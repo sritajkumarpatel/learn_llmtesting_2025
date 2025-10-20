@@ -4,7 +4,12 @@ from deepeval.metrics import GEval
 import ollama
 import os
 from dotenv import load_dotenv
-from local_llm_ollama_setup import setup_ollama, generate_ollama_response
+import sys
+from pathlib import Path
+
+# Add parent directory to path to import utils
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from utils import setup_ollama, generate_ollama_response
 
 # Load environment variables from .env file
 load_dotenv()
@@ -28,6 +33,7 @@ def test_correctness(threshold=1.0):
         criteria="Determine if the actual output matches the expected output",
         evaluation_params=[LLMTestCaseParams.ACTUAL_OUTPUT, LLMTestCaseParams.EXPECTED_OUTPUT],
         threshold=threshold,
+        openai_api_key=openai_api_key,
     )
     test_case = LLMTestCase(
         input="Who is the president of the United States as of 2024?",

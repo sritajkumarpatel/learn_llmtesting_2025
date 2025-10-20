@@ -1,7 +1,12 @@
 from deepeval.test_case import LLMTestCase
 from deepeval.metrics import AnswerRelevancyMetric
 import ollama
-from local_llm_ollama_setup import setup_ollama, generate_ollama_response
+import sys
+from pathlib import Path
+
+# Add parent directory to path to import utils
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from utils import setup_ollama, generate_ollama_response
 
 def test_answer_relevancy(query):
     

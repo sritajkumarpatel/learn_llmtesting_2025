@@ -3,12 +3,17 @@ from deepeval.test_case import LLMTestCase, LLMTestCaseParams
 from deepeval.metrics import GEval
 import ollama
 import os
+import sys
+from pathlib import Path
 from dotenv import load_dotenv
-from local_llm_ollama_setup import setup_ollama, generate_ollama_response, setup_custom_ollama_model_for_evaluation
+
+# Add parent directory to path to import utils
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from utils import setup_ollama, generate_ollama_response, setup_custom_ollama_model_for_evaluation
 
 
 # TODO: This file needs to be tested to ensure all test cases work as expected
-def test_correctness(evaluationModel,threshold=1.0):
+def test_correctness(evaluationModel, threshold=1.0):
 
     # Generate response using local Ollama LLM
     response = generate_ollama_response('What is the capital of India?')

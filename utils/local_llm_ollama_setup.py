@@ -54,14 +54,14 @@ def generate_ollama_response(query, model_name="llama3.2:3b"):
     Generate a response from specified Ollama model for a given query.
     
     Args:
-        model_name (str): Name of the Ollama model to use (e.g., "llama3.2:3b")
         query (str): The question/prompt to send to the model
+        model_name (str): Name of the Ollama model to use (e.g., "llama3.2:3b")
     
     Returns:
         str: The model's response text
     
     Example:
-        response = generate_ollama_response('llama3.2:3b', 'What is AI?')
+        response = generate_ollama_response('What is AI?', model_name='llama3.2:3b')
         print(response)  # Outputs model's answer
     """
     response = ollama.chat(model=model_name, messages=[

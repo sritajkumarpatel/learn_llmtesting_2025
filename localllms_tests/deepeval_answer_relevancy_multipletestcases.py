@@ -1,7 +1,12 @@
 from deepeval.test_case import LLMTestCase
 from deepeval.metrics import AnswerRelevancyMetric
 import ollama
-from local_llm_ollama_setup import setup_ollama, setup_custom_ollama_model_for_evaluation, generate_ollama_response
+import sys
+from pathlib import Path
+
+# Add parent directory to path to import utils
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from utils import setup_ollama, setup_custom_ollama_model_for_evaluation, generate_ollama_response
 import os
 from deepeval import evaluate
 
@@ -62,4 +67,3 @@ if __name__ == "__main__":
     print("Batch 2: Testing remaining 2 questions")
     print("=" * 70)
     test_answer_relevancy(test_questions[3:], evaluationModel)
-    
