@@ -4,7 +4,7 @@ from deepeval.metrics import GEval
 import ollama
 import os
 from dotenv import load_dotenv
-from local_llm_ollama_setup import setup_ollama
+from local_llm_ollama_setup import setup_ollama, generate_ollama_response
 
 # Load environment variables from .env file
 load_dotenv()
@@ -19,16 +19,9 @@ if not openai_api_key:
 os.environ["OPENAI_API_KEY"] = openai_api_key
 
 def test_correctness(threshold=1.0):
-    # Check if Ollama is running and start if needed
-    setup_ollama()
 
-    response = ollama.chat(model='llama3.2:3b', messages=[
-        {
-            'role': 'user',
-            'content': 'Who is the president of the United States as of 2024?'
-        }
-    ])
-    actual_output = response['message']['content']
+    # Generate response using local Ollama LLM
+    response = generate_ollama_response('Who is the president of the United States as of 2024?')
 
     correctness_metric = GEval(
         name="test_correctness",
@@ -38,54 +31,35 @@ def test_correctness(threshold=1.0):
     )
     test_case = LLMTestCase(
         input="Who is the president of the United States as of 2024?",
-        actual_output=actual_output,
+        actual_output=response,
         expected_output="As of 2024, the president of the United States is Joe Biden.",
     )
-    print("Actual Output:", actual_output)
+    print("Actual Output:", response)
     
     try:
         assert_test(test_case, [correctness_metric])
-        print("✅ Test Passed!")
+        print(f"✅ Test Passed! (Score: {correctness_metric.score} >= Threshold: {correctness_metric.threshold})")
     except AssertionError as e:
-        print("\n❌ Test Failed!")
-        print(f"\nError Details:\n{str(e)}")
-        
-        # Extract and display metric details
-        for metric in [correctness_metric]:
-            print(f"\n📊 Metric: {metric.name}")
-            print(f"   Score: {metric.score}")
-            print(f"   Threshold: {metric.threshold}")
-            print(f"   Reason: {metric.reason}")
+        print(f"❌ Test Failed! (Score: {correctness_metric.score} < Threshold: {correctness_metric.threshold})")
+        print(f"   Reason: {correctness_metric.reason}")
 
 if __name__ == "__main__":
-    # Test 1: Threshold 1.0 - Will FAIL (score is typically ~0.28-0.3, needs 1.0)
-    # LLM output includes extra context, not exact match
-    print("=" * 60)
-    print("Test 1: Strict Match (threshold=1.0)")
-    print("Expected Result: ❌ WILL FAIL - LLM adds extra context")
-    print("=" * 60)
+
+    # Check if Ollama is running and start if needed
+    setup_ollama()
+
+    # Test 1: Threshold 1.0 - Will FAIL
+    print("Test 1 (threshold=1.0) - Expected: ❌ FAIL")
     test_correctness()
     
-    # Test 2: Threshold 0.8 - Will FAIL (score is typically ~0.28-0.3, needs 0.8)
-    # Still won't meet the 0.8 threshold requirement
-    print("\n" + "=" * 60)
-    print("Test 2: High Threshold (threshold=0.8)")
-    print("Expected Result: ❌ WILL FAIL - Score doesn't reach 0.8")
-    print("=" * 60)
+    # Test 2: Threshold 0.8 - Will FAIL
+    print("\nTest 2 (threshold=0.8) - Expected: ❌ FAIL")
     test_correctness(threshold=0.8)
     
-    # Test 3: Threshold 0.5 - Will FAIL (score is typically ~0.28-0.3, needs 0.5)
-    # Score still below threshold
-    print("\n" + "=" * 60)
-    print("Test 3: Medium Threshold (threshold=0.5)")
-    print("Expected Result: ❌ WILL FAIL - Score doesn't reach 0.5")
-    print("=" * 60)
+    # Test 3: Threshold 0.5 - Will FAIL
+    print("\nTest 3 (threshold=0.5) - Expected: ❌ FAIL")
     test_correctness(threshold=0.5)
     
-    # Test 4: Threshold 0.0 - Will PASS (any positive score passes)
-    # Any non-zero score will pass this threshold
-    print("\n" + "=" * 60)
-    print("Test 4: No Threshold (threshold=0.0)")
-    print("Expected Result: ✅ WILL PASS - Any score above 0 passes")
-    print("=" * 60)
+    # Test 4: Threshold 0.0 - Will PASS
+    print("\nTest 4 (threshold=0.0) - Expected: ✅ PASS")
     test_correctness(threshold=0.0)
