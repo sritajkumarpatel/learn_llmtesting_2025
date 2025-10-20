@@ -4,9 +4,11 @@ from deepeval.metrics import GEval
 import ollama
 import os
 from dotenv import load_dotenv
+from local_llm_ollama_setup import setup_ollama
 
 # Load environment variables from .env file
 load_dotenv()
+
 
 # Set OpenAI API key in environment
 openai_api_key = os.getenv("OPENAI_API_KEY")
@@ -18,12 +20,8 @@ os.environ["OPENAI_API_KEY"] = openai_api_key
 
 def test_correctness(threshold=1.0):
     # Check if Ollama is running and start if needed
-    try:
-        # Test if Ollama is already running by listing models
-        ollama.list()
-    except Exception:
-        # If not running, start Ollama server
-        ollama.serve()
+    setup_ollama()
+
     response = ollama.chat(model='llama3.2:3b', messages=[
         {
             'role': 'user',
