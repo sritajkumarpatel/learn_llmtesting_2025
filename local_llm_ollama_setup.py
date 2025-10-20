@@ -49,7 +49,7 @@ def setup_custom_ollama_model_for_evaluation(model="deepseek-r1:8b", base_url="h
     """
     return OllamaModel(model=model, base_url=base_url, temperature=temperature)
 
-def generate_ollama_response(model_name, query):
+def generate_ollama_response(query, model_name="llama3.2:3b"):
     """
     Generate a response from specified Ollama model for a given query.
     
