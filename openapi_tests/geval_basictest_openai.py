@@ -32,8 +32,7 @@ def test_correctness(threshold=1.0):
         name="test_correctness",
         criteria="Determine if the actual output matches the expected output",
         evaluation_params=[LLMTestCaseParams.ACTUAL_OUTPUT, LLMTestCaseParams.EXPECTED_OUTPUT],
-        threshold=threshold,
-        openai_api_key=openai_api_key,
+        threshold=threshold
     )
     test_case = LLMTestCase(
         input="Who is the president of the United States as of 2024?",
