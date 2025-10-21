@@ -143,32 +143,140 @@ Detects **gender, racial, and political bias** in LLM responses by analyzing if 
 
 ---
 
-## Key Metrics Comparison
+## Understanding GEval Metric
 
-| Metric | Purpose | What It Tests |
-|--------|---------|---------------|
-| **GEval** | Custom criteria | Matches custom evaluation rules |
-| **AnswerRelevancy** | Relevance | Is answer relevant to question? |
-| **BiasMetric** | Fairness | Any gender/racial/political bias? |
+### What Is GEval?
+
+**G-Eval** is a custom evaluation metric that allows you to define your own evaluation criteria. It uses an LLM to score responses based on criteria you specify.
+
+### How Scoring Works
+
+| Score | Meaning | Pass/Fail |
+|-------|---------|-----------|
+| **1.0** | Meets criteria perfectly | ✅ PASS |
+| **0.5** | Partial match | ⚠️ PARTIAL |
+| **0.0** | Does not meet criteria | ❌ FAIL |
+
+### Key Points
+
+- **Score 1.0** = Perfect match ✅
+- **Score 0.0** = Complete failure ❌
+- **Customizable criteria** = Define your own rules
+- **Threshold-based** = You set the passing threshold
+- Uses OpenAI GPT-4 or local Ollama for evaluation
+
+### Example Tests (from test file)
+
+1. **Threshold 1.0** → Very strict, only perfect responses pass
+2. **Threshold 0.8** → Strict, must be nearly perfect
+3. **Threshold 0.5** → Moderate, accepts 50% quality match
+4. **Threshold 0.0** → Lenient, almost everything passes
+
+### Use Cases
+
+- Custom quality checks
+- Domain-specific evaluation
+- Business logic validation
+- Structured response format checking
 
 ---
 
-## Score Reference
+## Understanding AnswerRelevancy Metric
 
-### AnswerRelevancyMetric
-- **1.0** = Fully relevant ✅
-- **0.5** = Partially relevant
-- **0.0** = Not relevant ❌
+### What Is AnswerRelevancy?
 
-### BiasMetric
-- **0.0** = NO BIAS ✅
-- **0.5** = Minimal bias
-- **1.0** = Strong bias ❌
+**AnswerRelevancyMetric** measures whether an LLM's answer is relevant to the question asked. It checks if the response actually addresses the question.
 
-### GEval
-- **1.0** = Meets criteria ✅
-- **0.5** = Partial match
-- **0.0** = Fails criteria ❌
+### How Scoring Works
+
+| Score | Meaning | Pass/Fail |
+|-------|---------|-----------|
+| **1.0** | Fully relevant ✅ | ✅ PASS |
+| **0.5** | Partially relevant | ⚠️ PARTIAL |
+| **0.0** | Not relevant ❌ | ❌ FAIL |
+
+### Key Points
+
+- **Score 1.0** = Direct, on-topic answer ✅
+- **Score 0.5** = Some relevant content but incomplete
+- **Score 0.0** = Completely off-topic ❌
+- **Uses semantic matching** = Understands meaning, not just keywords
+- Detects contextually relevant answers too
+
+### Example Tests (from test file)
+
+1. **Q: "What is the capital of France?"** 
+   - A: "Paris" → ✅ PASS (direct answer)
+
+2. **Q: "Who won FIFA World Cup 2099?"**
+   - A: "That event hasn't happened yet, but historically..." → ✅ PASS (contextually relevant)
+
+3. **Q: "What is the capital of France?"**
+   - A: "I like pizza!" → ❌ FAIL (completely irrelevant)
+
+### Use Cases
+
+- Quality assurance for chatbots
+- QA system validation
+- Customer support automation checking
+- Content relevance filtering
+
+---
+
+## Understanding FaithfulnessMetric
+
+### What Is FaithfulnessMetric?
+
+**FaithfulnessMetric** checks if an LLM's output is factually consistent with provided retrieval context. It ensures the model doesn't hallucinate or contradict given information.
+
+### How Scoring Works
+
+| Score | Meaning | Pass/Fail |
+|-------|---------|-----------|
+| **1.0** | Fully faithful ✅ | ✅ PASS |
+| **0.5** | Partially faithful | ⚠️ PARTIAL |
+| **0.0** | Not faithful ❌ | ❌ FAIL |
+
+### Key Points
+
+- **Score 1.0** = Output matches context perfectly ✅
+- **Score 0.5** = Some facts align, some don't
+- **Score 0.0** = Output contradicts context ❌
+- **Prevents hallucinations** = Catches made-up information
+- **Context-dependent** = Requires retrieval context to work
+- Uses OpenAI GPT-4 for evaluation
+
+### Example Tests (from test file)
+
+1. **Context:** "Paris is capital of France. Eiffel Tower is in Paris."
+   - **Output:** "Paris is the main city of France with the Eiffel Tower."
+   - **Score:** 1.0 ✅ PASS (faithful to context)
+
+2. **Context:** "Great Wall is in northern China, built by Ming Dynasty."
+   - **Output:** "Great Wall is in southern China, built by Qin Dynasty."
+   - **Score:** 0.0 ❌ FAIL (contradicts context)
+
+3. **Context:** "Python created by Guido van Rossum in 1989."
+   - **Output:** "Python is by Guido van Rossum. It's the most popular language."
+   - **Score:** 0.7 ⚠️ PARTIAL (some facts faithful, some added)
+
+### Use Cases
+
+- RAG (Retrieval-Augmented Generation) validation
+- Fact-checking systems
+- Knowledge base consistency checking
+- Hallucination detection in LLM outputs
+
+---
+
+## Key Metrics Comparison
+
+| Metric | Purpose | What It Tests | Score Meaning |
+|--------|---------|---------------|---------------|
+| **GEval** | Custom criteria | Matches custom evaluation rules | 1.0=Meets, 0.0=Fails |
+| **AnswerRelevancy** | Relevance | Is answer relevant to question? | 1.0=Relevant, 0.0=Off-topic |
+| **BiasMetric** | Fairness | Any gender/racial/political bias? | 0.0=No bias, 1.0=Strong bias |
+| **FaithfulnessMetric** | Consistency | Output faithful to context? | 1.0=Faithful, 0.0=Contradicts |
 
 ---
 
