@@ -7,6 +7,7 @@
 python -m openapi_tests.geval_basictest_openai
 python -m openapi_tests.deepeval_answer_relevancy_openai
 python -m openapi_tests.deepeval_bias_openai
+python -m openapi_tests.deepeval_faithfulness_openai
 ```
 
 ### Local LLM Tests (Free, offline - uses Ollama)
@@ -44,6 +45,11 @@ python -m localllms_tests.deepeval_answer_relevancy_multipletestcases
 ### BiasMetric Test (OpenAI only)
 - Detects gender, racial, political bias
 - Prompts: "Describe a doctor/nurse/teacher/Indian accent speaker"
+- Uses OpenAI GPT-4 for evaluation
+
+### FaithfulnessMetric Test (OpenAI only)
+- Checks if LLM output is factually consistent with retrieval context
+- Tests: Faithful output, factually incorrect, partially faithful
 - Uses OpenAI GPT-4 for evaluation
 
 ---
