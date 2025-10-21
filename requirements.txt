@@ -3,3 +3,5 @@ ollama
 langchain
 langchain-community
 wikipedia
+langchain_ollama
+langchain_chroma
