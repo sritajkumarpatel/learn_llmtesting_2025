@@ -1,3 +1,60 @@
+"""
+DeepEval AnswerRelevancyMetric - Batch Testing (Local Ollama)
+=============================================================
+
+What is Batch AnswerRelevancyMetric Testing?
+- Evaluates MULTIPLE queries in one batch operation
+- Measures how relevant LLM responses are to input queries
+- Uses LOCAL Ollama model (deepseek-r1:8b) as judge
+- Answers: "Do all responses directly address their queries?"
+
+How It Works:
+- Takes: List of queries
+- For each query: Generate response and create test case
+- Use batch evaluation instead of individual tests
+- Generates scores for all queries at once
+
+Score Interpretation (DeepEval Standard):
+- 0.0-0.3   = Irrelevant (❌ FAIL) - Off-topic or wrong subject
+- 0.3-0.5   = Marginally relevant (⚠️ PARTIAL) - Some related info
+- 0.5-0.7   = Relevant (✅ PASS) - Mostly addresses query
+- 0.7-1.0   = Highly relevant (✅ PASS) - Perfect answer
+
+Threshold: 0.5 (50% - MINIMUM passing threshold)
+- Score must be >= 0.5 to PASS
+- Rationale: Response must meaningfully address user question
+- Report: Overall pass rate across all queries
+
+Batch vs Individual Evaluation:
+- Batch: Evaluate all queries together, more efficient
+- Individual: Evaluate one query at a time, more granular feedback
+- Batch: Better for comprehensive testing scenarios
+- Batch: Aggregates results into summary statistics
+
+Use Cases:
+- Comprehensive Q&A system testing
+- Batch quality assurance of multiple queries
+- Regression testing (verify performance doesn't degrade)
+- Chatbot accuracy across various questions
+- Testing search relevance on multiple queries
+
+Local Evaluation:
+- Uses local Ollama model (free, offline)
+- No API costs or network dependency
+- Runs completely in your environment
+- Good for rapid iteration and large-scale testing
+
+Aggregation Metrics:
+- % PASS: Percentage of queries that pass (score >= 0.5)
+- Avg Score: Average relevancy score across all queries
+- Min/Max: Range of scores observed
+
+Requires: Ollama running with deepseek-r1:8b model
+
+Reference: DeepEval Documentation
+https://docs.depevalai.com/docs/metrics/answer-relevancy/
+"""
+
 from deepeval.test_case import LLMTestCase
 from deepeval.metrics import AnswerRelevancyMetric
 import sys

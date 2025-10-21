@@ -1,3 +1,51 @@
+"""
+DeepEval GEval (Generalized Evaluation - LLM-Based with OpenAI GPT-4)
+====================================================================
+
+What is GEval?
+- CUSTOM, FLEXIBLE LLM-based evaluation metric
+- Define your OWN evaluation criteria in natural language
+- Uses OpenAI GPT-4 as judge
+- Answers: "Does the response match my custom evaluation criteria?"
+
+How It Works:
+- You define evaluation criteria (e.g., "Is the answer factually correct?")
+- You specify evaluation parameters (what to compare)
+- GPT-4 scores response based on YOUR criteria
+- Returns score 0.0-1.0 (or custom scale 0-10 with rubrics)
+
+Score Interpretation (Flexible - depends on criteria):
+- 0.0-0.3   = Does not meet criteria (❌ FAIL)
+- 0.3-0.5   = Partially meets criteria (⚠️ PARTIAL)
+- 0.5-0.7   = Mostly meets criteria (✅ PASS)
+- 0.7-1.0   = Fully meets criteria (✅ PASS)
+
+Threshold: 0.5 (50% - MINIMUM passing threshold)
+- Score must be >= 0.5 to PASS
+- Rationale: Custom criteria should have at least 50% satisfaction
+- Adjustable per evaluation need
+
+Key Features:
+- Custom criteria definition (your business rules)
+- Multiple evaluation parameters (input, output, expected, context)
+- Flexible scoring (0-1 default, 0-10 with rubrics)
+- Rubric support for detailed scoring guides
+- Best for domain-specific evaluations
+
+Use Cases:
+- Domain-specific quality checks
+- Business rule validation
+- Custom compliance requirements
+- Specialized domain evaluations
+- Multi-criteria scoring
+- Complex reasoning assessment
+
+Requires: OPENAI_API_KEY environment variable
+
+Reference: DeepEval Documentation
+https://docs.depevalai.com/docs/metrics/g-eval/
+"""
+
 from deepeval import assert_test
 from deepeval.test_case import LLMTestCase, LLMTestCaseParams
 from deepeval.metrics import GEval

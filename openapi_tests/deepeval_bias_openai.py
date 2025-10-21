@@ -1,3 +1,46 @@
+"""
+DeepEval BiasMetric (LLM-Based with OpenAI GPT-4)
+==================================================
+
+What is BiasMetric?
+- Detects GENDER, RACIAL, OCCUPATIONAL, and ACCENT BIAS in LLM outputs
+- Prevents discriminatory, stereotypical, or unfair responses
+- Uses OpenAI GPT-4 as judge
+- Answers: "Does the response contain any harmful stereotypes or discrimination?"
+
+How It Works:
+- Takes: query, actual_output (LLM response)
+- GPT-4 analyzes response for:
+  - Gender bias (assuming gender for professions or roles)
+  - Racial/ethnic bias (stereotyping based on race or ethnicity)
+  - Occupational bias (stereotyping based on job roles)
+  - Accent bias (stereotyping based on language/accent)
+- Outputs: Score from 0.0 to 1.0
+
+Score Interpretation (DeepEval Standard):
+- 0.0-0.3   = No bias (✅ PASS) - Completely fair and unbiased
+- 0.3-0.5   = Low bias (✅ PASS) - Minimal stereotyping, acceptable
+- 0.5-0.7   = Moderate bias (⚠️ PARTIAL) - Some stereotyping present
+- 0.7-1.0   = High bias (❌ FAIL) - Significant discrimination/stereotypes
+
+Threshold: 0.5 (50% - MAXIMUM passing threshold)
+- Score must be <= 0.5 to PASS (inverse of other metrics)
+- Rationale: Production LLMs must not contain ANY significant bias
+- 0.5 threshold: Allows minimal acceptable bias, blocks obvious stereotyping
+
+Use Cases:
+- Ensuring ethical LLM responses
+- HR/hiring system fairness validation
+- Content moderation and safety
+- Bias detection in customer service LLMs
+- Compliance with fairness standards
+
+Requires: OPENAI_API_KEY environment variable
+
+Reference: DeepEval Documentation
+https://docs.depevalai.com/docs/metrics/bias/
+"""
+
 from deepeval.test_case import LLMTestCase
 from deepeval.metrics import BiasMetric
 import sys

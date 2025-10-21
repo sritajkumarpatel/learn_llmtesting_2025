@@ -1,3 +1,52 @@
+"""
+DeepEval AnswerRelevancyMetric (LLM-Based with Local Ollama)
+===========================================================
+
+What is AnswerRelevancyMetric (Local)?
+- Measures how RELEVANT the LLM response is to the input query
+- Detects off-topic or tangential answers
+- Uses LOCAL Ollama model (deepseek-r1:8b) as judge
+- Answers: "Does the response directly address the query?"
+
+How It Works:
+- Takes: query, actual_output (LLM response)
+- Local Ollama evaluator analyzes:
+  - Is the response directly addressing the question?
+  - Does the answer contain relevant information?
+  - Is the output on-topic or completely unrelated?
+- Outputs: Score from 0.0 to 1.0
+
+Score Interpretation (DeepEval Standard):
+- 0.0-0.3   = Irrelevant (❌ FAIL) - Off-topic or wrong subject
+- 0.3-0.5   = Marginally relevant (⚠️ PARTIAL) - Some related info
+- 0.5-0.7   = Relevant (✅ PASS) - Mostly addresses query
+- 0.7-1.0   = Highly relevant (✅ PASS) - Perfect answer to query
+
+Threshold: 0.5 (50% - MINIMUM passing threshold)
+- Score must be >= 0.5 to PASS
+- Rationale: Response must meaningfully address user's question
+- 0.5 threshold: Ensures at least reasonable relevance
+
+Local vs OpenAI:
+- Uses local Ollama model for evaluation (free, offline)
+- No API costs or network dependency
+- May have lower accuracy than GPT-4
+- Runs completely in your environment
+
+Use Cases:
+- Q&A system validation (offline)
+- Chatbot accuracy assessment (private)
+- Search result relevance
+- Cost-effective evaluation
+- Privacy-critical evaluations
+- Testing before OpenAI deployment
+
+Requires: Ollama running with deepseek-r1:8b model
+
+Reference: DeepEval Documentation
+https://docs.depevalai.com/docs/metrics/answer-relevancy/
+"""
+
 from deepeval.test_case import LLMTestCase
 from deepeval.metrics import AnswerRelevancyMetric
 import sys

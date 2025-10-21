@@ -1,3 +1,58 @@
+"""
+DeepEval GEval (Generalized Evaluation - LLM-Based with Local Ollama)
+===================================================================
+
+What is GEval (Local)?
+- CUSTOM, FLEXIBLE LLM-based evaluation metric
+- Define your OWN evaluation criteria in natural language
+- Uses LOCAL Ollama model (deepseek-r1:8b) as judge
+- Answers: "Does the response match my custom evaluation criteria?"
+
+How It Works:
+- You define evaluation criteria (e.g., "Is the answer factually correct?")
+- You specify evaluation parameters (what to compare)
+- Local Ollama model scores response based on YOUR criteria
+- Returns score 0.0-1.0 (or custom scale 0-10 with rubrics)
+
+Score Interpretation (Flexible - depends on criteria):
+- 0.0-0.3   = Does not meet criteria (❌ FAIL)
+- 0.3-0.5   = Partially meets criteria (⚠️ PARTIAL)
+- 0.5-0.7   = Mostly meets criteria (✅ PASS)
+- 0.7-1.0   = Fully meets criteria (✅ PASS)
+
+Threshold: 0.5 (50% - MINIMUM passing threshold)
+- Score must be >= 0.5 to PASS
+- Rationale: Custom criteria should have at least 50% satisfaction
+- Adjustable per evaluation need
+
+Key Features:
+- Custom criteria definition (your business rules)
+- Multiple evaluation parameters (input, output, expected, context)
+- Flexible scoring (0-1 default, 0-10 with rubrics)
+- Local evaluation (offline, free, private)
+- Rubric support for detailed scoring guides
+
+Local vs OpenAI:
+- Uses local Ollama model instead of OpenAI GPT-4
+- Cost-effective and runs offline
+- No API costs or network dependency
+- May have lower accuracy than GPT-4
+- Best for testing before OpenAI deployment
+
+Use Cases:
+- Domain-specific quality checks (offline)
+- Business rule validation (private)
+- Custom compliance requirements
+- Cost-effective evaluation
+- Testing before production
+- Privacy-critical evaluations
+
+Requires: Ollama running with deepseek-r1:8b model
+
+Reference: DeepEval Documentation
+https://docs.depevalai.com/docs/metrics/g-eval/
+"""
+
 from deepeval import assert_test
 from deepeval.test_case import LLMTestCase, LLMTestCaseParams
 from deepeval.metrics import GEval

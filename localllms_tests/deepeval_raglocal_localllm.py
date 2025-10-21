@@ -1,3 +1,77 @@
+"""
+DeepEval RAG Contextual Metrics (Local Ollama) - Precision, Recall, Relevancy
+==============================================================================
+
+What are RAG Contextual Metrics?
+- Evaluate RETRIEVAL-AUGMENTED GENERATION (RAG) systems
+- Test how well LLM uses retrieved context documents
+- Uses LOCAL Ollama model (deepseek-r1:8b) as judge
+- Answers: "Does the response use and rely on the provided context?"
+
+The 3 RAG Metrics:
+
+1. CONTEXTUAL PRECISION
+   - Measures: % of retrieved context ACTUALLY USED by response
+   - Ideal: All retrieved documents are relevant and used
+   - Formula: (# relevant docs used) / (total docs retrieved)
+   - Score 0.0-1.0
+   
+2. CONTEXTUAL RECALL
+   - Measures: % of AVAILABLE INFO in context captured in response
+   - Ideal: Response includes all important information
+   - Formula: (# facts from context in response) / (total facts in context)
+   - Score 0.0-1.0
+   
+3. CONTEXTUAL RELEVANCY
+   - Measures: Are retrieved docs RELEVANT to the query?
+   - Ideal: All retrieved docs help answer the question
+   - Formula: (# relevant docs) / (total docs retrieved)
+   - Score 0.0-1.0
+
+Score Interpretation (Each Metric):
+- 0.0-0.3   = Poor (❌ FAIL) - Low precision/recall/relevancy
+- 0.3-0.5   = Moderate (⚠️ PARTIAL) - Some issues
+- 0.5-0.7   = Good (✅ PASS) - Mostly working
+- 0.7-1.0   = Excellent (✅ PASS) - Great RAG performance
+
+Threshold: 0.7 (70% - LLM-based metric standard)
+- Score must be >= 0.7 to PASS (per test, per metric)
+- Rationale: RAG systems should use context effectively
+- 0.7 threshold: Industry standard for LLM-based metrics
+
+Typical RAG Evaluation:
+- Query input to retrieve documents from knowledge base
+- Retrieve top K relevant documents (vector similarity)
+- Build prompt with context: "Context: [documents] \n Question: [query]"
+- Generate LLM response using context
+- Evaluate 3 metrics per test case
+- All 3 metrics must pass (>= 0.7)
+
+Use Cases:
+- Document QA system validation
+- FAQ chatbot evaluation
+- Search result effectiveness
+- Knowledge base coverage testing
+- Customer support bot assessment
+- Research document retrieval evaluation
+
+Local vs OpenAI:
+- Uses local Ollama for evaluation (free, offline)
+- No API costs, runs in your environment
+- Good for rapid iteration and testing
+- May have lower accuracy than GPT-4
+
+Data Source: Wikipedia documents via vector similarity search
+Vector DB: ChromaDB with semantic embeddings
+
+Requires: Ollama running with:
+- llama3.1:8b (or similar) for response generation
+- deepseek-r1:8b for evaluation
+
+Reference: DeepEval RAG Metrics
+https://docs.depevalai.com/docs/metrics/contextual-precision/
+"""
+
 from deepeval.test_case import LLMTestCase
 from deepeval.metrics import ContextualPrecisionMetric, ContextualRecallMetric, ContextualRelevancyMetric
 import sys

@@ -1,3 +1,46 @@
+"""
+DeepEval AnswerRelevancyMetric (LLM-Based with OpenAI GPT-4)
+============================================================
+
+What is AnswerRelevancyMetric?
+- Measures how RELEVANT the LLM response is to the input query
+- Detects off-topic or tangential answers
+- Uses OpenAI GPT-4 as judge
+- Answers: "Does the response directly address the query?"
+
+How It Works:
+- Takes: query, actual_output (LLM response)
+- GPT-4 evaluates:
+  - Is the response directly addressing the question?
+  - Does the answer contain relevant information to the query?
+  - Is the output on-topic or completely unrelated?
+- Outputs: Score from 0.0 to 1.0
+
+Score Interpretation (DeepEval Standard):
+- 0.0-0.3   = Irrelevant (❌ FAIL) - Off-topic or wrong subject
+- 0.3-0.5   = Marginally relevant (⚠️ PARTIAL) - Some related info
+- 0.5-0.7   = Relevant (✅ PASS) - Mostly addresses query
+- 0.7-1.0   = Highly relevant (✅ PASS) - Perfect answer to query
+
+Threshold: 0.5 (50% - MINIMUM passing threshold)
+- Score must be >= 0.5 to PASS (inverse of BiasMetric)
+- Rationale: Response must meaningfully address user's question
+- 0.5 threshold: Ensures at least reasonable relevance
+
+Use Cases:
+- Q&A system validation
+- Chatbot accuracy assessment
+- Search result relevance
+- Customer support bot evaluation
+- Semantic search quality
+- RAG system answer quality
+
+Requires: OPENAI_API_KEY environment variable
+
+Reference: DeepEval Documentation
+https://docs.depevalai.com/docs/metrics/answer-relevancy/
+"""
+
 from deepeval.test_case import LLMTestCase
 from deepeval.metrics import AnswerRelevancyMetric
 import sys
