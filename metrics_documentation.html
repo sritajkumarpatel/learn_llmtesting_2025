@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LLM Evaluation Metrics - DeepEval & RAGAS Documentation</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #333;
+        line-height: 1.6;
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+      }
+
+      header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 60px 40px;
+        text-align: center;
+      }
+
+      header h1 {
+        font-size: 2.8em;
+        margin-bottom: 10px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      header p {
+        font-size: 1.2em;
+        opacity: 0.95;
+        margin-bottom: 5px;
+      }
+
+      .subtitle {
+        font-size: 0.95em;
+        opacity: 0.85;
+        margin-top: 10px;
+      }
+
+      .content {
+        padding: 40px;
+      }
+
+      .framework-section {
+        margin-bottom: 50px;
+      }
+
+      .framework-title {
+        font-size: 2.2em;
+        margin-bottom: 10px;
+        padding-bottom: 15px;
+        border-bottom: 4px solid;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        justify-content: space-between;
+      }
+
+      .framework-docs-link {
+        font-size: 0.8em;
+        color: #666;
+        text-decoration: none;
+        padding: 5px 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background: white;
+        transition: all 0.2s ease;
+      }
+
+      .framework-docs-link:hover {
+        background: #f5f5f5;
+        color: #333;
+      }
+
+      .deepeval-title {
+        color: #667eea;
+        border-bottom-color: #667eea;
+      }
+
+      .ragas-title {
+        color: #f093fb;
+        border-bottom-color: #f093fb;
+      }
+
+      .framework-desc {
+        font-size: 1.05em;
+        margin-bottom: 30px;
+        padding: 15px 20px;
+        background: #f8f9ff;
+        border-left: 4px solid;
+        border-radius: 5px;
+      }
+
+      .deepeval-desc {
+        border-left-color: #667eea;
+        background: #f0f4ff;
+      }
+
+      .ragas-desc {
+        border-left-color: #f093fb;
+        background: #fef0ff;
+      }
+
+      .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 20px;
+        margin-top: 30px;
+      }
+
+      .metric-card {
+        background: white;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        padding: 20px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        margin-bottom: 15px;
+      }
+
+      .metric-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        border-color: #667eea;
+      }
+
+      .metric-card.ragas:hover {
+        border-color: #f093fb;
+      }
+
+      .metric-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #f0f0f0;
+      }
+
+      .metric-name {
+        font-size: 1.5em;
+        font-weight: bold;
+        color: #333;
+      }
+
+      .metric-tag {
+        display: inline-block;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.85em;
+        font-weight: bold;
+        white-space: nowrap;
+      }
+
+      .tag-llm {
+        background: #e8f5e9;
+        color: #2e7d32;
+      }
+
+      .tag-non-llm {
+        background: #fff3e0;
+        color: #e65100;
+      }
+
+      .tag-openai {
+        background: #e3f2fd;
+        color: #1565c0;
+      }
+
+      .tag-local {
+        background: #f3e5f5;
+        color: #6a1b9a;
+      }
+
+      .section-title {
+        font-size: 1.1em;
+        font-weight: bold;
+        margin-top: 15px;
+        margin-bottom: 8px;
+        color: #667eea;
+      }
+
+      .metric-card.ragas .section-title {
+        color: #f093fb;
+      }
+
+      .purpose,
+      .use-cases {
+        font-size: 0.95em;
+        line-height: 1.6;
+        margin-bottom: 12px;
+      }
+
+      .threshold-section {
+        background: #f5f5f5;
+        padding: 12px;
+        border-radius: 8px;
+        margin-top: 12px;
+      }
+
+      .threshold-simple {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .threshold-simple .status {
+        font-size: 0.85em;
+        padding: 4px 8px;
+        border-radius: 4px;
+      }
+
+      .threshold-label {
+        font-weight: bold;
+        color: #667eea;
+        margin-bottom: 8px;
+      }
+
+      .metric-card.ragas .threshold-label {
+        color: #f093fb;
+      }
+
+      .scoring-table {
+        width: 100%;
+        margin-top: 10px;
+        font-size: 0.9em;
+        border-collapse: collapse;
+      }
+
+      .scoring-table th,
+      .scoring-table td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .scoring-table th {
+        background: #f0f0f0;
+        font-weight: bold;
+        color: #333;
+      }
+
+      .scoring-table tr:hover {
+        background: #f9f9f9;
+      }
+
+      .score-range {
+        font-weight: bold;
+        color: #667eea;
+      }
+
+      .metric-card.ragas .score-range {
+        color: #f093fb;
+      }
+
+      .status {
+        display: inline-block;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: 0.85em;
+        font-weight: bold;
+      }
+
+      .status-pass {
+        background: #c8e6c9;
+        color: #2e7d32;
+      }
+
+      .status-fail {
+        background: #ffcdd2;
+        color: #c62828;
+      }
+
+      .status-partial {
+        background: #fff9c4;
+        color: #f57f17;
+      }
+
+      .examples {
+        background: #fafafa;
+        padding: 12px;
+        border-radius: 6px;
+        margin-top: 12px;
+        font-size: 0.9em;
+      }
+
+      .example-item {
+        margin-bottom: 8px;
+        padding-left: 15px;
+        position: relative;
+      }
+
+      .example-item:before {
+        content: "▪";
+        position: absolute;
+        left: 0;
+        color: #667eea;
+      }
+
+      .metric-card.ragas .example-item:before {
+        color: #f093fb;
+      }
+
+      .docs-reference {
+        margin-top: 20px;
+        padding-top: 15px;
+        border-top: 1px solid #e0e0e0;
+        font-size: 0.9em;
+      }
+
+      .docs-link {
+        display: inline-block;
+        color: #667eea;
+        text-decoration: none;
+        margin-top: 8px;
+        font-weight: bold;
+        transition: color 0.3s ease;
+      }
+
+      .docs-link:hover {
+        color: #764ba2;
+        text-decoration: underline;
+      }
+
+      .metric-card.ragas .docs-link {
+        color: #f093fb;
+      }
+
+      .metric-card.ragas .docs-link:hover {
+        color: #d946ef;
+      }
+
+      .comparison-table {
+        width: 100%;
+        margin-top: 30px;
+        border-collapse: collapse;
+        font-size: 0.9em;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        padding: 12px;
+        text-align: left;
+        border: 1px solid #ddd;
+      }
+
+      .comparison-table th {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        font-weight: bold;
+      }
+
+      .comparison-table tr:nth-child(even) {
+        background: #f9f9f9;
+      }
+
+      .comparison-table tr:hover {
+        background: #f0f4ff;
+      }
+
+      .footer {
+        background: #f8f9fa;
+        padding: 25px 40px;
+        text-align: center;
+        border-top: 1px solid #e0e0e0;
+        font-size: 0.9em;
+        color: #666;
+      }
+
+      .summary-box {
+        background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+        border-left: 4px solid #667eea;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+      }
+
+      .icon {
+        font-size: 1.5em;
+        display: inline-block;
+      }
+
+      .badge-count {
+        display: inline-block;
+        background: #667eea;
+        color: white;
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 0.85em;
+        margin-left: 8px;
+      }
+
+      .metric-card.ragas .badge-count {
+        background: #f093fb;
+      }
+
+      @media (max-width: 768px) {
+        .metrics-grid {
+          grid-template-columns: 1fr;
+        }
+
+        header h1 {
+          font-size: 1.8em;
+        }
+
+        .content {
+          padding: 20px;
+        }
+
+        .comparison-table {
+          font-size: 0.8em;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+          padding: 8px;
+        }
+      }
+
+      .feature-highlight {
+        display: inline-block;
+        background: #e8f5e9;
+        color: #2e7d32;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-size: 0.85em;
+        margin: 0 2px;
+      }
+
+      .feature-highlight.cons {
+        background: #ffebee;
+        color: #c62828;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>🚀 LLM Evaluation Metrics</h1>
+        <p>Comprehensive Documentation for DeepEval & RAGAS Frameworks</p>
+        <p class="subtitle">
+          Test Coverage & Threshold Guidelines | October 2025
+        </p>
+      </header>
+
+      <div class="content">
+        <!-- Summary Box -->
+        <div class="summary-box">
+          <h2>📊 Overview</h2>
+          <p>
+            Complete evaluation framework covering
+            <strong>9 DeepEval metrics</strong> across multiple test scenarios
+            and <strong>2 RAGAS metrics</strong> for alternative evaluation
+            approaches. Each metric includes detailed threshold specifications,
+            scoring ranges, and practical examples.
+          </p>
+        </div>
+
+        <!-- DEEPEVAL SECTION -->
+        <div class="framework-section">
+          <h2 class="framework-title deepeval-title">
+            <span class="icon">🔵</span> DeepEval Framework
+            <span class="badge-count">9 Metrics</span>
+            <a
+              href="https://docs.depevalai.com/"
+              target="_blank"
+              class="framework-docs-link"
+              >📖 Docs</a
+            >
+          </h2>
+          <div class="framework-desc deepeval-desc">
+            <strong>DeepEval</strong> is a comprehensive LLM evaluation
+            framework offering customizable metrics for quality assessment.
+            Supports both OpenAI GPT-4 and local Ollama models as evaluators.
+          </div>
+
+          <!-- DeepEval Metrics -->
+          <div class="metrics-grid">
+            <!-- GEval -->
+            <div class="metric-card">
+              <div class="metric-header">
+                <div class="metric-name">GEval</div>
+                <span class="metric-tag tag-llm">LLM-Based</span>
+              </div>
+
+              <div class="purpose">
+                <strong>Purpose:</strong> Custom evaluation criteria with
+                flexible scoring based on your defined business rules.
+              </div>
+
+              <div class="threshold-section">
+                <div class="threshold-simple">
+                  <span class="status status-pass">PASS ≥0.5</span>
+                  <span class="status status-partial">PARTIAL 0.3-0.5</span>
+                  <span class="status status-fail">FAIL <0.3</span>
+                </div>
+              </div>
+
+              <div class="section-title">Use Cases:</div>
+              <div class="use-cases">
+                Domain-specific evaluation, business logic validation, custom
+                quality checks
+              </div>
+
+              <div class="examples">
+                <strong>Examples:</strong>
+                <div class="example-item">
+                  <span class="status status-pass">✅ PASS</span> Output: "The
+                  task was completed successfully" (matches criteria)
+                </div>
+                <div class="example-item">
+                  <span class="status status-partial">⚠️ PARTIAL</span> Output:
+                  "Task done, but details unclear" (partial compliance)
+                </div>
+                <div class="example-item">
+                  <span class="status status-fail">❌ FAIL</span> Output: "I
+                  don't know" (doesn't meet criteria)
+                </div>
+              </div>
+            </div>
+
+            <!-- Answer Relevancy -->
+            <div class="metric-card">
+              <div class="metric-header">
+                <div class="metric-name">Answer Relevancy</div>
+                <span class="metric-tag tag-llm">LLM-Based</span>
+              </div>
+
+              <div class="purpose">
+                <strong>Purpose:</strong> Measures whether LLM response directly
+                addresses the user query.
+              </div>
+
+              <div class="threshold-section">
+                <div class="threshold-simple">
+                  <span class="status status-pass">PASS ≥0.5</span>
+                  <span class="status status-partial">PARTIAL 0.3-0.5</span>
+                  <span class="status status-fail">FAIL <0.3</span>
+                </div>
+              </div>
+
+              <div class="section-title">Use Cases:</div>
+              <div class="use-cases">
+                Q&A systems, chatbots, search relevance, customer support
+                automation
+              </div>
+
+              <div class="examples">
+                <strong>Examples:</strong>
+                <div class="example-item">
+                  Q: "What is France's capital?" A: "Paris" ✅ PASS
+                </div>
+                <div class="example-item">
+                  Q: "Who won FIFA 2099?" A: "Future event..." ✅ PASS
+                </div>
+                <div class="example-item">
+                  Q: "France capital?" A: "I like pizza!" ❌ FAIL
+                </div>
+              </div>
+            </div>
+
+            <!-- BiasMetric -->
+            <div class="metric-card">
+              <div class="metric-header">
+                <div class="metric-name">BiasMetric</div>
+                <span class="metric-tag tag-llm">LLM-Based</span>
+              </div>
+
+              <div class="purpose">
+                <strong>Purpose:</strong> Detects gender, racial, occupational,
+                and accent bias in LLM responses.
+              </div>
+
+              <div class="threshold-section">
+                <div class="threshold-simple">
+                  <span class="status status-pass">PASS ≤0.5</span>
+                  <span class="status status-fail">FAIL >0.5</span>
+                </div>
+              </div>
+
+              <div class="section-title">Use Cases:</div>
+              <div class="use-cases">
+                Ethical AI validation, fairness assurance, HR systems, content
+                moderation
+              </div>
+
+              <div class="examples">
+                <strong>Examples:</strong>
+                <div class="example-item">
+                  <span class="status status-pass">✅ PASS</span> Q: "Who is a
+                  good nurse?" A: "Anyone with proper training and compassion"
+                  (no gender bias)
+                </div>
+                <div class="example-item">
+                  <span class="status status-partial">⚠️ PARTIAL</span> Q: "Who
+                  is a good scientist?" A: "He conducts research..."
+                  (gender-biased language)
+                </div>
+                <div class="example-item">
+                  <span class="status status-fail">❌ FAIL</span> Q: "Who works
+                  in finance?" A: "Only wealthy men from elite backgrounds..."
+                  (class and gender bias)
+                </div>
+              </div>
+            </div>
+
+            <!-- FaithfulnessMetric -->
+            <div class="metric-card">
+              <div class="metric-header">
+                <div class="metric-name">FaithfulnessMetric</div>
+                <span class="metric-tag tag-llm">LLM-Based</span>
+              </div>
+
+              <div class="purpose">
+                <strong>Purpose:</strong> Checks if LLM output is factually
+                consistent with provided context (prevents hallucinations).
+              </div>
+
+              <div class="threshold-section">
+                <div class="threshold-simple">
+                  <span class="status status-pass">PASS ≥0.5</span>
+                  <span class="status status-partial">PARTIAL 0.3-0.5</span>
+                  <span class="status status-fail">FAIL <0.3</span>
+                </div>
+              </div>
+
+              <div class="section-title">Use Cases:</div>
+              <div class="use-cases">
+                RAG systems, fact-checking, knowledge base consistency,
+                hallucination detection
+              </div>
+
+              <div class="examples">
+                <strong>Examples:</strong>
+                <div class="example-item">
+                  <strong>Context:</strong> "Paris is capital of France"
+                </div>
+                <div class="example-item">
+                  <strong>Output:</strong> "Paris, the French capital..." ✅
+                  PASS
+                </div>
+                <div class="example-item">
+                  <strong>Output:</strong> "Paris is in Germany..." ❌ FAIL
+                </div>
+              </div>
+            </div>
+
+            <!-- Contextual Precision -->
+            <div class="metric-card">
+              <div class="metric-header">
+                <div class="metric-name">Contextual Precision</div>
+                <span class="metric-tag tag-llm">LLM-Based</span>
+              </div>
+
+              <div class="purpose">
+                <strong>Purpose:</strong> Measures % of retrieved context
+                actually used by the LLM response (RAG evaluation).
+              </div>
+
+              <div class="threshold-section">
+                <div class="threshold-simple">
+                  <span class="status status-pass">PASS ≥0.7</span>
+                  <span class="status status-partial">PARTIAL 0.3-0.7</span>
+                  <span class="status status-fail">FAIL <0.3</span>
+                </div>
+              </div>
+
+              <div class="section-title">Use Cases:</div>
+              <div class="use-cases">
+                RAG optimization, document QA systems, knowledge base
+                effectiveness
+              </div>
+
+              <div class="examples">
+                <strong>Examples:</strong>
+                <div class="example-item">
+                  <span class="status status-pass">✅ PASS</span> Retrieved 5
+                  docs, used all 5 in response (100% precision)
+                </div>
+                <div class="example-item">
+                  <span class="status status-partial">⚠️ PARTIAL</span>
+                  Retrieved 5 docs, used 3 in response (60% precision)
+                </div>
+                <div class="example-item">
+                  <span class="status status-fail">❌ FAIL</span> Retrieved 5
+                  docs, used only 1 in response (20% precision)
+                </div>
+              </div>
+            </div>
+
+            <!-- Contextual Recall -->
+            <div class="metric-card">
+              <div class="metric-header">
+                <div class="metric-name">Contextual Recall</div>
+                <span class="metric-tag tag-llm">LLM-Based</span>
+              </div>
+
+              <div class="purpose">
+                <strong>Purpose:</strong> Measures % of available information in
+                context captured in the LLM response.
+              </div>
+
+              <div class="threshold-section">
+                <div class="threshold-simple">
+                  <span class="status status-pass">PASS ≥0.7</span>
+                  <span class="status status-partial">PARTIAL 0.3-0.7</span>
+                  <span class="status status-fail">FAIL <0.3</span>
+                </div>
+              </div>
+
+              <div class="section-title">Use Cases:</div>
+              <div class="use-cases">
+                Comprehensive answer checking, research summarization,
+                information retrieval
+              </div>
+
+              <div class="examples">
+                <strong>Examples:</strong>
+                <div class="example-item">
+                  <span class="status status-pass">✅ PASS</span> Context has 10
+                  key facts, response includes 9 (90% recall)
+                </div>
+                <div class="example-item">
+                  <span class="status status-partial">⚠️ PARTIAL</span> Context
+                  has 10 key facts, response includes 5 (50% recall)
+                </div>
+                <div class="example-item">
+                  <span class="status status-fail">❌ FAIL</span> Context has 10
+                  key facts, response includes only 1 (10% recall)
+                </div>
+              </div>
+            </div>
+
+            <!-- Contextual Relevancy -->
+            <div class="metric-card">
+              <div class="metric-header">
+                <div class="metric-name">Contextual Relevancy</div>
+                <span class="metric-tag tag-llm">LLM-Based</span>
+              </div>
+
+              <div class="purpose">
+                <strong>Purpose:</strong> Measures if retrieved documents are
+                relevant to the user query.
+              </div>
+
+              <div class="threshold-section">
+                <div class="threshold-simple">
+                  <span class="status status-pass">PASS ≥0.7</span>
+                  <span class="status status-partial">PARTIAL 0.3-0.7</span>
+                  <span class="status status-fail">FAIL <0.3</span>
+                </div>
+              </div>
+
+              <div class="section-title">Use Cases:</div>
+              <div class="use-cases">
+                Retrieval quality, document search effectiveness, knowledge base
+                coverage
+              </div>
+
+              <div class="examples">
+                <strong>Examples:</strong>
+                <div class="example-item">
+                  <span class="status status-pass">✅ PASS</span> Q: "Python
+                  syntax", Retrieved docs all about Python (100% relevant)
+                </div>
+                <div class="example-item">
+                  <span class="status status-partial">⚠️ PARTIAL</span> Q:
+                  "Python syntax", 2 out of 3 docs about Python (67% relevant)
+                </div>
+                <div class="example-item">
+                  <span class="status status-fail">❌ FAIL</span> Q: "Python
+                  syntax", Retrieved docs mostly about Java/C++ (20% relevant)
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RAGAS SECTION -->
+        <div class="framework-section">
+          <h2 class="framework-title ragas-title">
+            <span class="icon">🟣</span> RAGAS Framework
+            <span class="badge-count">2 Metrics</span>
+            <a
+              href="https://docs.ragas.io/"
+              target="_blank"
+              class="framework-docs-link"
+              >📖 Docs</a
+            >
+          </h2>
+          <div class="framework-desc ragas-desc">
+            <strong>RAGAS (Retrieval-Augmented Generation Assessment)</strong>
+            is a specialized framework for evaluating RAG systems. Offers both
+            non-LLM (fast) and LLM-based (accurate) metrics for comprehensive
+            assessment.
+          </div>
+
+          <!-- RAGAS Metrics -->
+          <div class="metrics-grid">
+            <!-- BLEU Score -->
+            <div class="metric-card ragas">
+              <div class="metric-header">
+                <div class="metric-name">BLEU Score</div>
+                <span class="metric-tag tag-non-llm">Non-LLM</span>
+              </div>
+
+              <div class="purpose">
+                <strong>Purpose:</strong> Surface-level n-gram matching between
+                generated and expected output (no semantic understanding).
+              </div>
+
+              <div class="threshold-section">
+                <div class="threshold-simple">
+                  <span class="status status-pass">PASS ≥0.5</span>
+                  <span class="status status-partial">PARTIAL 0.3-0.5</span>
+                  <span class="status status-fail">FAIL <0.3</span>
+                </div>
+              </div>
+
+              <div class="section-title">Characteristics:</div>
+              <div class="use-cases">
+                <span class="feature-highlight">✓ Fast</span>
+                <span class="feature-highlight">✓ No API calls</span>
+                <span class="feature-highlight cons"
+                  >✗ No semantic understanding</span
+                >
+                <span class="feature-highlight cons">✗ Less reliable</span>
+              </div>
+
+              <div class="section-title">Use Cases:</div>
+              <div class="use-cases">
+                Quick baseline testing, word-level matching, testing before LLM
+                evaluation
+              </div>
+
+              <div class="examples">
+                <strong>Examples:</strong>
+                <div class="example-item">
+                  <span class="status status-pass">✅ PASS</span> Expected:
+                  "Paris is the capital", Generated: "Paris is the capital"
+                  (100% match)
+                </div>
+                <div class="example-item">
+                  <span class="status status-partial">⚠️ PARTIAL</span>
+                  Expected: "Paris is the capital", Generated: "Paris is
+                  capital" (80% match)
+                </div>
+                <div class="example-item">
+                  <span class="status status-fail">❌ FAIL</span> Expected:
+                  "Paris is the capital", Generated: "The capital is Paris" (low
+                  n-gram overlap)
+                </div>
+              </div>
+            </div>
+
+            <!-- LLMContextRecall -->
+            <div class="metric-card ragas">
+              <div class="metric-header">
+                <div class="metric-name">LLMContextRecall</div>
+                <span class="metric-tag tag-llm">LLM-Based</span>
+              </div>
+
+              <div class="purpose">
+                <strong>Purpose:</strong> LLM-based evaluation measuring % of
+                context information recalled in the response (semantic
+                understanding).
+              </div>
+
+              <div class="threshold-section">
+                <div class="threshold-simple">
+                  <span class="status status-pass">PASS ≥0.7</span>
+                  <span class="status status-partial">PARTIAL 0.3-0.7</span>
+                  <span class="status status-fail">FAIL <0.3</span>
+                </div>
+              </div>
+
+              <div class="section-title">Characteristics:</div>
+              <div class="use-cases">
+                <span class="feature-highlight">✓ Semantic understanding</span>
+                <span class="feature-highlight">✓ Production-ready</span>
+                <span class="feature-highlight">✓ Accurate</span>
+                <span class="feature-highlight cons"
+                  >✗ Slower than non-LLM</span
+                >
+              </div>
+
+              <div class="section-title">Use Cases:</div>
+              <div class="use-cases">
+                Production RAG evaluation, context coverage assessment, quality
+                assurance
+              </div>
+
+              <div class="examples">
+                <strong>Examples:</strong>
+                <div class="example-item">
+                  <span class="status status-pass">✅ PASS</span> Context: "The
+                  meeting is at 3 PM on Tuesday", Response mentions time and day
+                  (100% recall)
+                </div>
+                <div class="example-item">
+                  <span class="status status-partial">⚠️ PARTIAL</span> Context
+                  has 5 key points, response captures 3 (60% recall)
+                </div>
+                <div class="example-item">
+                  <span class="status status-fail">❌ FAIL</span> Context has
+                  important details, response missing key facts (30% recall)
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- COMPARISON TABLE -->
+        <div class="framework-section">
+          <h2 style="font-size: 1.8em; margin-bottom: 25px; color: #333">
+            📊 Metrics Comparison Matrix
+          </h2>
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Metric</th>
+                <th>Framework</th>
+                <th>Type</th>
+                <th>Threshold</th>
+                <th>Primary Use</th>
+                <th>Speed</th>
+                <th>Accuracy</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>GEval</strong></td>
+                <td>DeepEval</td>
+                <td>LLM-Based</td>
+                <td>≥ 0.5</td>
+                <td>Custom criteria</td>
+                <td>Medium</td>
+                <td>High</td>
+              </tr>
+              <tr>
+                <td><strong>Answer Relevancy</strong></td>
+                <td>DeepEval</td>
+                <td>LLM-Based</td>
+                <td>≥ 0.5</td>
+                <td>Q&A relevance</td>
+                <td>Medium</td>
+                <td>High</td>
+              </tr>
+              <tr>
+                <td><strong>BiasMetric</strong></td>
+                <td>DeepEval</td>
+                <td>LLM-Based</td>
+                <td>≤ 0.5</td>
+                <td>Bias detection</td>
+                <td>Medium</td>
+                <td>High</td>
+              </tr>
+              <tr>
+                <td><strong>FaithfulnessMetric</strong></td>
+                <td>DeepEval</td>
+                <td>LLM-Based</td>
+                <td>≥ 0.5</td>
+                <td>Fact checking</td>
+                <td>Medium</td>
+                <td>High</td>
+              </tr>
+              <tr>
+                <td><strong>Contextual Precision</strong></td>
+                <td>DeepEval</td>
+                <td>LLM-Based</td>
+                <td>≥ 0.5</td>
+                <td>RAG precision</td>
+                <td>Medium</td>
+                <td>High</td>
+              </tr>
+              <tr>
+                <td><strong>Contextual Recall</strong></td>
+                <td>DeepEval</td>
+                <td>LLM-Based</td>
+                <td>≥ 0.5</td>
+                <td>RAG recall</td>
+                <td>Medium</td>
+                <td>High</td>
+              </tr>
+              <tr>
+                <td><strong>Contextual Relevancy</strong></td>
+                <td>DeepEval</td>
+                <td>LLM-Based</td>
+                <td>≥ 0.5</td>
+                <td>Retrieval quality</td>
+                <td>Medium</td>
+                <td>High</td>
+              </tr>
+              <tr>
+                <td><strong>BLEU Score</strong></td>
+                <td>RAGAS</td>
+                <td>Non-LLM</td>
+                <td>≥ 0.5</td>
+                <td>Baseline testing</td>
+                <td>Fast</td>
+                <td>Low</td>
+              </tr>
+              <tr>
+                <td><strong>LLMContextRecall</strong></td>
+                <td>RAGAS</td>
+                <td>LLM-Based</td>
+                <td>≥ 0.7</td>
+                <td>RAG evaluation</td>
+                <td>Medium</td>
+                <td>High</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <footer>
+        <p><strong>LLM Evaluation Metrics Documentation</strong></p>
+        <p>Last Updated: October 2025</p>
+        <p>
+          DeepEval Docs:
+          <a
+            href="https://docs.depevalai.com/"
+            target="_blank"
+            style="color: #667eea"
+            >https://docs.depevalai.com/</a
+          >
+        </p>
+        <p>
+          RAGAS Docs:
+          <a
+            href="https://docs.ragas.io/"
+            target="_blank"
+            style="color: #f093fb"
+            >https://docs.ragas.io/</a
+          >
+        </p>
+        <p style="margin-top: 15px; font-size: 0.85em; color: #999">
+          📊 Complete coverage of 9 DeepEval metrics & 2 RAGAS metrics with
+          thresholds, scoring ranges, and practical examples
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>
