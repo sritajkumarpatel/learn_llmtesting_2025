@@ -1,80 +1,126 @@
 from deepeval.test_case import LLMTestCase
 from deepeval.metrics import AnswerRelevancyMetric
-import ollama
 import sys
 from pathlib import Path
 
 # Add parent directory to path to import utils
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from utils import setup_ollama, setup_custom_ollama_model_for_evaluation, generate_ollama_response
-import os
+
 
 def test_answer_relevancy(evaluationModel, query):
+    """
+    Test AnswerRelevancyMetric with Local LLM Evaluator - measures relevance using local Ollama.
+    
+    Scoring:
+    - Score ranges from 0 to 1
+    - Score 1.0 = Highly relevant to query ✅ PASS
+    - Score >= 0.5 = Reasonably relevant ✅ PASS
+    - Score < 0.5 = Not relevant to query ❌ FAIL
+    - Default threshold = 0.5
+    
+    Local vs OpenAI:
+    - Uses local Ollama model for evaluation instead of OpenAI GPT-4
+    - Runs completely offline
+    - Free to use but may have lower accuracy
+    """
 
     # Generate response using local Ollama LLM
     ollama_response = generate_ollama_response(query)
     
+    # Initialize AnswerRelevancyMetric with local evaluator
     answer_relevancy_metric = AnswerRelevancyMetric(model=evaluationModel)
+    
+    # Create test case
     test_case = LLMTestCase(
         input=query,
         actual_output=ollama_response,
     )
 
-    print("Actual Output:", ollama_response)
+    print(f"Query: {query}")
+    print(f"LLM Output: {ollama_response}")
+    print(f"Evaluator Model: {evaluationModel}")
+    print("=" * 80)
+    
+    # Measure relevancy
     answer_relevancy_metric.measure(test_case)
-    print("Answer Relevancy Score:", answer_relevancy_metric.score)
+    
+    # Determine pass/fail based on relevancy score
+    if answer_relevancy_metric.score >= 0.5:
+        print(f"✅ Test PASSED - Relevancy Score: {answer_relevancy_metric.score:.2f}")
+    else:
+        print(f"❌ Test FAILED - Relevancy Score: {answer_relevancy_metric.score:.2f}")
+        print(f"   Reason: {answer_relevancy_metric.reason}")
 
 
 def test_answer_relevancy_custom(evaluationModel, query, custom_answer):
-    """Test with a custom answer (useful for testing failure cases)"""
+    """
+    Test with a custom answer for testing specific scenarios.
+    Useful for testing failure cases or specific output patterns with local evaluator.
+    """
+    
+    # Initialize AnswerRelevancyMetric with local evaluator
     answer_relevancy_metric = AnswerRelevancyMetric(model=evaluationModel)
+    
+    # Create test case with custom answer
     test_case = LLMTestCase(
         input=query,
         actual_output=custom_answer,
     )
 
-    print("Actual Output:", custom_answer)
+    print(f"Query: {query}")
+    print(f"Custom Output: {custom_answer}")
+    print(f"Evaluator Model: {evaluationModel}")
+    print("=" * 80)
+    
+    # Measure relevancy
     answer_relevancy_metric.measure(test_case)
-    print("Answer Relevancy Score:", answer_relevancy_metric.score)
+    
+    # Determine pass/fail based on relevancy score
+    if answer_relevancy_metric.score >= 0.5:
+        print(f"✅ Test PASSED - Relevancy Score: {answer_relevancy_metric.score:.2f}")
+    else:
+        print(f"❌ Test FAILED - Relevancy Score: {answer_relevancy_metric.score:.2f}")
+        print(f"   Reason: {answer_relevancy_metric.reason}")
 
 
 if __name__ == "__main__":
+    print("=" * 80)
+    print("DEEPEVAL ANSWER RELEVANCY METRIC TEST - Local Ollama Evaluator")
+    print("=" * 80)
+    print("\nAnswerRelevancyMetric Scoring (with Local LLM):")
+    print("  Score 1.0 = Highly relevant ✅ PASS")
+    print("  Score >= 0.5 = Reasonably relevant ✅ PASS")
+    print("  Score < 0.5 = Not relevant ❌ FAIL")
+    print("  Default threshold = 0.5")
+    print("\nNote: Using local Ollama for evaluation instead of OpenAI GPT-4")
+    print("\n" + "=" * 80)
 
     # Check if Ollama is running and start if needed
     setup_ollama()
+    
     # Set local LLM as evaluation judge model
     evaluationModel = setup_custom_ollama_model_for_evaluation()
 
-    # Test 1: "What is the capital of France?"
-    # ✅ PASSES with Score: 1.0
-    # Reason: The answer "The capital of France is Paris." is directly relevant and 
-    # accurately answers the question. The LLM provides a concise, factually correct response 
-    # that directly addresses the query without unnecessary information.
-    print("Test 1 - Expected: ✅ PASS")
+    # Test 1: Direct factual question (Expected: ✅ PASS)
+    print("\n📝 Test 1: Direct Factual Question")
+    print("-" * 80)
     test_answer_relevancy(evaluationModel, "What is the capital of France?")
     
-    # Test 2: "Who won the FIFA World Cup in 2099?"
-    # ✅ PASSES with Score: 1.0
-    # Reason: Although the question asks about a future event (2099), the LLM's answer is 
-    # highly relevant because it:
-    #   1. Acknowledges the question directly
-    #   2. Explains why it cannot answer (date hasn't occurred)
-    #   3. Provides relevant alternative information (past/future tournaments)
-    #   4. Offers to help with related queries
-    # The answer is contextually appropriate and demonstrates understanding of the query's 
-    # intent, making it fully relevant despite not being answerable.
-    print("\nTest 2 - Expected: ✅ PASS")
+    # Test 2: Future event question (Expected: ✅ PASS)
+    print("\n📝 Test 2: Future Event Question")
+    print("-" * 80)
     test_answer_relevancy(evaluationModel, "Who won the FIFA World Cup in 2099?")
     
-    # Test 3: "What is the capital of France?"
-    # ❌ FAILS with Score: 0.0 (or very low)
-    # Reason: The answer is completely irrelevant to the query. When asked about the capital 
-    # of France, the response is about pizza recipes instead. This demonstrates when 
-    # AnswerRelevancyMetric fails - when the actual output has ZERO connection to the 
-    # input question. The metric detects that the response doesn't address the user's query at all.
-    print("\nTest 3 - Expected: ❌ FAIL")
+    # Test 3: Completely off-topic answer (Expected: ❌ FAIL)
+    print("\n📝 Test 3: Off-Topic Answer (Should FAIL)")
+    print("-" * 80)
     test_answer_relevancy_custom(
         evaluationModel,
         "What is the capital of France?",
         "Pizza is a delicious Italian dish made with dough, tomato sauce, and cheese. Popular toppings include pepperoni, mushrooms, and olives."
     )
+    
+    print("\n" + "=" * 80)
+    print("TESTS COMPLETE")
+    print("=" * 80)
