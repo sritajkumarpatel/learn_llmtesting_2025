@@ -15,6 +15,7 @@ python -m openapi_tests.deepeval_faithfulness_openai
 python -m localllms_tests.geval_basictest_localllm
 python -m localllms_tests.deepeval_answer_relevancy_localllm
 python -m localllms_tests.deepeval_answer_relevancy_multipletestcases
+python -m localllms_tests.deepeval_raglocal_localllm
 ```
 
 ---
@@ -23,9 +24,9 @@ python -m localllms_tests.deepeval_answer_relevancy_multipletestcases
 
 | Folder | Purpose | Tests |
 |--------|---------|-------|
-| `utils/` | Shared utilities (Ollama setup) | - |
-| `openapi_tests/` | OpenAI GPT-4 evaluation | 3 tests |
-| `localllms_tests/` | Local LLM evaluation | 3 tests |
+| `utils/` | Shared utilities (Ollama setup, vector DB) | - |
+| `openapi_tests/` | OpenAI GPT-4 evaluation | 4 tests |
+| `localllms_tests/` | Local LLM evaluation | 4 tests |
 
 ---
 
@@ -51,6 +52,12 @@ python -m localllms_tests.deepeval_answer_relevancy_multipletestcases
 - Checks if LLM output is factually consistent with retrieval context
 - Tests: Faithful output, factually incorrect, partially faithful
 - Uses OpenAI GPT-4 for evaluation
+
+### RAG Local LLM Test (Local only)
+- Tests Retrieval-Augmented Generation with vector database
+- Evaluates 3 contextual metrics: Precision, Recall, Relevancy
+- Uses local Ollama with Wikipedia vector DB
+- Tests relevant and off-topic responses for comparison
 
 ---
 

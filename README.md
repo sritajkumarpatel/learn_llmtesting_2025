@@ -104,6 +104,15 @@ learn_llmtesting_2025/
 - **Tests:** Batch 1 (3 questions), Batch 2 (2 questions)
 - **Run:** `python -m localllms_tests.deepeval_answer_relevancy_multipletestcases`
 
+#### 4. **`deepeval_raglocal_localllm.py`**
+- **Purpose:** RAG evaluation with vector database and 3 contextual metrics
+- **Tests:**
+  - Relevant question about movie → ✅ PASS (output matches context)
+  - Off-topic response about soccer → ❌ FAIL (irrelevant to context)
+- **Metrics:** Contextual Precision, Recall, Relevancy
+- **Scoring:** 1.0 = Perfect ✅ | ≥ 0.5 = PASS ✅ | < 0.5 = FAIL ❌
+- **Run:** `python -m localllms_tests.deepeval_raglocal_localllm`
+
 ---
 
 ## Understanding BiasMetric
