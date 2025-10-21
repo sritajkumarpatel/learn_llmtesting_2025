@@ -1,2 +1,5 @@
 deepeval
 ollama
+langchain
+langchain-community
+wikipedia
