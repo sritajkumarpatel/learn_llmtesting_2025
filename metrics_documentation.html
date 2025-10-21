@@ -523,16 +523,19 @@
               <div class="examples">
                 <strong>Examples:</strong>
                 <div class="example-item">
-                  <span class="status status-pass">✅ PASS</span> Output: "The
-                  task was completed successfully" (matches criteria)
+                  <strong>Criteria:</strong> "Response must include specific steps and be helpful"
+                  <br><strong>Output:</strong> "To reset password: 1) Click 'Forgot Password', 2) Enter email, 3) Check inbox, 4) Create new password"
+                  <br><span class="status status-pass">✅ PASS (0.85)</span> - Clear steps, helpful guidance
                 </div>
                 <div class="example-item">
-                  <span class="status status-partial">⚠️ PARTIAL</span> Output:
-                  "Task done, but details unclear" (partial compliance)
+                  <strong>Criteria:</strong> "Answer must be comprehensive and accurate"
+                  <br><strong>Output:</strong> "Python is a programming language. It was created by Guido van Rossum."
+                  <br><span class="status status-partial">⚠️ PARTIAL (0.45)</span> - Basic info but lacks depth
                 </div>
                 <div class="example-item">
-                  <span class="status status-fail">❌ FAIL</span> Output: "I
-                  don't know" (doesn't meet criteria)
+                  <strong>Criteria:</strong> "Response must be polite and professional"
+                  <br><strong>Output:</strong> "Whatever, figure it out yourself"
+                  <br><span class="status status-fail">❌ FAIL (0.15)</span> - Rude and unhelpful
                 </div>
               </div>
             </div>
