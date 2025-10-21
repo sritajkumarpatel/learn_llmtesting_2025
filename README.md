@@ -32,17 +32,26 @@ Testing framework for evaluating Large Language Models (LLMs) using local models
 ```
 learn_llmtesting_2025/
 ├── utils/                              # Shared utilities
-│   └── local_llm_ollama_setup.py
+│   ├── local_llm_ollama_setup.py
+│   ├── create_vector_db.py
+│   └── wikipedia_retriever.py
 │
 ├── openapi_tests/                      # OpenAI API tests
-│   ├── geval_basictest_openai.py
+│   ├── deepeval_geval_openai.py
 │   ├── deepeval_answer_relevancy_openai.py
-│   └── deepeval_bias_openai.py
+│   ├── deepeval_bias_openai.py
+│   └── deepeval_faithfulness_openai.py
 │
 ├── localllms_tests/                    # Local LLM tests
-│   ├── geval_basictest_localllm.py
+│   ├── deepeval_geval_localllm.py
 │   ├── deepeval_answer_relevancy_localllm.py
-│   └── deepeval_answer_relevancy_multipletestcases.py
+│   ├── deepeval_answer_relevancy_multipletestcases.py
+│   ├── deepeval_rag_localllm.py
+│   └── deepeval_raglocal_localllm.py
+│
+├── ragas_tests/                        # RAGAS evaluation framework tests
+│   ├── ragas_non_llmmetric.py
+│   └── ragas_llmmetric.py
 │
 ├── README.md
 ├── QUICK_REFERENCE.md
@@ -112,6 +121,38 @@ learn_llmtesting_2025/
 - **Metrics:** Contextual Precision, Recall, Relevancy
 - **Scoring:** 1.0 = Perfect ✅ | ≥ 0.5 = PASS ✅ | < 0.5 = FAIL ❌
 - **Run:** `python -m localllms_tests.deepeval_raglocal_localllm`
+
+---
+
+### RAGAS Tests (Alternative Evaluation Framework)
+
+#### 1. **`ragas_non_llmmetric.py`**
+- **Purpose:** BLEU Score evaluation (non-LLM based, surface-level n-gram matching)
+- **Metric:** BleuScore - Surface-level comparison without semantic understanding
+- **Tests:**
+  - Generates response and scores against expected output
+  - Tests semantic matching at word/phrase level
+- **Scoring:** 0.0-1.0 where 1.0 = perfect match
+  - 0.0-0.3 = Poor match ❌ FAIL
+  - 0.3-0.5 = Moderate match ⚠️ PARTIAL
+  - 0.5-1.0 = Good match ✅ PASS (threshold 0.5)
+- **Notes:** Non-LLM metrics are less reliable than LLM-based alternatives
+- **Run:** `python -m ragas_tests.ragas_non_llmmetric`
+
+#### 2. **`ragas_llmmetric.py`**
+- **Purpose:** LLMContextRecall evaluation (LLM-based, semantic understanding)
+- **Metric:** LLMContextRecall - Measures % of context information recalled in response
+- **Tests:**
+  - Retrieves Wikipedia context
+  - Generates response using context
+  - Evaluates how much relevant information was used
+- **Scoring:** 0.0-1.0 where 1.0 = 100% context recall
+  - 0.0-0.3 = Poor recall ❌ FAIL
+  - 0.3-0.5 = Low recall ⚠️ PARTIAL
+  - 0.5-0.7 = Acceptable recall ⚠️ PARTIAL
+  - 0.7-1.0 = Good recall ✅ PASS (threshold 0.7 - LLM standard)
+- **Judge Model:** Local Ollama with deepseek-r1:8b
+- **Run:** `python -m ragas_tests.ragas_llmmetric`
 
 ---
 

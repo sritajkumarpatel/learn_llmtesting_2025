@@ -1,10 +1,10 @@
 # Quick Reference
 
-## � Run Tests Now
+## 🚀 Run Tests Now
 
 ### OpenAI Tests (Uses GPT-4, requires API key)
 ```bash
-python -m openapi_tests.geval_basictest_openai
+python -m openapi_tests.deepeval_geval_openai
 python -m openapi_tests.deepeval_answer_relevancy_openai
 python -m openapi_tests.deepeval_bias_openai
 python -m openapi_tests.deepeval_faithfulness_openai
@@ -12,21 +12,29 @@ python -m openapi_tests.deepeval_faithfulness_openai
 
 ### Local LLM Tests (Free, offline - uses Ollama)
 ```bash
-python -m localllms_tests.geval_basictest_localllm
+python -m localllms_tests.deepeval_geval_localllm
 python -m localllms_tests.deepeval_answer_relevancy_localllm
 python -m localllms_tests.deepeval_answer_relevancy_multipletestcases
+python -m localllms_tests.deepeval_rag_localllm
 python -m localllms_tests.deepeval_raglocal_localllm
+```
+
+### RAGAS Tests (Alternative Framework - uses Ollama)
+```bash
+python -m ragas_tests.ragas_non_llmmetric
+python -m ragas_tests.ragas_llmmetric
 ```
 
 ---
 
-## � Folder Organization
+## 📁 Folder Organization
 
 | Folder | Purpose | Tests |
 |--------|---------|-------|
 | `utils/` | Shared utilities (Ollama setup, vector DB) | - |
 | `openapi_tests/` | OpenAI GPT-4 evaluation | 4 tests |
-| `localllms_tests/` | Local LLM evaluation | 4 tests |
+| `localllms_tests/` | Local LLM evaluation (DeepEval) | 5 tests |
+| `ragas_tests/` | RAGAS evaluation framework | 2 tests |
 
 ---
 
@@ -58,6 +66,31 @@ python -m localllms_tests.deepeval_raglocal_localllm
 - Evaluates 3 contextual metrics: Precision, Recall, Relevancy
 - Uses local Ollama with Wikipedia vector DB
 - Tests relevant and off-topic responses for comparison
+
+### RAGAS Framework Tests (Local only)
+- **BLEU Score (Non-LLM)** - Surface-level n-gram matching
+  - Non-LLM metric: Fast but less accurate
+  - Threshold: 0.5 (50% match)
+  - Use case: Quick baseline testing
+  - Limitation: No semantic understanding
+  
+- **LLMContextRecall (LLM-Based)** - Semantic context understanding
+  - LLM-based metric: Slower but more accurate
+  - Threshold: 0.7 (70% context recall)
+  - Use case: Production-quality evaluation
+  - Judge: Local Ollama deepseek-r1:8b
+
+---
+
+## 🔍 RAGAS vs DeepEval
+
+| Aspect | RAGAS | DeepEval |
+|--------|-------|----------|
+| **Focus** | RAG evaluation | General LLM evaluation |
+| **Non-LLM Metrics** | BLEU, METEOR | N/A |
+| **LLM Metrics** | LLMContextRecall, etc | AnswerRelevancy, Faithfulness |
+| **Use Case** | RAG-specific testing | Broad LLM testing |
+| **Integration** | Works with custom RAG | Works with any LLM output |
 
 ---
 
