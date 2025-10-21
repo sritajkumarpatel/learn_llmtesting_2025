@@ -17,14 +17,14 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from utils import setup_ollama, setup_custom_ollama_model_for_evaluation, generate_ollama_response
 
 
-def test_single_query_blue_score(user_query, expected_output, use_custom_response=False, custom_response=None):
+def test_single_query_blue_score(user_query, expected_output):
     """Test query with Blue Score metric."""
     
     # Generate response from LLM under test
     ollama_response = generate_ollama_response(user_query, model_name="llama3.1:8b")
     
     test_data = {
-        "input": user_query,
+        "user_input": user_query,
         "response": ollama_response,
         "reference": expected_output
     }
