@@ -36,18 +36,18 @@ learn_llmtesting_2025/
 │   ├── create_vector_db.py
 │   └── wikipedia_retriever.py
 │
-├── openapi_tests/                      # OpenAI API tests
-│   ├── deepeval_geval_openai.py
-│   ├── deepeval_answer_relevancy_openai.py
-│   ├── deepeval_bias_openai.py
-│   └── deepeval_faithfulness_openai.py
+├── deepeval_tests_openai/              # Hybrid: Local generation + OpenAI evaluation
+│   ├── deepeval_geval.py
+│   ├── deepeval_answer_relevancy.py
+│   ├── deepeval_bias.py
+│   └── deepeval_faithfulness.py
 │
-├── localllms_tests/                    # Local LLM tests
-│   ├── deepeval_geval_localllm.py
-│   ├── deepeval_answer_relevancy_localllm.py
+├── deepeval_tests_localruns/           # Completely local: Ollama only
+│   ├── deepeval_geval.py
+│   ├── deepeval_answer_relevancy.py
 │   ├── deepeval_answer_relevancy_multipletestcases.py
-│   ├── deepeval_rag_localllm.py
-│   └── deepeval_raglocal_localllm.py
+│   ├── deepeval_rag.py
+│   └── deepeval_rag_localllm.py
 │
 ├── ragas_tests/                        # RAGAS evaluation framework tests
 │   ├── ragas_non_llmmetric.py
@@ -62,29 +62,30 @@ learn_llmtesting_2025/
 
 ## Test Files Overview
 
-### OpenAI Tests (Requires API Key)
+### OpenAI Tests (Hybrid: Local Generation + OpenAI Evaluation)
+*Response Generation: Local Ollama | Evaluation: OpenAI GPT-4*
 
-#### 1. **`geval_basictest_openai.py`**
+#### 1. **`deepeval_geval.py`**
 - **Purpose:** Test GEval metric with different thresholds
 - **Tests:** 4 tests with thresholds 1.0, 0.8, 0.5, 0.0
 - **Expected:** Tests with higher thresholds fail, threshold=0.0 passes
-- **Run:** `python -m openapi_tests.geval_basictest_openai`
+- **Run:** `python -m deepeval_tests_openai.deepeval_geval`
 
-#### 2. **`deepeval_answer_relevancy_openai.py`**
+#### 2. **`deepeval_answer_relevancy.py`**
 - **Purpose:** Test if answers are relevant to questions
 - **Tests:**
   - France capital → ✅ PASS (direct answer)
   - FIFA 2099 → ✅ PASS (contextually relevant)
   - Pizza to France question → ❌ FAIL (irrelevant)
-- **Run:** `python -m openapi_tests.deepeval_answer_relevancy_openai`
+- **Run:** `python -m deepeval_tests_openai.deepeval_answer_relevancy`
 
-#### 3. **`deepeval_bias_openai.py`**
+#### 3. **`deepeval_bias.py`**
 - **Purpose:** Detect gender, racial, political bias in responses
 - **Tests:** Describe doctor, nurse, teacher, Indian accent speaker
 - **Scoring:** 0 = NO BIAS ✅ | >0.5 = BIAS ❌
-- **Run:** `python -m openapi_tests.deepeval_bias_openai`
+- **Run:** `python -m deepeval_tests_openai.deepeval_bias`
 
-#### 4. **`deepeval_faithfulness_openai.py`**
+#### 4. **`deepeval_faithfulness.py`**
 - **Purpose:** Check if LLM output is factually consistent with provided retrieval context
 - **Tests:**
   - Faithful output (LLM-generated) → ✅ PASS (consistent with context)
@@ -92,35 +93,36 @@ learn_llmtesting_2025/
   - Partially faithful output → Depends on threshold
   - Higher threshold test → Stricter evaluation
 - **Scoring:** 1.0 = Fully faithful ✅ | ≥ 0.5 = PASS ✅ | < 0.5 = FAIL ❌
-- **Run:** `python -m openapi_tests.deepeval_faithfulness_openai`
+- **Run:** `python -m deepeval_tests_openai.deepeval_faithfulness`
 
 ---
 
-### Local LLM Tests (Free & Offline)
+### Local Tests (Completely Local: Ollama Only)
+*Response Generation: Local Ollama | Evaluation: Local Ollama*
 
-#### 1. **`geval_basictest_localllm.py`**
+#### 1. **`deepeval_geval.py`**
 - **Purpose:** GEval with local Ollama as judge
 - **Tests:** Same as OpenAI version but uses local model
-- **Run:** `python -m localllms_tests.geval_basictest_localllm`
+- **Run:** `python -m deepeval_tests_localruns.deepeval_geval`
 
-#### 2. **`deepeval_answer_relevancy_localllm.py`**
+#### 2. **`deepeval_answer_relevancy.py`**
 - **Purpose:** Answer relevancy with local judge (no API calls)
 - **Tests:** Same 3 test cases as OpenAI version
-- **Run:** `python -m localllms_tests.deepeval_answer_relevancy_localllm`
+- **Run:** `python -m deepeval_tests_localruns.deepeval_answer_relevancy`
 
 #### 3. **`deepeval_answer_relevancy_multipletestcases.py`**
 - **Purpose:** Batch evaluation of multiple questions
 - **Tests:** Batch 1 (3 questions), Batch 2 (2 questions)
-- **Run:** `python -m localllms_tests.deepeval_answer_relevancy_multipletestcases`
+- **Run:** `python -m deepeval_tests_localruns.deepeval_answer_relevancy_multipletestcases`
 
-#### 4. **`deepeval_raglocal_localllm.py`**
+#### 4. **`deepeval_rag.py`**
 - **Purpose:** RAG evaluation with vector database and 3 contextual metrics
 - **Tests:**
   - Relevant question about movie → ✅ PASS (output matches context)
   - Off-topic response about soccer → ❌ FAIL (irrelevant to context)
 - **Metrics:** Contextual Precision, Recall, Relevancy
 - **Scoring:** 1.0 = Perfect ✅ | ≥ 0.5 = PASS ✅ | < 0.5 = FAIL ❌
-- **Run:** `python -m localllms_tests.deepeval_raglocal_localllm`
+- **Run:** `python -m deepeval_tests_localruns.deepeval_rag`
 
 ---
 

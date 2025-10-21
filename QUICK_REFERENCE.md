@@ -2,21 +2,21 @@
 
 ## 🚀 Run Tests Now
 
-### OpenAI Tests (Uses GPT-4, requires API key)
+### OpenAI Tests (Hybrid: Local Generation + OpenAI Evaluation)
 ```bash
-python -m openapi_tests.deepeval_geval_openai
-python -m openapi_tests.deepeval_answer_relevancy_openai
-python -m openapi_tests.deepeval_bias_openai
-python -m openapi_tests.deepeval_faithfulness_openai
+python -m deepeval_tests_openai.deepeval_geval
+python -m deepeval_tests_openai.deepeval_answer_relevancy
+python -m deepeval_tests_openai.deepeval_bias
+python -m deepeval_tests_openai.deepeval_faithfulness
 ```
 
-### Local LLM Tests (Free, offline - uses Ollama)
+### Local Tests (Completely Local: Ollama Only)
 ```bash
-python -m localllms_tests.deepeval_geval_localllm
-python -m localllms_tests.deepeval_answer_relevancy_localllm
-python -m localllms_tests.deepeval_answer_relevancy_multipletestcases
-python -m localllms_tests.deepeval_rag_localllm
-python -m localllms_tests.deepeval_raglocal_localllm
+python -m deepeval_tests_localruns.deepeval_geval
+python -m deepeval_tests_localruns.deepeval_answer_relevancy
+python -m deepeval_tests_localruns.deepeval_answer_relevancy_multipletestcases
+python -m deepeval_tests_localruns.deepeval_rag
+python -m deepeval_tests_localruns.deepeval_rag_localllm
 ```
 
 ### RAGAS Tests (Alternative Framework - uses Ollama)
@@ -29,39 +29,58 @@ python -m ragas_tests.ragas_llmmetric
 
 ## 📁 Folder Organization
 
-| Folder | Purpose | Tests |
-|--------|---------|-------|
-| `utils/` | Shared utilities (Ollama setup, vector DB) | - |
-| `openapi_tests/` | OpenAI GPT-4 evaluation | 4 tests |
-| `localllms_tests/` | Local LLM evaluation (DeepEval) | 5 tests |
-| `ragas_tests/` | RAGAS evaluation framework | 2 tests |
+| Folder | Architecture | Tests |
+|--------|--------------|-------|
+| `utils/` | Shared utilities | - |
+| `deepeval_tests_openai/` | Local Gen + OpenAI Eval | 4 tests |
+| `deepeval_tests_localruns/` | Completely Local (Ollama) | 5 tests |
+| `ragas_tests/` | RAGAS Framework | 2 tests |
+
+### Architecture Explained
+- **deepeval_tests_openai**: Response generation via local Ollama, evaluation via OpenAI GPT-4
+  - ✅ Best accuracy (GPT-4 for evaluation)
+  - ✅ No generation costs (local)
+  - ⚠️ Requires OpenAI API key
+  
+- **deepeval_tests_localruns**: Both generation and evaluation via local Ollama
+  - ✅ No API key required
+  - ✅ No internet dependency
+  - ✅ No costs
+  - ✅ Complete privacy
+  - ⚠️ Slightly lower accuracy than GPT-4
 
 ---
 
 ## 📊 What Each Test Does
 
-### GEval Tests
-- Tests custom evaluation criteria with different thresholds
-- **OpenAI:** Uses GPT-4 as judge
-- **Local:** Uses deepseek-r1:8b as judge
+### OpenAI Tests (Hybrid Approach)
+Tests use local Ollama for generation and OpenAI GPT-4 for evaluation.
 
-### Answer Relevancy Tests
+**GEval Tests**
+- Custom evaluation criteria with different thresholds
+- **OpenAI:** GPT-4 as judge
+- **Local:** Ollama deepseek-r1:8b as judge
+
+**Answer Relevancy Tests**
 - Tests if answers are relevant to questions
-- **OpenAI:** Uses GPT-4 as judge
-- **Local:** Uses deepseek-r1:8b as judge
+- **OpenAI:** GPT-4 as judge
+- **Local:** Ollama deepseek-r1:8b as judge
 - **Batch:** Multiple questions at once (local only)
 
-### BiasMetric Test (OpenAI only)
+**BiasMetric Test (OpenAI only)**
 - Detects gender, racial, political bias
 - Prompts: "Describe a doctor/nurse/teacher/Indian accent speaker"
 - Uses OpenAI GPT-4 for evaluation
 
-### FaithfulnessMetric Test (OpenAI only)
+**FaithfulnessMetric Test (OpenAI only)**
 - Checks if LLM output is factually consistent with retrieval context
 - Tests: Faithful output, factually incorrect, partially faithful
 - Uses OpenAI GPT-4 for evaluation
 
-### RAG Local LLM Test (Local only)
+### Local Tests (Completely Local)
+Tests use local Ollama for both generation and evaluation.
+
+**RAG Local Tests**
 - Tests Retrieval-Augmented Generation with vector database
 - Evaluates 3 contextual metrics: Precision, Recall, Relevancy
 - Uses local Ollama with Wikipedia vector DB
