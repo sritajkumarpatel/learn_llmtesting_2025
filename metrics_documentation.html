@@ -377,12 +377,43 @@
       }
 
       .footer {
-        background: #f8f9fa;
-        padding: 25px 40px;
+        background: white;
+        padding: 0;
+        margin-top: 50px;
+      }
+
+      .footer-inner {
+        background: linear-gradient(
+          135deg,
+          #667eea 0%,
+          #764ba2 50%,
+          #f093fb 100%
+        );
+        padding: 50px 40px;
         text-align: center;
-        border-top: 1px solid #e0e0e0;
-        font-size: 0.9em;
-        color: #666;
+        border-radius: 15px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        color: white;
+        max-width: 1400px;
+        margin: 0 auto 0 auto;
+      }
+
+      .footer p {
+        text-align: center;
+        margin: 0;
+      }
+
+      .footer a {
+        color: #ffd700;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .footer a:hover {
+        color: #ffffff;
+        text-decoration: underline;
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
       }
 
       .summary-box {
@@ -480,7 +511,7 @@
             <span class="icon">🔵</span> DeepEval Framework
             <span class="badge-count">9 Metrics</span>
             <a
-              href="https://docs.depevalai.com/"
+              href="https://deepeval.com/docs/getting-started"
               target="_blank"
               class="framework-docs-link"
               >📖 Docs</a
@@ -523,19 +554,31 @@
               <div class="examples">
                 <strong>Examples:</strong>
                 <div class="example-item">
-                  <strong>Criteria:</strong> "Response must include specific steps and be helpful"
-                  <br><strong>Output:</strong> "To reset password: 1) Click 'Forgot Password', 2) Enter email, 3) Check inbox, 4) Create new password"
-                  <br><span class="status status-pass">✅ PASS (0.85)</span> - Clear steps, helpful guidance
+                  <strong>Criteria:</strong> "Response must include specific
+                  steps and be helpful" <br /><strong>Output:</strong> "To reset
+                  password: 1) Click 'Forgot Password', 2) Enter email, 3) Check
+                  inbox, 4) Create new password" <br /><span
+                    class="status status-pass"
+                    >✅ PASS (0.85)</span
+                  >
+                  - Clear steps, helpful guidance
                 </div>
                 <div class="example-item">
-                  <strong>Criteria:</strong> "Answer must be comprehensive and accurate"
-                  <br><strong>Output:</strong> "Python is a programming language. It was created by Guido van Rossum."
-                  <br><span class="status status-partial">⚠️ PARTIAL (0.45)</span> - Basic info but lacks depth
+                  <strong>Criteria:</strong> "Answer must be comprehensive and
+                  accurate" <br /><strong>Output:</strong> "Python is a
+                  programming language. It was created by Guido van Rossum."
+                  <br /><span class="status status-partial"
+                    >⚠️ PARTIAL (0.45)</span
+                  >
+                  - Basic info but lacks depth
                 </div>
                 <div class="example-item">
-                  <strong>Criteria:</strong> "Response must be polite and professional"
-                  <br><strong>Output:</strong> "Whatever, figure it out yourself"
-                  <br><span class="status status-fail">❌ FAIL (0.15)</span> - Rude and unhelpful
+                  <strong>Criteria:</strong> "Response must be polite and
+                  professional" <br /><strong>Output:</strong> "Whatever, figure
+                  it out yourself" <br /><span class="status status-fail"
+                    >❌ FAIL (0.15)</span
+                  >
+                  - Rude and unhelpful
                 </div>
               </div>
             </div>
@@ -1036,30 +1079,40 @@
       </div>
 
       <footer>
-        <p><strong>LLM Evaluation Metrics Documentation</strong></p>
-        <p>Last Updated: October 2025</p>
-        <p>
-          DeepEval Docs:
-          <a
-            href="https://docs.depevalai.com/"
-            target="_blank"
-            style="color: #667eea"
-            >https://docs.depevalai.com/</a
-          >
-        </p>
-        <p>
-          RAGAS Docs:
-          <a
-            href="https://docs.ragas.io/"
-            target="_blank"
-            style="color: #f093fb"
-            >https://docs.ragas.io/</a
-          >
-        </p>
-        <p style="margin-top: 15px; font-size: 0.85em; color: #999">
-          📊 Complete coverage of 9 DeepEval metrics & 2 RAGAS metrics with
-          thresholds, scoring ranges, and practical examples
-        </p>
+        <div class="footer-inner">
+          <p style="font-size: 1.2em; font-weight: bold; margin-bottom: 10px">
+            📚 LLM Evaluation Metrics Documentation
+          </p>
+          <p style="font-size: 0.9em; margin-bottom: 20px; opacity: 0.9">
+            October 2025
+          </p>
+
+          <p style="font-size: 0.95em; margin-bottom: 15px">
+            Credits:
+            <a
+              href="https://github.com/sritajkumarpatel/learn_llmtesting_2025"
+              target="_blank"
+              style="font-weight: bold"
+            >
+              learn_llmtesting_2025
+            </a>
+          </p>
+
+          <p style="font-size: 0.9em; margin-bottom: 15px">
+            Based on <strong>DeepEval</strong> &
+            <strong>RAGAS</strong> frameworks •
+            <a href="https://deepeval.com/docs/getting-started" target="_blank">
+              DeepEval Docs
+            </a>
+            •
+            <a href="https://docs.ragas.io/" target="_blank"> RAGAS Docs </a>
+          </p>
+
+          <p style="font-size: 0.85em; opacity: 0.85">
+            © 2025 Sri Taj Kumar Patel | Educational reference for LLM
+            evaluation metrics
+          </p>
+        </div>
       </footer>
     </div>
   </body>
