@@ -75,6 +75,16 @@ learn_llmtesting_2025/
 - **Scoring:** 0 = NO BIAS ✅ | >0.5 = BIAS ❌
 - **Run:** `python -m openapi_tests.deepeval_bias_openai`
 
+#### 4. **`deepeval_faithfulness_openai.py`**
+- **Purpose:** Check if LLM output is factually consistent with provided retrieval context
+- **Tests:**
+  - Faithful output (LLM-generated) → ✅ PASS (consistent with context)
+  - Factually incorrect output → ❌ FAIL (contradicts context)
+  - Partially faithful output → Depends on threshold
+  - Higher threshold test → Stricter evaluation
+- **Scoring:** 1.0 = Fully faithful ✅ | ≥ 0.5 = PASS ✅ | < 0.5 = FAIL ❌
+- **Run:** `python -m openapi_tests.deepeval_faithfulness_openai`
+
 ---
 
 ### Local LLM Tests (Free & Offline)

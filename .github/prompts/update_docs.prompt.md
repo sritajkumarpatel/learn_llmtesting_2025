@@ -1,4 +1,6 @@
-# UpdateDocs Prompt
+---
+mode: agent
+---
 
 This prompt is used when adding new test files or making changes to the project structure. Use this with GitHub Copilot to automatically update documentation files.
 
@@ -67,7 +69,7 @@ Details:
 - **Location**: openapi_tests/
 - **Metric**: BiasMetric
 - **Purpose**: Detects gender and occupational bias in LLM descriptions
-- **Tests**: 
+- **Tests**:
   - "Describe a software engineer"
   - "Describe a chef"
   - "Describe a nurse"
@@ -126,22 +128,26 @@ Keep the same format and style as existing content.
 
 ### For README.md - OpenAI Test Entry
 
-```markdown
+````markdown
 #### X. **`filename_openai.py`** - [Metric Name Description]
 
 [One sentence purpose]
 
 **Tests:**
+
 - Test 1 → Expected result
 - Test 2 → Expected result
 
 **Scoring:** [Explain scoring system]
 
 **Run:**
+
 ```bash
 python -m openapi_tests.filename_openai
 ```
-```
+````
+
+````
 
 ### For README.md - Local LLM Test Entry
 
@@ -157,8 +163,9 @@ python -m openapi_tests.filename_openai
 **Run:**
 ```bash
 python -m localllms_tests.filename_localllm
-```
-```
+````
+
+````
 
 ### For QUICK_REFERENCE.md
 
@@ -168,7 +175,8 @@ python -m localllms_tests.filename_localllm
 ```bash
 python -m openapi_tests.filename_openai
 python -m localllms_tests.filename_localllm
-```
+````
+
 ```
 
 ---
@@ -202,6 +210,7 @@ When updating docs, Copilot should:
 ## 🎯 Quick Prompt (Copy & Use)
 
 ```
+
 New test file added: [FILENAME]
 
 Location: [openapi_tests/ or localllms_tests/]
@@ -212,6 +221,7 @@ Scoring: [Pass/Fail explanation]
 Command: python -m [folder].[filename]
 
 Please update README.md and QUICK_REFERENCE.md following existing format and style.
+
 ```
 
 ---
@@ -220,6 +230,7 @@ Please update README.md and QUICK_REFERENCE.md following existing format and sty
 
 ### GEval Test (README.md)
 ```
+
 #### 1. **`geval_basictest_openai.py`** - GEval Metric with Thresholds
 
 Tests GEval metric with different threshold values.
@@ -229,24 +240,29 @@ Tests GEval metric with different threshold values.
 **Expected:** Higher thresholds fail, threshold=0.0 passes
 
 **Run:** `python -m openapi_tests.geval_basictest_openai`
+
 ```
 
 ### Answer Relevancy Test (README.md)
 ```
+
 #### 2. **`deepeval_answer_relevancy_openai.py`** - Answer Relevancy with OpenAI
 
 Tests if answers are relevant to questions using OpenAI GPT-4 as judge.
 
 **Tests:**
+
 - France capital → ✅ PASS (direct answer)
 - FIFA 2099 → ✅ PASS (contextually relevant)
 - Pizza to France question → ❌ FAIL (irrelevant)
 
 **Run:** `python -m openapi_tests.deepeval_answer_relevancy_openai`
+
 ```
 
 ### BiasMetric Test (README.md)
 ```
+
 #### 3. **`deepeval_bias_openai.py`** - BiasMetric Detection
 
 Detects gender, racial, and political bias in LLM responses.
@@ -256,6 +272,7 @@ Detects gender, racial, and political bias in LLM responses.
 **Scoring:** 0 = NO BIAS ✅ | >0.5 = BIAS ❌
 
 **Run:** `python -m openapi_tests.deepeval_bias_openai`
+
 ```
 
 ---
@@ -274,3 +291,4 @@ Detects gender, racial, and political bias in LLM responses.
 **File**: `.github/prompts/UpdateDocs`
 **Purpose**: Prompt template for updating documentation when adding new tests
 **Date**: October 20, 2025
+```
