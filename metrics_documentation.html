@@ -844,7 +844,7 @@
         <div class="framework-section">
           <h2 class="framework-title ragas-title">
             <span class="icon">🟣</span> RAGAS Framework
-            <span class="badge-count">2 Metrics</span>
+            <span class="badge-count">3 Metrics</span>
             <a
               href="https://docs.ragas.io/"
               target="_blank"
@@ -971,6 +971,59 @@
                 </div>
               </div>
             </div>
+
+            <!-- NoiseSensitivity -->
+            <div class="metric-card ragas">
+              <div class="metric-header">
+                <div class="metric-name">NoiseSensitivity</div>
+                <span class="metric-tag tag-llm">LLM-Based</span>
+              </div>
+
+              <div class="purpose">
+                <strong>Purpose:</strong> LLM-based evaluation measuring
+                response robustness to irrelevant/noisy context injection (lower
+                scores are better).
+              </div>
+
+              <div class="threshold-section">
+                <div class="threshold-simple">
+                  <span class="status status-pass">PASS ≤0.5</span>
+                  <span class="status status-partial">PARTIAL 0.3-0.5</span>
+                  <span class="status status-fail">FAIL >0.5</span>
+                </div>
+              </div>
+
+              <div class="section-title">Characteristics:</div>
+              <div class="use-cases">
+                <span class="feature-highlight">✓ Robustness testing</span>
+                <span class="feature-highlight">✓ Semantic understanding</span>
+                <span class="feature-highlight">✓ Production-ready</span>
+                <span class="feature-highlight cons">✗ Slower evaluation</span>
+              </div>
+
+              <div class="section-title">Use Cases:</div>
+              <div class="use-cases">
+                Prompt injection vulnerability testing, RAG robustness
+                evaluation, system resilience assessment, noise tolerance
+                analysis
+              </div>
+
+              <div class="examples">
+                <strong>Examples:</strong>
+                <div class="example-item">
+                  <span class="status status-pass">✅ PASS</span> Score 0.0
+                  (perfect robustness - no errors with noise added)
+                </div>
+                <div class="example-item">
+                  <span class="status status-partial">⚠️ PARTIAL</span> Score
+                  0.4 (good robustness - minimal errors detected)
+                </div>
+                <div class="example-item">
+                  <span class="status status-fail">❌ FAIL</span> Score 0.8
+                  (poor robustness - many errors when noise injected)
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -1070,6 +1123,15 @@
                 <td>LLM-Based</td>
                 <td>≥ 0.7</td>
                 <td>RAG evaluation</td>
+                <td>Medium</td>
+                <td>High</td>
+              </tr>
+              <tr>
+                <td><strong>NoiseSensitivity</strong></td>
+                <td>RAGAS</td>
+                <td>LLM-Based</td>
+                <td>≤ 0.5</td>
+                <td>Robustness testing</td>
                 <td>Medium</td>
                 <td>High</td>
               </tr>

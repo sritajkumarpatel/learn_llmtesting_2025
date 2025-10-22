@@ -156,6 +156,22 @@ learn_llmtesting_2025/
 - **Judge Model:** Local Ollama with deepseek-r1:8b
 - **Run:** `python -m ragas_tests.ragas_llmmetric`
 
+#### 3. **`ragas_noisesensitivity.py`**
+- **Purpose:** NoiseSensitivity evaluation (LLM-based, robustness testing)
+- **Metric:** NoiseSensitivity - Measures response robustness to irrelevant/noisy context injection
+- **Tests:**
+  - Retrieves Wikipedia context
+  - Generates response using clean context
+  - Injects irrelevant noise into context
+  - Evaluates how many errors/inconsistencies appear
+- **Scoring:** 0.0-1.0 where 0.0 = perfect robustness (lower is better)
+  - 0.0 = Perfect robustness ✅ PASS (no noise impact)
+  - 0.0-0.3 = Good robustness ✅ PASS (minimal errors)
+  - 0.3-0.5 = Fair robustness ⚠️ PARTIAL (some errors detected)
+  - 0.5-1.0 = Poor robustness ❌ FAIL (many errors detected - threshold 0.5)
+- **Judge Model:** Local Ollama with gemma2:2b
+- **Run:** `python -m ragas_tests.ragas_noisesensitivity`
+
 ---
 
 ## Understanding BiasMetric

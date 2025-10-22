@@ -23,6 +23,7 @@ python -m deepeval_tests_localruns.deepeval_rag_localllm
 ```bash
 python -m ragas_tests.ragas_non_llmmetric
 python -m ragas_tests.ragas_llmmetric
+python -m ragas_tests.ragas_noisesensitivity
 ```
 
 ---
@@ -98,6 +99,13 @@ Tests use local Ollama for both generation and evaluation.
   - Threshold: 0.7 (70% context recall)
   - Use case: Production-quality evaluation
   - Judge: Local Ollama deepseek-r1:8b
+
+- **NoiseSensitivity (LLM-Based)** - Response robustness to noise
+  - LLM-based metric: Evaluates response degradation with irrelevant context
+  - Threshold: 0.5 (50% error tolerance - lower is better)
+  - Use case: Testing system vulnerability to prompt injection
+  - Judge: Local Ollama gemma2:2b
+  - Score: 0.0 = Perfect robustness, 1.0 = Very sensitive to noise
 
 ---
 
