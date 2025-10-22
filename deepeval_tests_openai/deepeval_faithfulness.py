@@ -3,26 +3,28 @@ DeepEval FaithfulnessMetric (LLM-Based with OpenAI GPT-4)
 ==========================================================
 
 What is FaithfulnessMetric?
-- Checks if LLM response is FACTUALLY CONSISTENT with provided context
+- Checks what PROPORTION of LLM response is FACTUALLY CONSISTENT with provided context
 - Prevents hallucinations and made-up information
 - Uses OpenAI GPT-4 as judge
-- Answers: "Does the response contradict or align with the context?"
+- Answers: "What percentage of response claims are supported by context?"
 
 How It Works:
 - Takes: query, actual_output (LLM response), retrieval_context
-- GPT-4 evaluates: "Are all claims in response supported by context?"
-- Outputs: Score from 0.0 to 1.0
+- GPT-4 evaluates: "What proportion of claims in response are supported by context?"
+- Outputs: Score from 0.0 to 1.0 (proportion of supported claims)
 
 Score Interpretation (DeepEval Standard):
-- 0.0-0.3   = Not faithful (❌ FAIL) - Contradicts or ignores context
-- 0.3-0.5   = Partially faithful (⚠️ PARTIAL) - Some claims unsupported
-- 0.5-0.7   = Mostly faithful (✅ PASS) - Most claims supported
-- 0.7-1.0   = Fully faithful (✅ PASS) - All claims supported by context
+- Score Range: 0.0 to 1.0 (PROPORTION of claims supported by context)
+- 0.0         = No faithful claims - All contradicts or ignores context
+- 0.0-0.3     = Low faithfulness (❌ FAIL) - ≤30% of claims supported
+- 0.3-0.5     = Partial faithfulness (⚠️ PARTIAL) - 30-50% of claims supported
+- 0.5-0.7     = Good faithfulness (✅ PASS) - 50-70% of claims supported
+- 0.7-1.0     = High faithfulness (✅ PASS) - ≥70% of claims supported by context
 
 Threshold: 0.5 (50%)
-- Minimum acceptable: At least 50% of claims must be faithful
-- Can be adjusted per use case
-- Default: 0.5 (balanced approach)
+- Minimum acceptable: At least 50% of claims must be supported by context
+- Higher scores are better: 1.0 = all claims faithful, 0.0 = all unsupported
+- Interpretation: Score represents PROPORTION of response claims supported by provided context
 
 Use Cases:
 - RAG system validation

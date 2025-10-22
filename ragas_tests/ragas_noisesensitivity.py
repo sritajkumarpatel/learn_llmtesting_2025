@@ -14,15 +14,15 @@ How It Works:
 - Outputs: Score from 0.0 to 1.0 (lower is better)
 
 Score Interpretation (RAGAS Standard):
-- 0.0       = Perfect (✅ PASS) - No noise detected, response is robust to irrelevant context
-- 0.0-0.3   = Good (✅ PASS) - Minimal error detection, good robustness to noise
-- 0.3-0.5   = Fair (⚠️ PARTIAL) - Some errors detected when noise is added
-- 0.5-1.0   = Poor (❌ FAIL) - Many errors detected, low robustness to noise
+- 0.0       = Perfect (✅ PASS) - No incorrect claims detected, response robust to noise
+- 0.0-0.3   = Good (✅ PASS) - ≤30% of claims become incorrect when noise added
+- 0.3-0.5   = Fair (⚠️ PARTIAL) - 30-50% of claims become incorrect when noise added
+- 0.5-1.0   = Poor (❌ FAIL) - >50% of claims become incorrect, low robustness to noise
 
 Threshold: 0.5 (50%)
-- Maximum acceptable: Noise sensitivity should be below 0.5 (less than 50% errors)
-- Lower scores are better: 0.0 means no noise impact, higher means more sensitive to noise
-- Meta-metric for evaluating robustness of responses to irrelevant context injection
+- Maximum acceptable: Noise sensitivity should be ≤0.5 (50% of claims can handle noise)
+- Lower scores are better: 0.0 = perfect robustness, 1.0 = all claims fail with noise
+- Interpretation: Score represents PROPORTION of claims that become incorrect when irrelevant context is injected
 
 Use Cases:
 - Evaluating response robustness to noisy/irrelevant context

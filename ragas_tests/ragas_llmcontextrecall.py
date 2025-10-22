@@ -3,25 +3,27 @@ RAGAS LLM Context Recall Metric
 ================================
 
 What is LLMContextRecall?
-- Measures if the LLM response contains information relevant to the retrieved context
-- Uses an LLM judge to evaluate how well the response recalls/uses the given context
-- Answers: "Does the response cover information from the provided context?"
+- Measures what proportion of retrieved context is used/recalled in the response
+- Uses an LLM judge to evaluate how well the response utilizes given context
+- Answers: "What percentage of available context information appears in the response?"
 
 How It Works:
 - Takes: query, response, and retrieved_contexts
 - LLM evaluates: "What portion of the retrieved context is recalled in the response?"
-- Outputs: Score from 0.0 to 1.0
+- Outputs: Score from 0.0 to 1.0 (proportion of context recalled)
 
 Score Interpretation (RAGAS Standard):
-- 0.0-0.3   = Poor recall (❌ FAIL) - Response ignores context
-- 0.3-0.5   = Fair recall (⚠️ PARTIAL) - Response uses only some context
-- 0.5-0.7   = Good recall (✅ PASS) - Response covers most context
-- 0.7-1.0   = Excellent recall (✅ PASS) - Response fully recalls context
+- Score Range: 0.0 to 1.0 (PROPORTION of context recalled)
+- 0.0         = No context recalled - Response ignores provided context
+- 0.0-0.3     = Poor recall (❌ FAIL) - ≤30% of context used
+- 0.3-0.5     = Fair recall (⚠️ PARTIAL) - 30-50% of context used
+- 0.5-0.7     = Good recall (✅ PASS) - 50-70% of context used
+- 0.7-1.0     = Excellent recall (✅ PASS) - ≥70% of context used, nearly complete
 
 Threshold: 0.7 (70%)
-- Minimum acceptable: Response should recall 70% of relevant context
-- Follows RAGAS LLM-based metric standards
-- Stricter than non-LLM metrics (0.5 threshold)
+- Minimum acceptable: Response should recall ≥70% of context (0.7 = excellent)
+- Higher scores are better: 1.0 = all context recalled, 0.0 = none recalled
+- Interpretation: Score represents PROPORTION of context information that appears in response
 
 Use Cases:
 - RAG system evaluation

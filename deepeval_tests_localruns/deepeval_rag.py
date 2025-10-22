@@ -3,41 +3,43 @@ DeepEval RAG Contextual Metrics (Local Ollama) - Precision, Recall, Relevancy
 ==============================================================================
 
 What are RAG Contextual Metrics?
-- Evaluate RETRIEVAL-AUGMENTED GENERATION (RAG) systems
-- Test how well LLM uses retrieved context documents
+- Evaluate how effectively RETRIEVAL-AUGMENTED GENERATION (RAG) systems work
+- Test what PROPORTION of retrieved context is used effectively
 - Uses LOCAL Ollama model (deepseek-r1:8b) as judge
-- Answers: "Does the response use and rely on the provided context?"
+- Answers: "What percentage of retrieved context is used effectively in response?"
 
 The 3 RAG Metrics:
 
 1. CONTEXTUAL PRECISION
-   - Measures: % of retrieved context ACTUALLY USED by response
+   - Measures: PROPORTION of retrieved context ACTUALLY USED by response
    - Ideal: All retrieved documents are relevant and used
    - Formula: (# relevant docs used) / (total docs retrieved)
    - Score 0.0-1.0
    
 2. CONTEXTUAL RECALL
-   - Measures: % of AVAILABLE INFO in context captured in response
+   - Measures: PROPORTION of AVAILABLE INFO in context captured in response
    - Ideal: Response includes all important information
    - Formula: (# facts from context in response) / (total facts in context)
    - Score 0.0-1.0
    
 3. CONTEXTUAL RELEVANCY
-   - Measures: Are retrieved docs RELEVANT to the query?
+   - Measures: What PROPORTION of retrieved docs are RELEVANT to the query?
    - Ideal: All retrieved docs help answer the question
    - Formula: (# relevant docs) / (total docs retrieved)
    - Score 0.0-1.0
 
 Score Interpretation (Each Metric):
-- 0.0-0.3   = Poor (❌ FAIL) - Low precision/recall/relevancy
-- 0.3-0.5   = Moderate (⚠️ PARTIAL) - Some issues
-- 0.5-0.7   = Good (✅ PASS) - Mostly working
-- 0.7-1.0   = Excellent (✅ PASS) - Great RAG performance
+- Score Range: 0.0 to 1.0 (PROPORTION metric - higher is better)
+- 0.0         = None/no relevance - No context used/relevant
+- 0.0-0.3     = Poor (❌ FAIL) - ≤30% precision/recall/relevancy
+- 0.3-0.5     = Moderate (⚠️ PARTIAL) - 30-50% effectiveness
+- 0.5-0.7     = Good (✅ PASS) - 50-70% effectiveness
+- 0.7-1.0     = Excellent (✅ PASS) - ≥70% effectiveness, nearly complete
 
 Threshold: 0.7 (70% - LLM-based metric standard)
 - Score must be >= 0.7 to PASS (per test, per metric)
-- Rationale: RAG systems should use context effectively
-- 0.7 threshold: Industry standard for LLM-based metrics
+- Higher scores are better: 1.0 = perfect, 0.0 = useless
+- Interpretation: Each metric represents PROPORTION of something (precision/recall/relevancy)
 
 Typical RAG Evaluation:
 - Query input to retrieve documents from knowledge base
@@ -45,7 +47,7 @@ Typical RAG Evaluation:
 - Build prompt with context: "Context: [documents] \n Question: [query]"
 - Generate LLM response using context
 - Evaluate 3 metrics per test case
-- All 3 metrics must pass (>= 0.7)
+- All 3 metrics should pass (>= 0.7)
 
 Use Cases:
 - Document QA system validation

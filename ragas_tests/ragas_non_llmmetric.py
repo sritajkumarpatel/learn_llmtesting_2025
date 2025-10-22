@@ -13,17 +13,20 @@ What is BLEU Score?
 How It Works:
 - Counts matching n-grams between response and reference
 - Calculates precision for each n-gram size
-- Outputs: Score from 0.0 to 1.0
+- Outputs: Score from 0.0 to 1.0 (proportion of matching n-grams)
 
-Score Interpretation:
-- 0.0-0.2   = Poor match (❌ FAIL) - Very different from reference
-- 0.2-0.4   = Fair match (⚠️ PARTIAL) - Some overlap with reference
-- 0.4-0.6   = Good match (✅ PASS) - Significant similarity
-- 0.6-1.0   = Excellent match (✅ PASS) - Very similar to reference
+Score Interpretation (RAGAS Standard):
+- Score Range: 0.0 to 1.0 (PROPORTION of n-grams matching)
+- 0.0         = No overlap - Response completely different from reference
+- 0.0-0.2     = Poor match (❌ FAIL) - ≤20% overlap, very different
+- 0.2-0.4     = Fair match (⚠️ PARTIAL) - 20-40% overlap
+- 0.4-0.6     = Good match (✅ PASS) - 40-60% overlap, significant similarity
+- 0.6-1.0     = Excellent match (✅ PASS) - ≥60% overlap, very similar
 
 Threshold: 0.5 (50%)
-- Minimum acceptable for BLEU Score
-- More lenient than LLM-based metrics
+- Minimum acceptable for BLEU Score: ≥50% n-gram overlap
+- Higher scores are better: 1.0 = identical, 0.0 = completely different
+- Interpretation: Score represents PROPORTION of n-grams matching between response and reference
 
 Limitations:
 ❌ No semantic understanding (synonyms treated as different)

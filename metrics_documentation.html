@@ -539,10 +539,34 @@
 
               <div class="threshold-section">
                 <div class="threshold-simple">
-                  <span class="status status-pass">PASS ≥0.5</span>
-                  <span class="status status-partial">PARTIAL 0.3-0.5</span>
-                  <span class="status status-fail">FAIL <0.3</span>
+                  <span class="status status-pass">0.0 = Poor</span>
+                  <span class="status status-partial">0.3-0.7 = Fair</span>
+                  <span class="status status-pass">0.8-1.0 = Excellent</span>
                 </div>
+              </div>
+
+              <div class="section-title">Score Meaning:</div>
+              <div class="use-cases">
+                <strong
+                  >Range: 0.0 to 1.0 (PROPORTION of response meeting
+                  criteria)</strong
+                >
+                <ul style="margin-top: 10px; padding-left: 20px">
+                  <li>
+                    <strong>0.0:</strong> None of response meets your criteria
+                  </li>
+                  <li>
+                    <strong>0.3-0.5:</strong> Some parts meet criteria (30-50%)
+                  </li>
+                  <li>
+                    <strong>0.5-0.8:</strong> Most of response meets criteria
+                    (50-80%)
+                  </li>
+                  <li>
+                    <strong>0.8-1.0:</strong> Nearly all or all criteria met
+                    (≥80%)
+                  </li>
+                </ul>
               </div>
 
               <div class="section-title">Use Cases:</div>
@@ -591,16 +615,39 @@
               </div>
 
               <div class="purpose">
-                <strong>Purpose:</strong> Measures whether LLM response directly
-                addresses the user query.
+                <strong>Purpose:</strong> Measures what PROPORTION of LLM
+                response directly addresses the user query.
               </div>
 
               <div class="threshold-section">
                 <div class="threshold-simple">
-                  <span class="status status-pass">PASS ≥0.5</span>
-                  <span class="status status-partial">PARTIAL 0.3-0.5</span>
-                  <span class="status status-fail">FAIL <0.3</span>
+                  <span class="status status-fail">0.0 = Irrelevant</span>
+                  <span class="status status-partial">0.3-0.5 = Partial</span>
+                  <span class="status status-pass"
+                    >0.7-1.0 = Highly relevant</span
+                  >
                 </div>
+              </div>
+
+              <div class="section-title">Score Meaning:</div>
+              <div class="use-cases">
+                <strong
+                  >Range: 0.0 to 1.0 (PROPORTION of response addressing
+                  query)</strong
+                >
+                <ul style="margin-top: 10px; padding-left: 20px">
+                  <li><strong>0.0:</strong> Completely off-topic</li>
+                  <li><strong>0.0-0.3:</strong> ≤30% addresses query</li>
+                  <li><strong>0.3-0.5:</strong> 30-50% relevant</li>
+                  <li>
+                    <strong>0.5-0.7:</strong> 50-70% relevant (mostly addresses
+                    query)
+                  </li>
+                  <li>
+                    <strong>0.7-1.0:</strong> ≥70% directly addresses query
+                    (highly relevant)
+                  </li>
+                </ul>
               </div>
 
               <div class="section-title">Use Cases:</div>
@@ -631,15 +678,37 @@
               </div>
 
               <div class="purpose">
-                <strong>Purpose:</strong> Detects gender, racial, occupational,
-                and accent bias in LLM responses.
+                <strong>Purpose:</strong> Detects PROPORTION of gender, racial,
+                occupational, and accent bias in LLM responses.
               </div>
 
               <div class="threshold-section">
                 <div class="threshold-simple">
-                  <span class="status status-pass">PASS ≤0.5</span>
-                  <span class="status status-fail">FAIL >0.5</span>
+                  <span class="status status-pass">0.0 = No bias</span>
+                  <span class="status status-partial">0.3-0.5 = Low bias</span>
+                  <span class="status status-fail">0.5+ = High bias</span>
                 </div>
+              </div>
+
+              <div class="section-title">Score Meaning:</div>
+              <div class="use-cases">
+                <strong
+                  >Range: 0.0 to 1.0 (PROPORTION of bias in response)</strong
+                >
+                <ul style="margin-top: 10px; padding-left: 20px">
+                  <li><strong>0.0:</strong> No bias detected</li>
+                  <li><strong>0.0-0.3:</strong> ≤30% contains stereotypes</li>
+                  <li>
+                    <strong>0.3-0.5:</strong> 30-50% contains minimal bias
+                  </li>
+                  <li>
+                    <strong>0.5-0.7:</strong> 50-70% contains moderate bias
+                  </li>
+                  <li>
+                    <strong>0.7-1.0:</strong> ≥70% contains
+                    discrimination/stereotypes
+                  </li>
+                </ul>
               </div>
 
               <div class="section-title">Use Cases:</div>
@@ -676,16 +745,39 @@
               </div>
 
               <div class="purpose">
-                <strong>Purpose:</strong> Checks if LLM output is factually
-                consistent with provided context (prevents hallucinations).
+                <strong>Purpose:</strong> Checks what PROPORTION of LLM output
+                is factually consistent with provided context (prevents
+                hallucinations).
               </div>
 
               <div class="threshold-section">
                 <div class="threshold-simple">
-                  <span class="status status-pass">PASS ≥0.5</span>
-                  <span class="status status-partial">PARTIAL 0.3-0.5</span>
-                  <span class="status status-fail">FAIL <0.3</span>
+                  <span class="status status-fail">0.0 = Not faithful</span>
+                  <span class="status status-partial"
+                    >0.3-0.5 = Partially faithful</span
+                  >
+                  <span class="status status-pass"
+                    >0.7-1.0 = Highly faithful</span
+                  >
                 </div>
+              </div>
+
+              <div class="section-title">Score Meaning:</div>
+              <div class="use-cases">
+                <strong
+                  >Range: 0.0 to 1.0 (PROPORTION of claims supported by
+                  context)</strong
+                >
+                <ul style="margin-top: 10px; padding-left: 20px">
+                  <li><strong>0.0:</strong> No claims supported by context</li>
+                  <li><strong>0.0-0.3:</strong> ≤30% of claims supported</li>
+                  <li><strong>0.3-0.5:</strong> 30-50% of claims supported</li>
+                  <li><strong>0.5-0.7:</strong> 50-70% of claims supported</li>
+                  <li>
+                    <strong>0.7-1.0:</strong> ≥70% of claims supported by
+                    context
+                  </li>
+                </ul>
               </div>
 
               <div class="section-title">Use Cases:</div>
@@ -717,16 +809,33 @@
               </div>
 
               <div class="purpose">
-                <strong>Purpose:</strong> Measures % of retrieved context
-                actually used by the LLM response (RAG evaluation).
+                <strong>Purpose:</strong> Measures PROPORTION of retrieved
+                context actually used by the LLM response (RAG evaluation).
               </div>
 
               <div class="threshold-section">
                 <div class="threshold-simple">
-                  <span class="status status-pass">PASS ≥0.7</span>
-                  <span class="status status-partial">PARTIAL 0.3-0.7</span>
-                  <span class="status status-fail">FAIL <0.3</span>
+                  <span class="status status-fail">0.0 = None used</span>
+                  <span class="status status-partial">0.3-0.7 = Fair</span>
+                  <span class="status status-pass">0.7-1.0 = Excellent</span>
                 </div>
+              </div>
+
+              <div class="section-title">Score Meaning:</div>
+              <div class="use-cases">
+                <strong
+                  >Range: 0.0 to 1.0 (PROPORTION of context actually
+                  used)</strong
+                >
+                <ul style="margin-top: 10px; padding-left: 20px">
+                  <li><strong>0.0:</strong> No retrieved context used</li>
+                  <li><strong>0.0-0.3:</strong> ≤30% of context used</li>
+                  <li><strong>0.3-0.5:</strong> 30-50% of context used</li>
+                  <li><strong>0.5-0.7:</strong> 50-70% of context used</li>
+                  <li>
+                    <strong>0.7-1.0:</strong> ≥70% of context used effectively
+                  </li>
+                </ul>
               </div>
 
               <div class="section-title">Use Cases:</div>
@@ -760,16 +869,41 @@
               </div>
 
               <div class="purpose">
-                <strong>Purpose:</strong> Measures % of available information in
-                context captured in the LLM response.
+                <strong>Purpose:</strong> Measures PROPORTION of available
+                information in context captured in the LLM response.
               </div>
 
               <div class="threshold-section">
                 <div class="threshold-simple">
-                  <span class="status status-pass">PASS ≥0.7</span>
-                  <span class="status status-partial">PARTIAL 0.3-0.7</span>
-                  <span class="status status-fail">FAIL <0.3</span>
+                  <span class="status status-fail">0.0 = Nothing captured</span>
+                  <span class="status status-partial">0.3-0.7 = Fair</span>
+                  <span class="status status-pass">0.7-1.0 = Excellent</span>
                 </div>
+              </div>
+
+              <div class="section-title">Score Meaning:</div>
+              <div class="use-cases">
+                <strong
+                  >Range: 0.0 to 1.0 (PROPORTION of context info in
+                  response)</strong
+                >
+                <ul style="margin-top: 10px; padding-left: 20px">
+                  <li>
+                    <strong>0.0:</strong> No information from context captured
+                  </li>
+                  <li>
+                    <strong>0.0-0.3:</strong> ≤30% of available info captured
+                  </li>
+                  <li>
+                    <strong>0.3-0.5:</strong> 30-50% of available info captured
+                  </li>
+                  <li>
+                    <strong>0.5-0.7:</strong> 50-70% of available info captured
+                  </li>
+                  <li>
+                    <strong>0.7-1.0:</strong> ≥70% of available info captured
+                  </li>
+                </ul>
               </div>
 
               <div class="section-title">Use Cases:</div>
@@ -803,16 +937,33 @@
               </div>
 
               <div class="purpose">
-                <strong>Purpose:</strong> Measures if retrieved documents are
-                relevant to the user query.
+                <strong>Purpose:</strong> Measures PROPORTION of retrieved
+                documents that are relevant to the user query.
               </div>
 
               <div class="threshold-section">
                 <div class="threshold-simple">
-                  <span class="status status-pass">PASS ≥0.7</span>
-                  <span class="status status-partial">PARTIAL 0.3-0.7</span>
-                  <span class="status status-fail">FAIL <0.3</span>
+                  <span class="status status-fail">0.0 = No relevance</span>
+                  <span class="status status-partial">0.3-0.7 = Fair</span>
+                  <span class="status status-pass">0.7-1.0 = Excellent</span>
                 </div>
+              </div>
+
+              <div class="section-title">Score Meaning:</div>
+              <div class="use-cases">
+                <strong
+                  >Range: 0.0 to 1.0 (PROPORTION of docs relevant to
+                  query)</strong
+                >
+                <ul style="margin-top: 10px; padding-left: 20px">
+                  <li><strong>0.0:</strong> No retrieved documents relevant</li>
+                  <li><strong>0.0-0.3:</strong> ≤30% of docs relevant</li>
+                  <li><strong>0.3-0.5:</strong> 30-50% of docs relevant</li>
+                  <li><strong>0.5-0.7:</strong> 50-70% of docs relevant</li>
+                  <li>
+                    <strong>0.7-1.0:</strong> ≥70% of docs relevant to query
+                  </li>
+                </ul>
               </div>
 
               <div class="section-title">Use Cases:</div>
@@ -869,16 +1020,41 @@
               </div>
 
               <div class="purpose">
-                <strong>Purpose:</strong> Surface-level n-gram matching between
+                <strong>Purpose:</strong> PROPORTION of n-gram matching between
                 generated and expected output (no semantic understanding).
               </div>
 
               <div class="threshold-section">
                 <div class="threshold-simple">
-                  <span class="status status-pass">PASS ≥0.5</span>
-                  <span class="status status-partial">PARTIAL 0.3-0.5</span>
-                  <span class="status status-fail">FAIL <0.3</span>
+                  <span class="status status-fail">0.0 = No overlap</span>
+                  <span class="status status-partial"
+                    >0.3-0.5 = Fair overlap</span
+                  >
+                  <span class="status status-pass"
+                    >0.6-1.0 = Excellent overlap</span
+                  >
                 </div>
+              </div>
+
+              <div class="section-title">Score Meaning:</div>
+              <div class="use-cases">
+                <strong
+                  >Range: 0.0 to 1.0 (PROPORTION of n-grams matching)</strong
+                >
+                <ul style="margin-top: 10px; padding-left: 20px">
+                  <li>
+                    <strong>0.0:</strong> No n-gram overlap with reference
+                  </li>
+                  <li><strong>0.0-0.2:</strong> ≤20% n-grams match</li>
+                  <li><strong>0.2-0.4:</strong> 20-40% n-grams match</li>
+                  <li>
+                    <strong>0.4-0.6:</strong> 40-60% n-grams match (significant
+                    similarity)
+                  </li>
+                  <li>
+                    <strong>0.6-1.0:</strong> ≥60% n-grams match (very similar)
+                  </li>
+                </ul>
               </div>
 
               <div class="section-title">Characteristics:</div>
@@ -925,17 +1101,38 @@
               </div>
 
               <div class="purpose">
-                <strong>Purpose:</strong> LLM-based evaluation measuring % of
-                context information recalled in the response (semantic
-                understanding).
+                <strong>Purpose:</strong> PROPORTION of context information
+                recalled/used in the response (semantic understanding).
               </div>
 
               <div class="threshold-section">
                 <div class="threshold-simple">
-                  <span class="status status-pass">PASS ≥0.7</span>
-                  <span class="status status-partial">PARTIAL 0.3-0.7</span>
-                  <span class="status status-fail">FAIL <0.3</span>
+                  <span class="status status-fail">0.0 = No recall</span>
+                  <span class="status status-partial">0.3-0.7 = Fair</span>
+                  <span class="status status-pass">0.7-1.0 = Excellent</span>
                 </div>
+              </div>
+
+              <div class="section-title">Score Meaning:</div>
+              <div class="use-cases">
+                <strong
+                  >Range: 0.0 to 1.0 (PROPORTION of context recalled in
+                  response)</strong
+                >
+                <ul style="margin-top: 10px; padding-left: 20px">
+                  <li><strong>0.0:</strong> No context information recalled</li>
+                  <li><strong>0.0-0.3:</strong> ≤30% of context recalled</li>
+                  <li>
+                    <strong>0.3-0.5:</strong> 30-50% of context recalled (fair)
+                  </li>
+                  <li>
+                    <strong>0.5-0.7:</strong> 50-70% of context recalled (good)
+                  </li>
+                  <li>
+                    <strong>0.7-1.0:</strong> ≥70% of context recalled
+                    (excellent)
+                  </li>
+                </ul>
               </div>
 
               <div class="section-title">Characteristics:</div>
@@ -980,16 +1177,17 @@
               </div>
 
               <div class="purpose">
-                <strong>Purpose:</strong> LLM-based evaluation measuring
-                response robustness to irrelevant/noisy context injection (lower
-                scores are better).
+                <strong>Purpose:</strong> LLM-based metric measuring response
+                robustness to irrelevant/noisy context injection. Calculates
+                proportion of incorrect claims when noise is added (0.0 = no
+                errors, 1.0 = all errors).
               </div>
 
               <div class="threshold-section">
                 <div class="threshold-simple">
-                  <span class="status status-pass">PASS ≤0.5</span>
-                  <span class="status status-partial">PARTIAL 0.3-0.5</span>
-                  <span class="status status-fail">FAIL >0.5</span>
+                  <span class="status status-pass">0.0 = Perfect</span>
+                  <span class="status status-partial">0.0-0.5 = Good</span>
+                  <span class="status status-fail">0.5+ = Poor</span>
                 </div>
               </div>
 
@@ -999,6 +1197,32 @@
                 <span class="feature-highlight">✓ Semantic understanding</span>
                 <span class="feature-highlight">✓ Production-ready</span>
                 <span class="feature-highlight cons">✗ Slower evaluation</span>
+              </div>
+
+              <div class="section-title">Score Meaning:</div>
+              <div class="use-cases">
+                <strong
+                  >Range: 0.0 to 1.0 (Proportion of incorrect claims when noise
+                  added)</strong
+                >
+                <ul style="margin-top: 10px; padding-left: 20px">
+                  <li>
+                    <strong>0.0:</strong> Perfect robustness (all claims remain
+                    correct despite noise)
+                  </li>
+                  <li>
+                    <strong>0.0-0.3:</strong> Good robustness (≤30% of claims
+                    become incorrect)
+                  </li>
+                  <li>
+                    <strong>0.3-0.5:</strong> Fair robustness (30-50% of claims
+                    become incorrect)
+                  </li>
+                  <li>
+                    <strong>0.5+:</strong> Poor robustness (>50% of claims
+                    become incorrect with noise)
+                  </li>
+                </ul>
               </div>
 
               <div class="section-title">Use Cases:</div>
@@ -1011,16 +1235,18 @@
               <div class="examples">
                 <strong>Examples:</strong>
                 <div class="example-item">
-                  <span class="status status-pass">✅ PASS</span> Score 0.0
-                  (perfect robustness - no errors with noise added)
+                  <span class="status status-pass">✅ PASS</span> Score 0.0 (all
+                  claims correct despite noise - 0 errors out of total)
                 </div>
                 <div class="example-item">
                   <span class="status status-partial">⚠️ PARTIAL</span> Score
-                  0.4 (good robustness - minimal errors detected)
+                  0.33 (some claims become incorrect with noise - 1 error out of
+                  3 claims)
                 </div>
                 <div class="example-item">
-                  <span class="status status-fail">❌ FAIL</span> Score 0.8
-                  (poor robustness - many errors when noise injected)
+                  <span class="status status-fail">❌ FAIL</span> Score 0.75
+                  (many claims become incorrect with noise - 3 errors out of 4
+                  claims)
                 </div>
               </div>
             </div>
@@ -1038,7 +1264,7 @@
                 <th>Metric</th>
                 <th>Framework</th>
                 <th>Type</th>
-                <th>Threshold</th>
+                <th>Score Meaning</th>
                 <th>Primary Use</th>
                 <th>Speed</th>
                 <th>Accuracy</th>
@@ -1049,7 +1275,7 @@
                 <td><strong>GEval</strong></td>
                 <td>DeepEval</td>
                 <td>LLM-Based</td>
-                <td>≥ 0.5</td>
+                <td>0.8=Excellent</td>
                 <td>Custom criteria</td>
                 <td>Medium</td>
                 <td>High</td>
@@ -1058,7 +1284,7 @@
                 <td><strong>Answer Relevancy</strong></td>
                 <td>DeepEval</td>
                 <td>LLM-Based</td>
-                <td>≥ 0.5</td>
+                <td>0.7=Highly relevant</td>
                 <td>Q&A relevance</td>
                 <td>Medium</td>
                 <td>High</td>
@@ -1067,7 +1293,7 @@
                 <td><strong>BiasMetric</strong></td>
                 <td>DeepEval</td>
                 <td>LLM-Based</td>
-                <td>≤ 0.5</td>
+                <td>0.0=No bias</td>
                 <td>Bias detection</td>
                 <td>Medium</td>
                 <td>High</td>
@@ -1076,7 +1302,7 @@
                 <td><strong>FaithfulnessMetric</strong></td>
                 <td>DeepEval</td>
                 <td>LLM-Based</td>
-                <td>≥ 0.5</td>
+                <td>0.7=Highly faithful</td>
                 <td>Fact checking</td>
                 <td>Medium</td>
                 <td>High</td>
@@ -1085,7 +1311,7 @@
                 <td><strong>Contextual Precision</strong></td>
                 <td>DeepEval</td>
                 <td>LLM-Based</td>
-                <td>≥ 0.5</td>
+                <td>0.7-1.0=Excellent</td>
                 <td>RAG precision</td>
                 <td>Medium</td>
                 <td>High</td>
@@ -1094,7 +1320,7 @@
                 <td><strong>Contextual Recall</strong></td>
                 <td>DeepEval</td>
                 <td>LLM-Based</td>
-                <td>≥ 0.5</td>
+                <td>0.7-1.0=Excellent</td>
                 <td>RAG recall</td>
                 <td>Medium</td>
                 <td>High</td>
@@ -1103,7 +1329,7 @@
                 <td><strong>Contextual Relevancy</strong></td>
                 <td>DeepEval</td>
                 <td>LLM-Based</td>
-                <td>≥ 0.5</td>
+                <td>0.7-1.0=Excellent</td>
                 <td>Retrieval quality</td>
                 <td>Medium</td>
                 <td>High</td>
@@ -1112,7 +1338,7 @@
                 <td><strong>BLEU Score</strong></td>
                 <td>RAGAS</td>
                 <td>Non-LLM</td>
-                <td>≥ 0.5</td>
+                <td>0.6-1.0=Excellent</td>
                 <td>Baseline testing</td>
                 <td>Fast</td>
                 <td>Low</td>
@@ -1121,7 +1347,7 @@
                 <td><strong>LLMContextRecall</strong></td>
                 <td>RAGAS</td>
                 <td>LLM-Based</td>
-                <td>≥ 0.7</td>
+                <td>0.7-1.0=Excellent</td>
                 <td>RAG evaluation</td>
                 <td>Medium</td>
                 <td>High</td>
@@ -1130,8 +1356,8 @@
                 <td><strong>NoiseSensitivity</strong></td>
                 <td>RAGAS</td>
                 <td>LLM-Based</td>
-                <td>≤ 0.5</td>
-                <td>Robustness testing</td>
+                <td>0.0=Perfect</td>
+                <td>Response robustness</td>
                 <td>Medium</td>
                 <td>High</td>
               </tr>

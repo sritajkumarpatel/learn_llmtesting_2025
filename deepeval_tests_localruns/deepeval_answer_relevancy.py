@@ -3,29 +3,31 @@ DeepEval AnswerRelevancyMetric (LLM-Based with Local Ollama)
 ===========================================================
 
 What is AnswerRelevancyMetric (Local)?
-- Measures how RELEVANT the LLM response is to the input query
+- Measures what PROPORTION of the LLM response directly addresses the input query
 - Detects off-topic or tangential answers
 - Uses LOCAL Ollama model (deepseek-r1:8b) as judge
-- Answers: "Does the response directly address the query?"
+- Answers: "What percentage of the response addresses the query?"
 
 How It Works:
 - Takes: query, actual_output (LLM response)
 - Local Ollama evaluator analyzes:
-  - Is the response directly addressing the question?
-  - Does the answer contain relevant information?
-  - Is the output on-topic or completely unrelated?
-- Outputs: Score from 0.0 to 1.0
+  - What proportion of the response directly addresses the question?
+  - How much of the answer contains relevant information?
+  - What percentage is on-topic vs completely unrelated?
+- Outputs: Score from 0.0 to 1.0 (proportion of relevant content)
 
 Score Interpretation (DeepEval Standard):
-- 0.0-0.3   = Irrelevant (❌ FAIL) - Off-topic or wrong subject
-- 0.3-0.5   = Marginally relevant (⚠️ PARTIAL) - Some related info
-- 0.5-0.7   = Relevant (✅ PASS) - Mostly addresses query
-- 0.7-1.0   = Highly relevant (✅ PASS) - Perfect answer to query
+- Score Range: 0.0 to 1.0 (PROPORTION of response addressing query)
+- 0.0         = Completely irrelevant - Off-topic or wrong subject entirely
+- 0.0-0.3     = Mostly irrelevant (❌ FAIL) - ≤30% addresses query
+- 0.3-0.5     = Partially relevant (⚠️ PARTIAL) - 30-50% addresses query
+- 0.5-0.7     = Mostly relevant (✅ PASS) - 50-70% addresses query
+- 0.7-1.0     = Highly relevant (✅ PASS) - ≥70% directly addresses query
 
 Threshold: 0.5 (50% - MINIMUM passing threshold)
-- Score must be >= 0.5 to PASS
-- Rationale: Response must meaningfully address user's question
-- 0.5 threshold: Ensures at least reasonable relevance
+- Score must be >= 0.5 to PASS (at least half relevant)
+- Higher scores are better: 1.0 = perfect relevance, 0.0 = irrelevant
+- Interpretation: Score represents PROPORTION of response addressing the query
 
 Local vs OpenAI:
 - Uses local Ollama model for evaluation (free, offline)
