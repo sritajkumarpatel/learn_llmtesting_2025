@@ -50,7 +50,7 @@ from ragas import SingleTurnSample
 from ragas.metrics import BleuScore
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from utils import setup_ollama, setup_custom_ollama_model_for_evaluation, generate_ollama_response
+from utils import setup_ollama, generate_ollama_response
 
 
 def test_single_query_blue_score(user_query, expected_output):

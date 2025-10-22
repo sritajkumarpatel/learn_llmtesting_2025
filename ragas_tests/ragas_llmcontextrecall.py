@@ -41,11 +41,11 @@ from ragas.llms.base import LangchainLLMWrapper
 from langchain_ollama import ChatOllama
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from utils import setup_ollama, setup_custom_ollama_model_for_evaluation, generate_ollama_response
+from utils import setup_ollama, generate_ollama_response
 from utils.wikipedia_retriever import retrieve_context_from_wiki
 
 
-def test_single_query_llm_context_recall(user_query, expected_output, context, llm, use_custom_response=False, custom_response=None):
+def test_single_query_llm_context_recall(user_query, expected_output, context):
     """Test query with LLMContextRecall metric."""
 
     # Generate response from LLM under test
@@ -89,15 +89,10 @@ if __name__ == "__main__":
     
     setup_ollama()
 
-    llm = setup_custom_ollama_model_for_evaluation(
-        model="deepseek-r1:8b",
-        temperature=1
-    )
-
     # Example test case
     user_query = "Who created the Mona Lisa?"
     expected_output = generate_ollama_response(user_query, model_name="deepseek-r1:8b")
 
     context = retrieve_context_from_wiki(u"Mona Lisa")
 
-    test_single_query_llm_context_recall(user_query, expected_output, context, llm)
+    test_single_query_llm_context_recall(user_query, expected_output, context)
