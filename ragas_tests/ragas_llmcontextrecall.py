@@ -43,7 +43,8 @@ from ragas.llms.base import LangchainLLMWrapper
 from langchain_ollama import ChatOllama
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from utils import setup_ollama, generate_ollama_response
+from utils import config, setup_ollama, generate_ollama_response
+from utils.config import get_ollama_model, get_ollama_url, ModelType
 from utils.wikipedia_retriever import retrieve_context_from_wiki
 
 
@@ -51,21 +52,21 @@ def test_single_query_llm_context_recall(user_query, expected_output, context):
     """Test query with LLMContextRecall metric."""
 
     # Generate response from LLM under test
-    ollama_response = generate_ollama_response(user_query, model_name="llama3.1:8b")
+    actual_output = generate_ollama_response(user_query, model_name=get_ollama_model(ModelType.ACTUAL_OUTPUT))
     
     test_data = {
         "user_input": user_query,
-        "response": ollama_response,
+        "response": actual_output,
         "reference": expected_output,
         "retrieved_contexts": [context]
     }
 
     print(f"\n📝 Query: {user_query}")
-    print(f"💬 Response: {ollama_response[:150]}...")
+    print(f"💬 Response: {actual_output[:150]}...")
     print(f"💬 Reference: {expected_output[:150]}...")
     print(f"📚 Context: {context[:150]}...")
 
-    ollama_chat = ChatOllama(model="deepseek-r1:8b", base_url="http://localhost:11434")
+    ollama_chat = ChatOllama(model=get_ollama_model(ModelType.EVALUATION), base_url=get_ollama_url())
     evaluator_model = LangchainLLMWrapper(ollama_chat)
     context_recall = LLMContextRecall(llm=evaluator_model)
 
@@ -93,7 +94,7 @@ if __name__ == "__main__":
 
     # Example test case
     user_query = "Who created the Mona Lisa?"
-    expected_output = generate_ollama_response(user_query, model_name="deepseek-r1:8b")
+    expected_output = generate_ollama_response(user_query, model_name=get_ollama_model(ModelType.EXPECTED_OUTPUT))
 
     context = retrieve_context_from_wiki(u"Mona Lisa")
 

@@ -40,31 +40,31 @@ from ragas import SingleTurnSample
 from ragas.metrics import NoiseSensitivity
 from ragas.llms.base import LangchainLLMWrapper
 from langchain_ollama import ChatOllama
-from datetime import datetime
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from utils import setup_ollama, generate_ollama_response
+from utils import config, setup_ollama, generate_ollama_response
+from utils.config import get_ollama_model, get_ollama_url, ModelType
 from utils.wikipedia_retriever import retrieve_context_from_wiki
 
 def test_noise_sensitivity(user_query, expected_output, context):
     """Test query with NoiseSensitivity metric."""
 
     # Generate response from LLM under test
-    ollama_response = generate_ollama_response(user_query, model_name="gemma2:2b")
+    actual_output = generate_ollama_response(user_query, model_name=get_ollama_model(ModelType.ACTUAL_OUTPUT))
     
     test_data = {
         "user_input": user_query,
-        "response": ollama_response,
+        "response": actual_output,
         "reference": expected_output,
         "retrieved_contexts": [context]
     }
 
     print(f"\n📝 Query: {user_query}")
-    print(f"💬 Response: {ollama_response[:150]}...")
+    print(f"💬 Response: {actual_output[:150]}...")
     print(f"� Reference: {expected_output[:150]}...")
     print(f"📚 Context: {context[:150]}...")
 
-    ollama_chat = ChatOllama(model="gemma2:2b", base_url="http://localhost:11434")
+    ollama_chat = ChatOllama(model=get_ollama_model(ModelType.EVALUATION), base_url=get_ollama_url())
     evaluator_model = LangchainLLMWrapper(ollama_chat)
     # NoiseSensitivity with mode='irrelevant' tests robustness to irrelevant/noisy contexts
     # According to RAGAS framework documentation, mode parameter specifies noise type:
@@ -88,13 +88,12 @@ def test_noise_sensitivity(user_query, expected_output, context):
 if __name__ == "__main__":
     print("RAGAS NoiseSensitivity Score Evaluation")
     print("=" * 50)
-    print("Threshold: 0.5 (50% - Meta-metric sensitivity standard)\n")
     
     setup_ollama()
 
     # Example test case
     user_query = "What is Harry Potter book series?"
-    expected_output = generate_ollama_response(user_query, model_name="qwen3:1.7b")
+    expected_output = generate_ollama_response(user_query, model_name=get_ollama_model(ModelType.EXPECTED_OUTPUT))
     context = retrieve_context_from_wiki("Harry Potter book series")
 
     test_noise_sensitivity(user_query, expected_output, context)

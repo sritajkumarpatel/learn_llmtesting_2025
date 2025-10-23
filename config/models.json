@@ -1,0 +1,10 @@
+{
+    "ollama": {
+        "base_url": "http://localhost:11434",
+        "models": {
+            "actual_output": "gemma2:2b",
+            "evaluation": "llama3.2:3b",
+            "expected_output": "qwen3:1.7b"
+        }
+    } 
+}
