@@ -9,6 +9,7 @@ class ModelType(Enum):
     ACTUAL_OUTPUT = "actual_output"
     EXPECTED_OUTPUT = "expected_output"
     BASE_URL = "base_url"
+    EVALUATION_ADVANCED = "evaluation_advanced"
 
 
 # Load configuration once
