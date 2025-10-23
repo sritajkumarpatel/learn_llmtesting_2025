@@ -24,6 +24,7 @@ python -m deepeval_tests_localruns.deepeval_rag_localllm
 python -m ragas_tests.ragas_non_llmmetric
 python -m ragas_tests.ragas_llmmetric
 python -m ragas_tests.ragas_noisesensitivity
+python -m ragas_tests_openai.ragas_aspectcritic_openai
 ```
 
 ---

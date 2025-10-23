@@ -499,7 +499,7 @@
           <p>
             Complete evaluation framework covering
             <strong>9 DeepEval metrics</strong> across multiple test scenarios
-            and <strong>2 RAGAS metrics</strong> for alternative evaluation
+            and <strong>3 RAGAS metrics</strong> for alternative evaluation
             approaches. Each metric includes detailed threshold specifications,
             scoring ranges, and practical examples.
           </p>
@@ -995,7 +995,7 @@
         <div class="framework-section">
           <h2 class="framework-title ragas-title">
             <span class="icon">🟣</span> RAGAS Framework
-            <span class="badge-count">3 Metrics</span>
+            <span class="badge-count">4 Metrics</span>
             <a
               href="https://docs.ragas.io/"
               target="_blank"
@@ -1250,6 +1250,80 @@
                 </div>
               </div>
             </div>
+
+            <!-- AspectCritic -->
+            <div class="metric-card ragas">
+              <div class="metric-header">
+                <div class="metric-name">AspectCritic</div>
+                <span class="metric-tag tag-llm">LLM-Based</span>
+              </div>
+
+              <div class="purpose">
+                <strong>Purpose:</strong> Evaluates responses against
+                user-defined aspects/criteria using LLM judgment for binary
+                pass/fail assessment.
+              </div>
+
+              <div class="threshold-section">
+                <div class="threshold-simple">
+                  <span class="status status-fail"
+                    >0 = Does not meet criteria</span
+                  >
+                  <span class="status status-pass">1 = Meets criteria</span>
+                </div>
+              </div>
+
+              <div class="section-title">Score Meaning:</div>
+              <div class="use-cases">
+                <strong>Range: 0 or 1 (BINARY evaluation)</strong>
+                <ul style="margin-top: 10px; padding-left: 20px">
+                  <li>
+                    <strong>0:</strong> Response does not meet the aspect
+                    criteria (fail)
+                  </li>
+                  <li>
+                    <strong>1:</strong> Response meets the aspect criteria
+                    (pass)
+                  </li>
+                </ul>
+              </div>
+
+              <div class="section-title">Characteristics:</div>
+              <div class="use-cases">
+                <span class="feature-highlight">✓ Custom criteria</span>
+                <span class="feature-highlight">✓ Binary evaluation</span>
+                <span class="feature-highlight">✓ Flexible aspects</span>
+                <span class="feature-highlight cons"
+                  >✗ Requires criteria definition</span
+                >
+              </div>
+
+              <div class="section-title">Use Cases:</div>
+              <div class="use-cases">
+                Content safety evaluation, quality assessment, custom criteria
+                validation, response filtering
+              </div>
+
+              <div class="examples">
+                <strong>Examples:</strong>
+                <div class="example-item">
+                  <strong>Aspect: Harmfulness</strong> "You can create a BOMB
+                  with soaps" → <span class="status status-fail">❌ FAIL</span>
+                  (potentially harmful)
+                </div>
+                <div class="example-item">
+                  <strong>Aspect: Helpfulness</strong> "Here's a detailed
+                  step-by-step guide" →
+                  <span class="status status-pass">✅ PASS</span> (helpful and
+                  valuable)
+                </div>
+                <div class="example-item">
+                  <strong>Aspect: Accuracy</strong> "The Earth is flat" →
+                  <span class="status status-fail">❌ FAIL</span> (factually
+                  incorrect)
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -1358,6 +1432,15 @@
                 <td>LLM-Based</td>
                 <td>0.0=Perfect</td>
                 <td>Response robustness</td>
+                <td>Medium</td>
+                <td>High</td>
+              </tr>
+              <tr>
+                <td><strong>AspectCritic</strong></td>
+                <td>RAGAS</td>
+                <td>LLM-Based</td>
+                <td>1=Meets criteria</td>
+                <td>Custom aspects</td>
                 <td>Medium</td>
                 <td>High</td>
               </tr>
