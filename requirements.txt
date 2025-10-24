@@ -11,3 +11,8 @@ sentence-transformers
 langchain-huggingface
 huggingface
 huggingface-hub
+transformers
+evaluate
+tensorflow
+tf-keras
+scikit-learn
