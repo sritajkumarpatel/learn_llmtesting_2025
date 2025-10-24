@@ -499,7 +499,7 @@
           <p>
             Complete evaluation framework covering
             <strong>9 DeepEval metrics</strong> across multiple test scenarios
-            and <strong>3 RAGAS metrics</strong> for alternative evaluation
+            and <strong>4 RAGAS metrics</strong> for alternative evaluation
             approaches. Each metric includes detailed threshold specifications,
             scoring ranges, and practical examples.
           </p>
@@ -995,7 +995,7 @@
         <div class="framework-section">
           <h2 class="framework-title ragas-title">
             <span class="icon">🟣</span> RAGAS Framework
-            <span class="badge-count">4 Metrics</span>
+            <span class="badge-count">5 Metrics</span>
             <a
               href="https://docs.ragas.io/"
               target="_blank"
@@ -1324,6 +1324,93 @@
                 </div>
               </div>
             </div>
+
+            <!-- ResponseRelevancy -->
+            <div class="metric-card ragas">
+              <div class="metric-header">
+                <div class="metric-name">ResponseRelevancy</div>
+                <span class="metric-tag tag-llm">LLM-Based</span>
+              </div>
+
+              <div class="purpose">
+                <strong>Purpose:</strong> Measures what proportion of the LLM
+                response is relevant to the user query using semantic embeddings
+                and LLM evaluation.
+              </div>
+
+              <div class="threshold-section">
+                <div class="threshold-simple">
+                  <span class="status status-fail">0.0-0.3 = Irrelevant</span>
+                  <span class="status status-partial">0.3-0.7 = Partial</span>
+                  <span class="status status-pass"
+                    >0.7-1.0 = Highly relevant</span
+                  >
+                </div>
+              </div>
+
+              <div class="section-title">Score Meaning:</div>
+              <div class="use-cases">
+                <strong
+                  >Range: 0.0 to 1.0 (PROPORTION of response relevant to
+                  query)</strong
+                >
+                <ul style="margin-top: 10px; padding-left: 20px">
+                  <li>
+                    <strong>0.0-0.3:</strong> ≤30% of response addresses query
+                    (irrelevant)
+                  </li>
+                  <li>
+                    <strong>0.3-0.5:</strong> 30-50% relevant (partially
+                    relevant)
+                  </li>
+                  <li>
+                    <strong>0.5-0.7:</strong> 50-70% relevant (moderately
+                    relevant)
+                  </li>
+                  <li>
+                    <strong>0.7-1.0:</strong> ≥70% directly addresses query
+                    (highly relevant)
+                  </li>
+                </ul>
+              </div>
+
+              <div class="section-title">Characteristics:</div>
+              <div class="use-cases">
+                <span class="feature-highlight">✓ Semantic understanding</span>
+                <span class="feature-highlight">✓ Embeddings-based</span>
+                <span class="feature-highlight">✓ Query-response matching</span>
+                <span class="feature-highlight cons"
+                  >✗ Requires embeddings model</span
+                >
+              </div>
+
+              <div class="section-title">Use Cases:</div>
+              <div class="use-cases">
+                Q&A system evaluation, chatbot response quality, search result
+                relevance, content filtering
+              </div>
+
+              <div class="examples">
+                <strong>Examples:</strong>
+                <div class="example-item">
+                  <strong>Query:</strong> "What is the capital of France?"
+                </div>
+                <div class="example-item">
+                  <strong>Response:</strong> "Paris is the capital city" →
+                  <span class="status status-pass">✅ PASS</span> (highly
+                  relevant)
+                </div>
+                <div class="example-item">
+                  <strong>Response:</strong> "France has beautiful landscapes" →
+                  <span class="status status-partial">⚠️ PARTIAL</span>
+                  (somewhat relevant)
+                </div>
+                <div class="example-item">
+                  <strong>Response:</strong> "I like pizza" →
+                  <span class="status status-fail">❌ FAIL</span> (irrelevant)
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -1441,6 +1528,15 @@
                 <td>LLM-Based</td>
                 <td>1=Meets criteria</td>
                 <td>Custom aspects</td>
+                <td>Medium</td>
+                <td>High</td>
+              </tr>
+              <tr>
+                <td><strong>ResponseRelevancy</strong></td>
+                <td>RAGAS</td>
+                <td>LLM-Based</td>
+                <td>0.7=Highly relevant</td>
+                <td>Query relevance</td>
                 <td>Medium</td>
                 <td>High</td>
               </tr>

@@ -186,6 +186,20 @@ learn_llmtesting_2025/
 - **Judge Model:** OpenAI GPT-4o-mini
 - **Run:** `python -m ragas_tests_openai.ragas_aspectcritic_openai`
 
+#### 5. **`ragas_response_relevancy_openai.py`**
+- **Purpose:** ResponseRelevancy evaluation (LLM-based, semantic relevance assessment)
+- **Metric:** ResponseRelevancy - Measures proportion of response relevant to user query
+- **Tests:**
+  - "What is the capital of France?" → Expected relevant response
+  - "What is the formula 1 event held in Monaco called?" → Expected relevant response
+- **Scoring:** 0.0-1.0 where 1.0 = highly relevant
+  - 0.0-0.3 = Irrelevant ❌ FAIL
+  - 0.3-0.5 = Partially relevant ⚠️ PARTIAL
+  - 0.5-0.7 = Moderately relevant ⚠️ PARTIAL
+  - 0.7-1.0 = Highly relevant ✅ PASS (threshold 0.7)
+- **Judge Model:** OpenAI GPT-4o-mini with embeddings
+- **Run:** `python -m ragas_tests_openai.ragas_response_relevancy_openai`
+
 ---
 
 ## Understanding BiasMetric
