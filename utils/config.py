@@ -10,6 +10,7 @@ class ModelType(Enum):
     EXPECTED_OUTPUT = "expected_output"
     BASE_URL = "base_url"
     EVALUATION_ADVANCED = "evaluation_advanced"
+    EMBEDDING_MODEL = "embedding_model"
 
 
 # Load configuration once
