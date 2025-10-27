@@ -1,3 +1,5 @@
+# RUNS WITH HUGGING FACE - Free models, no API keys required
+
 """
 Model Accuracy Evaluation Utility (Hugging Face)
 ================================================

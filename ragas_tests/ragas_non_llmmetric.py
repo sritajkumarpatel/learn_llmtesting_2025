@@ -1,3 +1,5 @@
+# RUNS LOCALLY - Uses local metrics, no API keys required
+
 """
 RAGAS BLEU Score Metric (Non-LLM Based)
 ========================================

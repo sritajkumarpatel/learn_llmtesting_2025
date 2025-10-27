@@ -1,3 +1,5 @@
+# RUNS LOCALLY - Uses Ollama for local LLM inference, no API keys required
+
 """
 DeepEval AnswerRelevancyMetric (LLM-Based with Local Ollama)
 ===========================================================

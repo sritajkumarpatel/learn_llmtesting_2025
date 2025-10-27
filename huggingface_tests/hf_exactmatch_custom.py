@@ -1,3 +1,5 @@
+# RUNS WITH HUGGING FACE - Free models, no API keys required
+
 """
 Exact Match Calculation Demonstration with Dummy Data (Hugging Face)
 ===================================================================

@@ -1,3 +1,5 @@
+# RUNS WITH HUGGING FACE - Free models, no API keys required
+
 """
 Named Entity Recognition (NER) Utility (Hugging Face Transformers)
 =================================================================

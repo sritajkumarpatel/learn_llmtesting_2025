@@ -1,3 +1,5 @@
+# RUNS WITH HUGGING FACE - Free models, no API keys required
+
 """
 F1 Score Calculation Demonstration with Dummy Data (Hugging Face)
 ================================================================

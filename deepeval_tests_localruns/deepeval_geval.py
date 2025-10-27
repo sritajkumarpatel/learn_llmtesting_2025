@@ -1,3 +1,5 @@
+# RUNS LOCALLY - Uses Ollama for local LLM inference, no API keys required
+
 """
 DeepEval GEval (Generalized Evaluation - LLM-Based with Local Ollama)
 ===================================================================

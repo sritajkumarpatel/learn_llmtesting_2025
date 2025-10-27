@@ -1,3 +1,5 @@
+# RUNS WITH OPENAI
+
 """
 RAGAS Response Relevancy Metric
 ================================

@@ -1,4 +1,4 @@
-# RUNS LOCALLY - Uses Hugging Face Transformers for local model inference, no API keys required
+# RUNS WITH HUGGING FACE - Free models, no API keys required
 
 """
 Sentiment Analysis Model Evaluation
