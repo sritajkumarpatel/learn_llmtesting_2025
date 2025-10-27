@@ -99,6 +99,11 @@
         border-bottom-color: #f093fb;
       }
 
+      .huggingface-title {
+        color: #ff6b35;
+        border-bottom-color: #ff6b35;
+      }
+
       .framework-desc {
         font-size: 1.05em;
         margin-bottom: 30px;
@@ -201,6 +206,10 @@
         color: #f093fb;
       }
 
+      .metric-card.huggingface .section-title {
+        color: #ff6b35;
+      }
+
       .purpose,
       .use-cases {
         font-size: 0.95em;
@@ -271,6 +280,10 @@
         color: #f093fb;
       }
 
+      .metric-card.huggingface .score-range {
+        color: #ff6b35;
+      }
+
       .status {
         display: inline-block;
         padding: 3px 8px;
@@ -319,6 +332,10 @@
         color: #f093fb;
       }
 
+      .metric-card.huggingface .example-item:before {
+        color: #ff6b35;
+      }
+
       .docs-reference {
         margin-top: 20px;
         padding-top: 15px;
@@ -346,6 +363,14 @@
 
       .metric-card.ragas .docs-link:hover {
         color: #d946ef;
+      }
+
+      .metric-card.huggingface .docs-link {
+        color: #ff6b35;
+      }
+
+      .metric-card.huggingface .docs-link:hover {
+        color: #e55a2b;
       }
 
       .comparison-table {
@@ -443,6 +468,10 @@
         background: #f093fb;
       }
 
+      .metric-card.huggingface .badge-count {
+        background: #ff6b35;
+      }
+
       @media (max-width: 768px) {
         .metrics-grid {
           grid-template-columns: 1fr;
@@ -486,7 +515,10 @@
     <div class="container">
       <header>
         <h1>🚀 LLM Evaluation Metrics</h1>
-        <p>Comprehensive Documentation for DeepEval & RAGAS Frameworks</p>
+        <p>
+          Comprehensive Documentation for DeepEval, RAGAS & Hugging Face
+          Frameworks
+        </p>
         <p class="subtitle">
           Test Coverage & Threshold Guidelines | October 2025
         </p>
@@ -498,10 +530,11 @@
           <h2>📊 Overview</h2>
           <p>
             Complete evaluation framework covering
-            <strong>9 DeepEval metrics</strong> across multiple test scenarios
-            and <strong>4 RAGAS metrics</strong> for alternative evaluation
-            approaches. Each metric includes detailed threshold specifications,
-            scoring ranges, and practical examples.
+            <strong>9 DeepEval metrics</strong> across multiple test scenarios,
+            <strong>5 RAGAS metrics</strong> for alternative evaluation
+            approaches, and <strong>2 Hugging Face metrics</strong> for
+            traditional NLP evaluation. Each metric includes detailed threshold
+            specifications, scoring ranges, and practical examples.
           </p>
         </div>
 
@@ -1414,6 +1447,169 @@
           </div>
         </div>
 
+        <!-- HUGGING FACE SECTION -->
+        <div class="framework-section">
+          <h2 class="framework-title huggingface-title">
+            <span class="icon">🤗</span> Hugging Face Evaluate
+            <span class="badge-count">2 Metrics</span>
+            <a
+              href="https://huggingface.co/docs/evaluate/index"
+              target="_blank"
+              class="framework-docs-link"
+              >📖 Docs</a
+            >
+          </h2>
+          <div class="framework-desc huggingface-desc">
+            <strong>Hugging Face Evaluate</strong> provides traditional NLP
+            evaluation metrics for classification, generation, and other tasks.
+            Fast, lightweight, and widely used in academic and industry
+            settings.
+          </div>
+
+          <!-- Hugging Face Metrics -->
+          <div class="metrics-grid">
+            <!-- Exact Match -->
+            <div class="metric-card huggingface">
+              <div class="metric-header">
+                <div class="metric-name">Exact Match</div>
+                <span class="metric-tag tag-non-llm">Non-LLM</span>
+              </div>
+
+              <div class="purpose">
+                <strong>Purpose:</strong> Measures PROPORTION of predictions
+                that exactly match the references (perfect string matching).
+              </div>
+
+              <div class="threshold-section">
+                <div class="threshold-simple">
+                  <span class="status status-fail">0.0 = No matches</span>
+                  <span class="status status-partial">0.0-1.0 = Partial</span>
+                  <span class="status status-pass">1.0 = All match</span>
+                </div>
+              </div>
+
+              <div class="section-title">Score Meaning:</div>
+              <div class="use-cases">
+                <strong>Range: 0.0 to 1.0 (PROPORTION of exact matches)</strong>
+                <ul style="margin-top: 10px; padding-left: 20px">
+                  <li><strong>0.0:</strong> No predictions match references</li>
+                  <li><strong>0.0-0.5:</strong> Some predictions match</li>
+                  <li><strong>0.5-1.0:</strong> Most predictions match</li>
+                  <li><strong>1.0:</strong> All predictions match exactly</li>
+                </ul>
+              </div>
+
+              <div class="section-title">Characteristics:</div>
+              <div class="use-cases">
+                <span class="feature-highlight">✓ Fast computation</span>
+                <span class="feature-highlight">✓ Exact matching</span>
+                <span class="feature-highlight"
+                  >✓ No semantic understanding</span
+                >
+                <span class="feature-highlight cons"
+                  >✗ Strict (no partial credit)</span
+                >
+              </div>
+
+              <div class="section-title">Use Cases:</div>
+              <div class="use-cases">
+                Classification evaluation, QA systems, code generation, any task
+                requiring exact correctness
+              </div>
+
+              <div class="examples">
+                <strong>Examples:</strong>
+                <div class="example-item">
+                  <span class="status status-pass">✅ PASS</span> Reference:
+                  "POSITIVE", Prediction: "POSITIVE" (100% match)
+                </div>
+                <div class="example-item">
+                  <span class="status status-partial">⚠️ PARTIAL</span> 2 out of
+                  4 predictions match (50% exact match)
+                </div>
+                <div class="example-item">
+                  <span class="status status-fail">❌ FAIL</span> Reference:
+                  "POSITIVE", Prediction: "NEGATIVE" (0% match)
+                </div>
+              </div>
+            </div>
+
+            <!-- F1 Score -->
+            <div class="metric-card huggingface">
+              <div class="metric-header">
+                <div class="metric-name">F1 Score</div>
+                <span class="metric-tag tag-non-llm">Non-LLM</span>
+              </div>
+
+              <div class="purpose">
+                <strong>Purpose:</strong> Harmonic mean of precision and recall,
+                balancing both metrics for comprehensive evaluation.
+              </div>
+
+              <div class="threshold-section">
+                <div class="threshold-simple">
+                  <span class="status status-fail">0.0 = Worst</span>
+                  <span class="status status-partial">0.0-1.0 = Variable</span>
+                  <span class="status status-pass">1.0 = Perfect</span>
+                </div>
+              </div>
+
+              <div class="section-title">Score Meaning:</div>
+              <div class="use-cases">
+                <strong
+                  >Range: 0.0 to 1.0 (Balanced precision/recall measure)</strong
+                >
+                <ul style="margin-top: 10px; padding-left: 20px">
+                  <li><strong>0.0:</strong> No correct predictions</li>
+                  <li>
+                    <strong>0.0-0.5:</strong> Poor balance of precision/recall
+                  </li>
+                  <li><strong>0.5-0.8:</strong> Good balance</li>
+                  <li><strong>0.8-1.0:</strong> Excellent balance</li>
+                  <li><strong>1.0:</strong> Perfect precision and recall</li>
+                </ul>
+              </div>
+
+              <div class="section-title">Characteristics:</div>
+              <div class="use-cases">
+                <span class="feature-highlight"
+                  >✓ Balances precision/recall</span
+                >
+                <span class="feature-highlight">✓ Handles imbalanced data</span>
+                <span class="feature-highlight"
+                  >✓ Single comprehensive metric</span
+                >
+                <span class="feature-highlight cons"
+                  >✗ Can be complex to interpret</span
+                >
+              </div>
+
+              <div class="section-title">Use Cases:</div>
+              <div class="use-cases">
+                Classification tasks, imbalanced datasets, when both false
+                positives and false negatives matter
+              </div>
+
+              <div class="examples">
+                <strong>Examples:</strong>
+                <div class="example-item">
+                  <span class="status status-pass">✅ PASS</span> Precision:
+                  0.9, Recall: 0.9, F1: 0.9 (excellent balance)
+                </div>
+                <div class="example-item">
+                  <span class="status status-partial">⚠️ PARTIAL</span>
+                  Precision: 1.0, Recall: 0.5, F1: 0.67 (high precision, low
+                  recall)
+                </div>
+                <div class="example-item">
+                  <span class="status status-fail">❌ FAIL</span> Precision:
+                  0.0, Recall: 0.0, F1: 0.0 (no correct predictions)
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- COMPARISON TABLE -->
         <div class="framework-section">
           <h2 style="font-size: 1.8em; margin-bottom: 25px; color: #333">
@@ -1540,6 +1736,24 @@
                 <td>Medium</td>
                 <td>High</td>
               </tr>
+              <tr>
+                <td><strong>Exact Match</strong></td>
+                <td>Hugging Face</td>
+                <td>Non-LLM</td>
+                <td>1.0=Perfect match</td>
+                <td>Exact correctness</td>
+                <td>Fast</td>
+                <td>High</td>
+              </tr>
+              <tr>
+                <td><strong>F1 Score</strong></td>
+                <td>Hugging Face</td>
+                <td>Non-LLM</td>
+                <td>1.0=Perfect balance</td>
+                <td>Precision/Recall balance</td>
+                <td>Fast</td>
+                <td>High</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -1566,13 +1780,20 @@
           </p>
 
           <p style="font-size: 0.9em; margin-bottom: 15px">
-            Based on <strong>DeepEval</strong> &
-            <strong>RAGAS</strong> frameworks •
+            Based on <strong>DeepEval</strong>, <strong>RAGAS</strong>, &
+            <strong>Hugging Face Evaluate</strong> frameworks •
             <a href="https://deepeval.com/docs/getting-started" target="_blank">
               DeepEval Docs
             </a>
             •
             <a href="https://docs.ragas.io/" target="_blank"> RAGAS Docs </a>
+            •
+            <a
+              href="https://huggingface.co/docs/evaluate/index"
+              target="_blank"
+            >
+              Hugging Face Docs
+            </a>
           </p>
 
           <p style="font-size: 0.85em; opacity: 0.85">
