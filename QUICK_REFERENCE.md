@@ -28,6 +28,15 @@ python -m ragas_tests_openai.ragas_aspectcritic_openai
 python -m ragas_tests_openai.ragas_response_relevancy_openai
 ```
 
+### Hugging Face Tests (Traditional NLP Metrics)
+```bash
+python huggingface_tests/hf_exactmatch.py
+python huggingface_tests/hf_exactmatch_custom.py
+python huggingface_tests/hf_f1_custom.py
+python huggingface_tests/hf_modelaccuracy.py
+python huggingface_tests/hf_modelaccuracy_custom.py
+```
+
 ---
 
 ## 📁 Folder Organization
@@ -37,7 +46,8 @@ python -m ragas_tests_openai.ragas_response_relevancy_openai
 | `utils/` | Shared utilities | - |
 | `deepeval_tests_openai/` | Local Gen + OpenAI Eval | 4 tests |
 | `deepeval_tests_localruns/` | Completely Local (Ollama) | 5 tests |
-| `ragas_tests/` | RAGAS Framework | 2 tests |
+| `ragas_tests/` | RAGAS Framework | 3 tests |
+| `huggingface_tests/` | Hugging Face Evaluate | 5 tests |
 
 ### Architecture Explained
 - **deepeval_tests_openai**: Response generation via local Ollama, evaluation via OpenAI GPT-4
@@ -109,17 +119,71 @@ Tests use local Ollama for both generation and evaluation.
   - Judge: Local Ollama gemma2:2b
   - Score: 0.0 = Perfect robustness, 1.0 = Very sensitive to noise
 
+### Hugging Face Framework Tests (Traditional NLP Metrics)
+- **Real Model Tests** - Evaluate actual models on real datasets
+  - Exact Match: Zero-shot classification accuracy on IMDB
+  - Model Accuracy: Fine-tuned sentiment analysis on SST2
+  - Use case: Benchmarking and model comparison
+  
+- **Dummy Data Tests** - Demonstrate metric calculations
+  - Exact Match: String matching scenarios (1.0, 0.5, 0.0)
+  - F1 Score: Precision/recall balance examples
+  - Accuracy: Prediction correctness scenarios
+  - Use case: Understanding metric calculations
+
 ---
 
-## 🔍 RAGAS vs DeepEval
+## 🤗 Hugging Face Framework Tests (Traditional NLP Metrics)
 
-| Aspect | RAGAS | DeepEval |
-|--------|-------|----------|
-| **Focus** | RAG evaluation | General LLM evaluation |
-| **Non-LLM Metrics** | BLEU, METEOR | N/A |
-| **LLM Metrics** | LLMContextRecall, etc | AnswerRelevancy, Faithfulness |
-| **Use Case** | RAG-specific testing | Broad LLM testing |
-| **Integration** | Works with custom RAG | Works with any LLM output |
+### Overview
+Hugging Face Evaluate provides traditional NLP evaluation metrics that are fast, lightweight, and widely used in academic and industry settings.
+
+### Test Types
+
+**Real Model Evaluation Tests**
+- **hf_exactmatch.py** - Zero-shot classification on IMDB dataset
+  - Model: BART large MNLI
+  - Dataset: 1000 IMDB movie reviews
+  - Metric: Exact match accuracy
+  - Use case: Real-world model benchmarking
+
+- **hf_modelaccuracy.py** - Fine-tuned model on SST2 dataset
+  - Model: DistilBERT SST-2 fine-tuned
+  - Dataset: Stanford Sentiment Treebank 2
+  - Metric: Classification accuracy
+  - Use case: Sentiment analysis evaluation
+
+**Dummy Data Demonstration Tests**
+- **hf_exactmatch_custom.py** - Exact match with controlled scenarios
+  - Demonstrates: Perfect (1.0), partial (0.5), no match (0.0)
+  - Use case: Understanding exact match calculation
+
+- **hf_f1_custom.py** - F1 score with controlled scenarios
+  - Demonstrates: Perfect balance, partial balance, poor balance
+  - Use case: Understanding precision/recall trade-offs
+
+- **hf_modelaccuracy_custom.py** - Accuracy with controlled scenarios
+  - Demonstrates: Perfect (1.0), half (0.5), zero (0.0) accuracy
+  - Use case: Understanding accuracy calculation
+
+### Key Characteristics
+- ✅ **Fast computation** - No LLM calls required
+- ✅ **Standardized metrics** - Widely used in NLP research
+- ✅ **No API costs** - Local computation only
+- ✅ **Academic standard** - Used in papers and benchmarks
+- ⚠️ **No semantic understanding** - Surface-level metrics only
+
+## 🔍 Framework Comparison
+
+| Aspect | DeepEval | RAGAS | Hugging Face |
+|--------|----------|-------|---------------|
+| **Focus** | General LLM evaluation | RAG evaluation | Traditional NLP metrics |
+| **Non-LLM Metrics** | None | BLEU, METEOR | Exact Match, F1, Accuracy |
+| **LLM Metrics** | AnswerRelevancy, Faithfulness | LLMContextRecall, etc | None |
+| **Use Case** | Broad LLM testing | RAG-specific testing | Classification evaluation |
+| **Speed** | Medium (LLM calls) | Medium (mixed) | Fast (no LLM calls) |
+| **Accuracy** | High (semantic) | High (semantic) | High (exact matching) |
+| **Cost** | API keys required | Local models | Free (local computation) |
 
 ---
 

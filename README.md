@@ -53,6 +53,13 @@ learn_llmtesting_2025/
 │   ├── ragas_non_llmmetric.py
 │   └── ragas_llmmetric.py
 │
+├── huggingface_tests/                   # Hugging Face Evaluate framework tests
+│   ├── hf_exactmatch.py
+│   ├── hf_exactmatch_custom.py
+│   ├── hf_f1_custom.py
+│   ├── hf_modelaccuracy.py
+│   └── hf_modelaccuracy_custom.py
+│
 ├── README.md
 ├── QUICK_REFERENCE.md
 └── requirements.txt
@@ -199,6 +206,55 @@ learn_llmtesting_2025/
   - 0.7-1.0 = Highly relevant ✅ PASS (threshold 0.7)
 - **Judge Model:** OpenAI GPT-4o-mini with embeddings
 - **Run:** `python -m ragas_tests_openai.ragas_response_relevancy_openai`
+
+---
+
+## Hugging Face Tests (Traditional NLP Metrics)
+
+### Overview
+Hugging Face Evaluate provides traditional NLP evaluation metrics for classification, generation, and other tasks. These are fast, lightweight, and widely used in academic and industry settings.
+
+#### 1. **`hf_exactmatch.py`**
+- **Purpose:** Evaluate model performance using exact match accuracy on real IMDB dataset
+- **Metric:** Exact Match - Measures proportion of predictions that exactly match references
+- **Model:** BART large MNLI zero-shot classification model
+- **Dataset:** IMDB movie reviews (1000 samples)
+- **Scoring:** 0.0-1.0 where 1.0 = all predictions match exactly
+- **Use Case:** Benchmarking text classification models on real-world data
+- **Run:** `python huggingface_tests/hf_exactmatch.py`
+
+#### 2. **`hf_exactmatch_custom.py`**
+- **Purpose:** Demonstrate exact match calculation with dummy data scenarios
+- **Metric:** Exact Match - String matching between predictions and references
+- **Tests:** Perfect match (1.0), partial match (0.5), no match (0.0)
+- **Scoring:** 0.0-1.0 where 1.0 = all predictions match exactly
+- **Use Case:** Understanding exact match calculation workflow
+- **Run:** `python huggingface_tests/hf_exactmatch_custom.py`
+
+#### 3. **`hf_f1_custom.py`**
+- **Purpose:** Demonstrate F1 score calculation with dummy data scenarios
+- **Metric:** F1 Score - Harmonic mean of precision and recall
+- **Tests:** Perfect match (1.0), partial match (lower score), poor match (0.0)
+- **Scoring:** 0.0-1.0 where 1.0 = perfect precision and recall balance
+- **Use Case:** Understanding F1 score for classification tasks
+- **Run:** `python huggingface_tests/hf_f1_custom.py`
+
+#### 4. **`hf_modelaccuracy.py`**
+- **Purpose:** Evaluate model accuracy on SST2 sentiment dataset
+- **Metric:** Accuracy - Proportion of correct predictions
+- **Model:** DistilBERT fine-tuned on SST-2
+- **Dataset:** Stanford Sentiment Treebank 2 (validation split)
+- **Scoring:** 0.0-1.0 where 1.0 = all predictions correct
+- **Use Case:** Benchmarking sentiment analysis model performance
+- **Run:** `python huggingface_tests/hf_modelaccuracy.py`
+
+#### 5. **`hf_modelaccuracy_custom.py`**
+- **Purpose:** Demonstrate accuracy calculation with dummy data scenarios
+- **Metric:** Accuracy - Proportion of correct predictions out of total
+- **Tests:** Perfect accuracy (1.0), half accuracy (0.5), zero accuracy (0.0)
+- **Scoring:** 0.0-1.0 where 1.0 = all predictions correct
+- **Use Case:** Understanding accuracy calculation with controlled examples
+- **Run:** `python huggingface_tests/hf_modelaccuracy_custom.py`
 
 ---
 
