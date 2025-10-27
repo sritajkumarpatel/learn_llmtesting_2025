@@ -101,3 +101,43 @@ def create_vector_db_from_wikipedia(query, num_docs=5, persist_directory=DB_LOCA
     
     return vectordb
 
+def add_documents_to_vector_db(query, num_docs=5, persist_directory=DB_LOCATION):
+        """
+        Add new documents to existing vector database or create one if it doesn't exist.
+        
+        Args:
+            query (str): Search query for Wikipedia
+            num_docs (int): Number of top documents to retrieve
+            persist_directory (str): Where to save/load the vector database
+            
+        Returns:
+            Chroma: Updated vector database instance
+        """
+        embeddings = OllamaEmbeddings(model=EMBEDDING_MODEL)
+        
+        if not os.path.exists(persist_directory):
+            print(f"Vector DB not found at {persist_directory}. Creating new DB...")
+            return create_vector_db_from_wikipedia(query, num_docs, persist_directory)
+        
+        print(f"Loading existing vector DB from {persist_directory}")
+        vectordb = Chroma(
+            embedding_function=embeddings,
+            persist_directory=persist_directory
+        )
+        existing_count = vectordb._collection.count()
+        print(f"✓ Loaded existing DB with {existing_count} chunks")
+        
+        print(f"\nFetching new documents for query: '{query}'...")
+        new_documents = load_from_wikipedia(query, num_docs=num_docs)
+        print(f"✓ Loaded {len(new_documents)} new documents")
+        
+        print(f"\nChunking new documents...")
+        new_chunked_docs = chunk_documents(new_documents)
+        print(f"✓ Created {len(new_chunked_docs)} new chunks")
+        
+        print(f"\nAdding chunks to vector database...")
+        vectordb.add_documents(new_chunked_docs)
+        print(f"✓ Successfully added {len(new_chunked_docs)} chunks to DB")
+        print(f"  Total chunks in DB: {vectordb._collection.count()}")
+        
+        return vectordb
