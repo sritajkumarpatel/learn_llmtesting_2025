@@ -2,6 +2,47 @@
 
 Testing framework for evaluating Large Language Models (LLMs) using local models and DeepEval metrics.
 
+
+
+[![Python](https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white)](https://www.python.org/)
+[![DeepEval](https://img.shields.io/badge/DeepEval-000000?style=flat&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJDMTMuMSAyIDE0IDIuOSAxNCA0VjIwQzE0IDIxLjEgMTMuMSAyMiAxMiAyMkg0QzIuOSAyMiAyIDIxLjEgMiAyMFY0QzIgMi45IDIuOSAyIDQgMkgxMkMxMy4xIDIgMTQgMi45IDE0IDRaTTEyIDRINEM1LjUgNCA1IDQuNSA1IDVWMTlINzlWNUM1IDQuNSA0LjUgNCA0IDRIMTJDNTEzLjUgNCAxMyA0LjUgMTMgNVYxOUgxMVY1QzExIDQuNSA5LjUgNCA5IDRIMTJaIiBmaWxsPSIjZmZmZmZmIi8+Cjwvc3ZnPgo=)](https://docs.confident-ai.com/)
+[![RAGAS](https://img.shields.io/badge/RAGAS-FF6B35?style=flat&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJDMTMuMSAyIDE0IDIuOSAxNCA0VjIwQzE0IDIxLjEgMTMuMSAyMiAxMiAyMkg0QzIuOSAyMiAyIDIxLjEgMiAyMFY0QzIgMi45IDIuOSAyIDQgMkgxMkMxMy4xIDIgMTQgMi45IDE0IDRaTTEyIDRINEM1LjUgNCA1IDQuNSA1IDVWMTlINzlWNUM1IDQuNSA0LjUgNCA0IDRIMTJDNTEzLjUgNCAxMyA0LjUgMTMgNVYxOUgxMVY1QzExIDQuNSA5LjUgNCA5IDRIMTJaIiBmaWxsPSIjZmZmZmZmIi8+Cjwvc3ZnPgo=)](https://docs.ragas.io/)
+[![Hugging Face](https://img.shields.io/badge/Hugging_Face-F7931E?style=flat&logo=huggingface&logoColor=white)](https://huggingface.co/)
+[![Ollama](https://img.shields.io/badge/Ollama-000000?style=flat&logo=ollama&logoColor=white)](https://ollama.ai/)
+[![OpenAI](https://img.shields.io/badge/OpenAI-412991?style=flat&logo=openai&logoColor=white)](https://openai.com/)
+[![ChromaDB](https://img.shields.io/badge/ChromaDB-000000?style=flat&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJDMTMuMSAyIDE0IDIuOSAxNCA0VjIwQzE0IDIxLjEgMTMuMSAyMiAxMiAyMkg0QzIuOSAyMiAyIDIxLjEgMiAyMFY0QzIgMi45IDIuOSAyIDQgMkgxMkMxMy4xIDIgMTQgMi45IDE0IDRaTTEyIDRINEM1LjUgNCA1IDQuNSA1IDVWMTlINzlWNUM1IDQuNSA0LjUgNCA0IDRIMTJDNTEzLjUgNCAxMyA0LjUgMTMgNVYxOUgxMVY1QzExIDQuNSA5LjUgNCA5IDRIMTJaIiBmaWxsPSIjZmZmZmZmIi8+Cjwvc3ZnPgo=)](https://www.trychroma.com/)
+
+---
+
+## 🚀 Tech Stack & Technologies
+
+### Core Languages & Frameworks
+- **Python 3.8+** - Primary programming language
+- **DeepEval** - LLM evaluation framework with custom metrics
+- **RAGAS** - RAG (Retrieval-Augmented Generation) evaluation toolkit
+- **Hugging Face Transformers/Evaluate** - NLP model inference and traditional metrics
+
+### Local LLM Infrastructure
+- **Ollama** - Local LLM serving and inference engine
+- **ChromaDB** - Vector database for embeddings and retrieval
+- **LangChain** - Framework for building LLM applications
+
+### Cloud & API Services
+- **OpenAI API** - GPT-4 for premium evaluation metrics
+- **Wikipedia API** - Knowledge retrieval for RAG testing
+
+### Models Used
+- **Generation Models**: llama3.2:3b, deepseek-r1:8b
+- **Evaluation Models**: GPT-4, deepseek-r1:8b, gemma2:2b
+- **NLP Models**: BART, RoBERTa, DistilBERT variants
+
+### Development Tools
+- **pip** - Python package management
+- **python-dotenv** - Environment variable management
+- **VS Code** - Primary IDE for development
+
+---
+
 ## Quick Setup
 
 1. **Activate virtual environment:**
