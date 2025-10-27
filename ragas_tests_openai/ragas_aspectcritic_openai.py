@@ -1,3 +1,5 @@
+# RUNS WITH OPENAI - Requires OpenAI API key for LLM evaluation
+
 """
 RAGAS Aspect Critic Metric
 ===========================

@@ -1,3 +1,5 @@
+# RUNS LOCALLY - Uses local models for evaluation, no API keys required
+
 """
 RAGAS LLM Context Recall Metric
 ================================

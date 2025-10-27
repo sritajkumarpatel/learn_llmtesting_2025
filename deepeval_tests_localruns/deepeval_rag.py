@@ -1,3 +1,5 @@
+# RUNS LOCALLY - Uses Ollama for local LLM inference, no API keys required
+
 """
 DeepEval RAG Contextual Metrics (Local Ollama) - Precision, Recall, Relevancy
 ==============================================================================

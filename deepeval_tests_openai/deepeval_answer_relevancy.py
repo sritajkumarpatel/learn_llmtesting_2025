@@ -1,3 +1,5 @@
+# RUNS WITH OPENAI - Requires OpenAI API key for GPT-4 evaluation
+
 """
 DeepEval AnswerRelevancyMetric (LLM-Based with OpenAI GPT-4)
 ============================================================
