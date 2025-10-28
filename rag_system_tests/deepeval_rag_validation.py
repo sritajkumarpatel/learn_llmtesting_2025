@@ -283,81 +283,81 @@ GOLDEN_TESTS = [
 
 
 if __name__ == "__main__":
-    # query = "Jagannatha Temple Puri Odisha"
-    # print("=" * 80)
-    # print("RAG EVALUATION")
-    # print("=" * 80)
+    query = "Jagannatha Temple Puri Odisha"
+    print("=" * 80)
+    print("RAG EVALUATION")
+    print("=" * 80)
 
-    # setup_ollama()
-    # evaluation_model = setup_custom_ollama_model_for_evaluation(model=get_ollama_model(ModelType.EVALUATION))
-    # # Step 1: Create vector database from Wikipedia
-    # print("\n📚 STEP 1: Updating Vector Database from Wikipedia")
-    # print(f"Topic: {{ {query} }}")
-    # print("=" * 80)
-    # vectordb = add_documents_to_vector_db(
-    #     query=query,
-    #     num_docs=8,
-    # )
+    setup_ollama()
+    evaluation_model = setup_custom_ollama_model_for_evaluation(model=get_ollama_model(ModelType.EVALUATION))
+    # Step 1: Create vector database from Wikipedia
+    print("\n📚 STEP 1: Updating Vector Database from Wikipedia")
+    print(f"Topic: {{ {query} }}")
+    print("=" * 80)
+    vectordb = add_documents_to_vector_db(
+        query=query,
+        num_docs=8,
+    )
 
-    # # Step 2: Create Evaluation Dataset and Run all golden tests
-    # print("\n\n🧪 CREATING DEEPEVAL EVALUATION DATASET")
-    # print("=" * 80)
+    # Step 2: Create Evaluation Dataset and Run all golden tests
+    print("\n\n🧪 CREATING DEEPEVAL EVALUATION DATASET")
+    print("=" * 80)
 
-    # # Create EvaluationDataset from GOLDEN_TESTS
-    # dataset = EvaluationDataset(goldens=GOLDEN_TESTS)
-    # print(f"✅ Created EvaluationDataset with {len(dataset.goldens)} golden test cases")
+    # Create EvaluationDataset from GOLDEN_TESTS
+    dataset = EvaluationDataset(goldens=GOLDEN_TESTS)
+    print(f"✅ Created EvaluationDataset with {len(dataset.goldens)} golden test cases")
 
-    # results = []
-    # test_descriptions = [
-    #     "🧪 TEST 1: BASIC FACTS ABOUT JAGANNATHA TEMPLE",
-    #     "🧪 TEST 2: ARCHITECTURE AND DESIGN",
-    #     "🧪 TEST 3: RATH YATRA FESTIVAL",
-    #     "🧪 TEST 4: LOCATION AND ACCESSIBILITY",
-    #     "🧪 TEST 5: TEMPLE CUISINE AND PRASAD",
-    #     "🧪 TEST 6: HISTORICAL SIGNIFICANCE"
-    # ]
+    results = []
+    test_descriptions = [
+        "🧪 TEST 1: BASIC FACTS ABOUT JAGANNATHA TEMPLE",
+        "🧪 TEST 2: ARCHITECTURE AND DESIGN",
+        "🧪 TEST 3: RATH YATRA FESTIVAL",
+        "🧪 TEST 4: LOCATION AND ACCESSIBILITY",
+        "🧪 TEST 5: TEMPLE CUISINE AND PRASAD",
+        "🧪 TEST 6: HISTORICAL SIGNIFICANCE"
+    ]
 
-    # for i, (golden, description) in enumerate(zip(dataset.goldens, test_descriptions), 1):
-    #     print(f"\n{'='*60}")
-    #     print(f"TEST {i}: {description.split(':')[1].strip()}")
-    #     print(f"Question: {golden.input}")
-    #     print("-" * 60)
+    for i, (golden, description) in enumerate(zip(dataset.goldens, test_descriptions), 1):
+        print(f"\n{'='*60}")
+        print(f"TEST {i}: {description.split(':')[1].strip()}")
+        print(f"Question: {golden.input}")
+        print("-" * 60)
 
-    #     # Retrieve relevant documents using similarity search
-    #     retrieved_docs = vectordb.similarity_search(golden.input, k=4)
+        # Retrieve relevant documents using similarity search
+        retrieved_docs = vectordb.similarity_search(golden.input, k=4)
 
-    #     # Build prompt and generate response for display
-    #     prompt_with_context = build_prompt_with_context(golden.input, retrieved_docs)
-    #     ollama_response = generate_ollama_response(prompt_with_context, model_name=get_ollama_model(ModelType.EXPECTED_OUTPUT))
-    #     print(f"Output: {ollama_response}")
-    #     print("-" * 60)
+        # Build prompt and generate response for display
+        prompt_with_context = build_prompt_with_context(golden.input, retrieved_docs)
+        ollama_response = generate_ollama_response(prompt_with_context, model_name=get_ollama_model(ModelType.EXPECTED_OUTPUT))
+        print(f"Output: {ollama_response}")
+        print("-" * 60)
 
-    #     # Run the test with Golden
-    #     result = test_single_query_all_metrics(
-    #         golden=golden,
-    #         retrieved_docs=retrieved_docs,
-    #         evaluationModel=evaluation_model,
-    #         test_description=description,
-    #         custom_response=ollama_response,
-    #         use_custom_response=True
-    #     )
+        # Run the test with Golden
+        result = test_single_query_all_metrics(
+            golden=golden,
+            retrieved_docs=retrieved_docs,
+            evaluationModel=evaluation_model,
+            test_description=description,
+            custom_response=ollama_response,
+            use_custom_response=True
+        )
 
-    #     results.append(result)
+        results.append(result)
 
 
-    # # Save results to JSON file
-    # import datetime
-    # timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    # json_filename = f"deepeval_rag_evaluation_with_{timestamp}.json"
+    # Save results to JSON file
+    import datetime
+    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    json_filename = f"deepeval_rag_evaluation_with_{timestamp}.json"
 
-    # json_data = {
-    #     'detailed_results': results
-    # }
+    json_data = {
+        'detailed_results': results
+    }
 
-    # with open(json_filename, 'w', encoding='utf-8') as f:
-    #     json.dump(json_data, f, indent=2, ensure_ascii=False)
+    with open(json_filename, 'w', encoding='utf-8') as f:
+        json.dump(json_data, f, indent=2, ensure_ascii=False)
 
-    # print(f"\n📄 Results saved to: {json_filename}")
+    print(f"\n📄 Results saved to: {json_filename}")
 
     generate_html_report()
 
