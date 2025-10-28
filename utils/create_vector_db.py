@@ -10,8 +10,9 @@ from langchain_ollama import OllamaEmbeddings, OllamaLLM
 from langchain_chroma import Chroma
 from langchain_community.document_loaders import WikipediaLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+from .config import get_ollama_model, ModelType
 
-EMBEDDING_MODEL = "mxbai-embed-large:335m"
+EMBEDDING_MODEL = get_ollama_model(ModelType.EMBEDDING_MODEL)
 CHUNK_SIZE = 1000
 CHUNK_OVERLAP = 200
 DB_LOCATION = "./wikipedia_chroma_db"
