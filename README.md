@@ -72,230 +72,302 @@ Testing framework for evaluating Large Language Models (LLMs) using local models
 
 ```
 learn_llmtesting_2025/
-├── utils/                              # Shared utilities
-│   ├── local_llm_ollama_setup.py
-│   ├── create_vector_db.py
-│   └── wikipedia_retriever.py
+├── config/                             # Configuration files
+│   └── models.json                     # Model configurations
+│
+├── utils/                              # Shared utilities and HTML report generator
+│   ├── __init__.py
+│   ├── config.py                       # Configuration utilities
+│   ├── local_llm_ollama_setup.py       # Ollama setup and management
+│   ├── create_vector_db.py             # Vector database creation
+│   ├── wikipedia_retriever.py          # Wikipedia data retrieval
+│   └── generate_html_report.py         # HTML report generator
 │
 ├── deepeval_tests_openai/              # Hybrid: Local generation + OpenAI evaluation
+│   ├── __init__.py
 │   ├── deepeval_geval.py
 │   ├── deepeval_answer_relevancy.py
 │   ├── deepeval_bias.py
 │   └── deepeval_faithfulness.py
 │
 ├── deepeval_tests_localruns/           # Completely local: Ollama only
+│   ├── __init__.py
 │   ├── deepeval_geval.py
 │   ├── deepeval_answer_relevancy.py
 │   ├── deepeval_answer_relevancy_multipletestcases.py
 │   ├── deepeval_rag.py
 │   └── deepeval_rag_localllm.py
 │
-├── deepeval_rag_validation.py          # RAG evaluation with JSON output
-├── utils/                              # Shared utilities and HTML report generator
-│   ├── local_llm_ollama_setup.py
-│   ├── create_vector_db.py
-│   ├── wikipedia_retriever.py
-│   └── generate_html_report.py         # HTML report generator
+├── rag_system_tests/                   # Advanced RAG evaluation frameworks
+│   ├── deepeval_rag_validation.py      # DeepEval Goldens RAG evaluation
+│   └── ragas_rag_validation.py         # RAGAS comprehensive RAG evaluation
 │
-├── ragas_tests/                        # RAGAS evaluation framework tests
-│   ├── ragas_non_llmmetric.py
-│   └── ragas_llmmetric.py
+├── ragas_tests/                        # RAGAS individual metric tests (local)
+│   ├── __init__.py
+│   ├── ragas_llmcontextrecall.py
+│   ├── ragas_noisesensitivity.py
+│   └── ragas_non_llmmetric.py
 │
-├── huggingface_tests/                   # Hugging Face Evaluate framework tests
+├── ragas_tests_openai/                 # RAGAS individual metric tests (OpenAI)
+│   ├── ragas_aspectcritic_openai.py
+│   └── ragas_response_relevancy.py
+│
+├── huggingface_tests/                  # Hugging Face Evaluate framework tests
 │   ├── hf_exactmatch.py
 │   ├── hf_exactmatch_custom.py
 │   ├── hf_f1_custom.py
 │   ├── hf_modelaccuracy.py
 │   └── hf_modelaccuracy_custom.py
 │
+├── huggingface_transformers/           # Hugging Face Transformers examples
+│   ├── ner.py                          # Named Entity Recognition
+│   ├── sentimentanalysis.py            # Sentiment Analysis
+│   ├── sentimentanalysis_evaluate.py   # Sentiment Analysis with evaluation
+│   ├── textsummarization.py            # Text Summarization
+│   └── zeroshotclassification.py       # Zero-shot Classification
+│
+├── models_tests/                       # Model testing examples
+│   ├── sentimentanalysis.py
+│   └── textsummarization.py
+│
+├── wikipedia_chroma_db/                # ChromaDB vector database
+│   ├── chroma.sqlite3
+│   └── b3fe227c-8aee-443d-8113-9f25926c8a85/
+│
 ├── README.md
 ├── QUICK_REFERENCE.md
-└── requirements.txt
+├── requirements.txt
+├── metrics_documentation.html          # Interactive metrics documentation
+├── deepeval_rag_evaluation_with_20251028_211047_report.html  # RAG evaluation report
+└── deepeval_rag_evaluation_with_20251028_211047_report.json  # RAG evaluation data
 ```
 
 ---
 
-## Test Files Overview
+## 🔗 Hybrid Tests (Local Generation + Cloud Evaluation)
 
-### OpenAI Tests (Hybrid: Local Generation + OpenAI Evaluation)
 *Response Generation: Local Ollama | Evaluation: OpenAI GPT-4*
 
-#### 1. **`deepeval_geval.py`**
-- **Purpose:** Test GEval metric with different thresholds
+### DeepEval Hybrid Framework
+
+#### Overview
+DeepEval Hybrid Framework combines local LLM generation with cloud-based OpenAI evaluation for production-grade metrics while maintaining cost efficiency.
+
+#### 1. **`deepeval_tests_openai/deepeval_geval.py`**
+- **Purpose:** Test GEval metric with different thresholds using OpenAI evaluation
 - **Tests:** 4 tests with thresholds 1.0, 0.8, 0.5, 0.0
 - **Expected:** Tests with higher thresholds fail, threshold=0.0 passes
+- **Generation:** Local Ollama (llama3.2:3b)
+- **Evaluation:** OpenAI GPT-4
 - **Run:** `python -m deepeval_tests_openai.deepeval_geval`
 
-#### 2. **`deepeval_answer_relevancy.py`**
-- **Purpose:** Test if answers are relevant to questions
+#### 2. **`deepeval_tests_openai/deepeval_answer_relevancy.py`**
+- **Purpose:** Test if answers are relevant to questions using OpenAI evaluation
 - **Tests:**
   - France capital → ✅ PASS (direct answer)
   - FIFA 2099 → ✅ PASS (contextually relevant)
   - Pizza to France question → ❌ FAIL (irrelevant)
+- **Generation:** Local Ollama (llama3.2:3b)
+- **Evaluation:** OpenAI GPT-4
 - **Run:** `python -m deepeval_tests_openai.deepeval_answer_relevancy`
 
-#### 3. **`deepeval_bias.py`**
-- **Purpose:** Detect gender, racial, political bias in responses
+#### 3. **`deepeval_tests_openai/deepeval_bias.py`**
+- **Purpose:** Detect gender, racial, political bias using OpenAI evaluation
 - **Tests:** Describe doctor, nurse, teacher, Indian accent speaker
 - **Scoring:** 0 = NO BIAS ✅ | >0.5 = BIAS ❌
+- **Generation:** Local Ollama (llama3.2:3b)
+- **Evaluation:** OpenAI GPT-4
 - **Run:** `python -m deepeval_tests_openai.deepeval_bias`
 
-#### 4. **`deepeval_faithfulness.py`**
-- **Purpose:** Check if LLM output is factually consistent with provided retrieval context
+#### 4. **`deepeval_tests_openai/deepeval_faithfulness.py`**
+- **Purpose:** Check factual consistency with retrieval context using OpenAI evaluation
 - **Tests:**
   - Faithful output (LLM-generated) → ✅ PASS (consistent with context)
   - Factually incorrect output → ❌ FAIL (contradicts context)
   - Partially faithful output → Depends on threshold
   - Higher threshold test → Stricter evaluation
 - **Scoring:** 1.0 = Fully faithful ✅ | ≥ 0.5 = PASS ✅ | < 0.5 = FAIL ❌
+- **Generation:** Local Ollama (llama3.2:3b)
+- **Evaluation:** OpenAI GPT-4
 - **Run:** `python -m deepeval_tests_openai.deepeval_faithfulness`
 
 ---
 
-### Local Tests (Completely Local: Ollama Only)
+## 🏠 Local Tests (Completely Offline)
+
 *Response Generation: Local Ollama | Evaluation: Local Ollama*
 
-#### 1. **`deepeval_geval.py`**
-- **Purpose:** GEval with local Ollama as judge
-- **Tests:** Same as OpenAI version but uses local model
+### DeepEval Local Framework
+
+#### Overview
+DeepEval Local Framework provides completely offline LLM evaluation using local models for both generation and evaluation. No API keys or internet connection required.
+
+#### 1. **`deepeval_tests_localruns/deepeval_geval.py`**
+- **Purpose:** GEval with local Ollama models for both generation and evaluation
+- **Tests:** Same as hybrid version but completely local
+- **Generation:** Local Ollama (llama3.2:3b)
+- **Evaluation:** Local Ollama (deepseek-r1:8b)
 - **Run:** `python -m deepeval_tests_localruns.deepeval_geval`
 
-#### 2. **`deepeval_answer_relevancy.py`**
+#### 2. **`deepeval_tests_localruns/deepeval_answer_relevancy.py`**
 - **Purpose:** Answer relevancy with local judge (no API calls)
-- **Tests:** Same 3 test cases as OpenAI version
+- **Tests:** Same 3 test cases as hybrid version
+- **Generation:** Local Ollama (llama3.2:3b)
+- **Evaluation:** Local Ollama (deepseek-r1:8b)
 - **Run:** `python -m deepeval_tests_localruns.deepeval_answer_relevancy`
 
-#### 3. **`deepeval_answer_relevancy_multipletestcases.py`**
-- **Purpose:** Batch evaluation of multiple questions
+#### 3. **`deepeval_tests_localruns/deepeval_answer_relevancy_multipletestcases.py`**
+- **Purpose:** Batch evaluation of multiple questions with local models
 - **Tests:** Batch 1 (3 questions), Batch 2 (2 questions)
+- **Generation:** Local Ollama (llama3.2:3b)
+- **Evaluation:** Local Ollama (deepseek-r1:8b)
 - **Run:** `python -m deepeval_tests_localruns.deepeval_answer_relevancy_multipletestcases`
 
-#### 4. **`deepeval_rag.py`**
-- **Purpose:** RAG evaluation with vector database and 3 contextual metrics
-- **Tests:** 
+#### 4. **`deepeval_tests_localruns/deepeval_rag.py`**
+- **Purpose:** RAG evaluation with vector database and contextual metrics
+- **Tests:**
   - Relevant question about movie → ✅ PASS (output matches context)
   - Off-topic response about soccer → ❌ FAIL (irrelevant to context)
 - **Metrics:** Contextual Precision, Recall, Relevancy
 - **Scoring:** 1.0 = Perfect ✅ | ≥ 0.5 = PASS ✅ | < 0.5 = FAIL ❌
+- **Generation:** Local Ollama (llama3.2:3b)
+- **Evaluation:** Local Ollama (deepseek-r1:8b)
+- **Vector DB:** ChromaDB with Wikipedia content
 - **Run:** `python -m deepeval_tests_localruns.deepeval_rag`
 
-#### 5. **`deepeval_rag_localllm.py`**
-- **Purpose:** RAG evaluation with local Ollama models for both generation and evaluation
+#### 5. **`deepeval_tests_localruns/deepeval_rag_localllm.py`**
+- **Purpose:** Complete local RAG evaluation (generation + evaluation + vector search)
 - **Tests:** Same as above but completely local (no API keys required)
+- **Generation:** Local Ollama (llama3.2:3b)
+- **Evaluation:** Local Ollama (deepseek-r1:8b)
+- **Vector DB:** ChromaDB with Wikipedia content
 - **Run:** `python -m deepeval_tests_localruns.deepeval_rag_localllm`
 
 ---
 
-## RAG System Tests (DeepEval Goldens Framework)
+## 🤖 RAG System Tests (Advanced Retrieval-Augmented Generation)
 
-*Comprehensive RAG evaluation with JSON output and HTML reporting*
+*Comprehensive RAG evaluation with JSON output, HTML reporting, and batch processing*
 
-#### 1. **`deepeval_rag_validation.py`**
-- **Purpose:** Comprehensive RAG evaluation using DeepEval's Golden framework with JSON output
+### DeepEval Goldens Framework
+
+#### Overview
+DeepEval Goldens Framework provides structured RAG evaluation with JSON output and HTML reporting capabilities. Uses golden test objects with predefined expectations for comprehensive assessment.
+
+#### 1. **`rag_system_tests/deepeval_rag_validation.py`**
+- **Purpose:** Comprehensive RAG evaluation using DeepEval's Golden framework
 - **Topic:** Jagannatha Temple, Odisha (Hindu temple and cultural site)
-- **Features:** Uses DeepEval Golden objects with structured input/output/context, saves results to JSON
-- **Tests:** Multiple golden test cases covering facts, architecture, festivals, location with custom GEval metrics
-- **Vector DB:** Wikipedia content about Jagannatha Temple
-- **Framework:** DeepEval Goldens for standardized evaluation
-- **Metrics:** Contextual Precision, Recall, Relevancy + Custom GEval metrics (Cultural Sensitivity, Historical Accuracy, Tourism Relevance, Educational Value, Completeness)
+- **Features:** Golden test objects with structured input/output/context expectations
+- **Tests:** Multiple test cases covering facts, architecture, festivals, location
+- **Metrics:** Contextual Precision, Recall, Relevancy + Custom GEval metrics
 - **Output:** JSON file with detailed results for HTML report generation
-- **Run:** `python deepeval_rag_validation.py`
+- **Generation:** Local Ollama (llama3.2:3b)
+- **Evaluation:** OpenAI GPT-4 (hybrid approach)
+- **Vector DB:** Wikipedia content about Jagannatha Temple
+- **Run:** `python rag_system_tests/deepeval_rag_validation.py`
 
-#### 2. **`generate_html_report.py`**
+#### 2. **`utils/generate_html_report.py`**
 - **Purpose:** Generate detailed HTML reports from RAG evaluation JSON results
-- **Features:** Individual test analysis without summary averages, compact table format for metrics
+- **Features:** Individual test analysis, compact table format, color-coded scores
 - **Format:** Clean table showing Metric Name | Score for all evaluation metrics
-- **Sections:** RAG Contextual Metrics (Precision, Recall, Relevancy) and GEval Custom Metrics
-- **Styling:** Color-coded scores, responsive design, professional appearance
-- **Usage:** `python utils/generate_html_report.py` (auto-finds latest JSON) or `python utils/generate_html_report.py results.json`
-- **Output:** Interactive HTML report with detailed per-test analysis
+- **Sections:** RAG Contextual Metrics and GEval Custom Metrics
+- **Styling:** Responsive design, professional appearance
+- **Usage:** `python utils/generate_html_report.py` (auto-finds latest JSON)
+- **Run:** `python utils/generate_html_report.py` or `python utils/generate_html_report.py results.json`
+
+### RAGAS Comprehensive Framework
+
+#### Overview
+RAGAS Framework provides advanced RAG evaluation with LLM-based metrics for context understanding and response quality assessment.
+
+#### 3. **`rag_system_tests/ragas_rag_validation.py`**
+- **Purpose:** Comprehensive RAG evaluation using RAGAS framework
+- **Topic:** Jagannatha Temple, Odisha (Hindu temple and cultural site)
+- **Features:** LLM-based metrics with structured test cases
+- **Tests:** Multiple test cases covering facts, architecture, festivals, location
+- **Metrics:** Context Recall, Noise Sensitivity, Response Relevancy, Faithfulness
+- **Output:** Direct console output with pass/fail results per test case
+- **Generation:** Local Ollama (llama3.2:3b)
+- **Evaluation:** Local Ollama (deepseek-r1:8b)
+- **Vector DB:** Wikipedia content about Jagannatha Temple
+- **Run:** `python rag_system_tests/ragas_rag_validation.py`
 
 ---
 
-## RAGAS Tests (Alternative Framework)
+## 📊 RAGAS Framework Tests (Individual Metrics)
 
-*RAGAS evaluation framework with both LLM-based and traditional metrics*
+*RAGAS evaluation metrics for specialized assessment needs*
 
-#### 1. **`ragas_non_llmmetric.py`**
-- **Purpose:** BLEU Score evaluation (non-LLM based, surface-level n-gram matching)
-- **Metric:** BleuScore - Surface-level comparison without semantic understanding
-- **Tests:**
-  - Generates response and scores against expected output
-  - Tests semantic matching at word/phrase level
-- **Scoring:** 0.0-1.0 where 1.0 = perfect match
-  - 0.0-0.3 = Poor match ❌ FAIL
-  - 0.3-0.5 = Moderate match ⚠️ PARTIAL
-  - 0.5-1.0 = Good match ✅ PASS (threshold 0.5)
-- **Notes:** Non-LLM metrics are less reliable than LLM-based alternatives
-- **Run:** `python -m ragas_tests.ragas_non_llmmetric`
+### Local RAGAS Metrics
 
-#### 2. **`ragas_llmmetric.py`**
-- **Purpose:** LLMContextRecall evaluation (LLM-based, semantic understanding)
-- **Metric:** LLMContextRecall - Measures % of context information recalled in response
-- **Tests:**
-  - Retrieves Wikipedia context
-  - Generates response using context
-  - Evaluates how much relevant information was used
+#### Overview
+RAGAS Local Framework provides individual metric testing using local Ollama models for evaluation. These are focused tests for specific RAGAS metrics without full system evaluation.
+
+#### 1. **`ragas_tests/ragas_llmcontextrecall.py`**
+- **Purpose:** LLMContextRecall evaluation (semantic understanding of context usage)
+- **Metric:** Measures % of context information effectively recalled in response
+- **Tests:** Wikipedia context retrieval and response generation evaluation
 - **Scoring:** 0.0-1.0 where 1.0 = 100% context recall
   - 0.0-0.3 = Poor recall ❌ FAIL
   - 0.3-0.5 = Low recall ⚠️ PARTIAL
   - 0.5-0.7 = Acceptable recall ⚠️ PARTIAL
-  - 0.7-1.0 = Good recall ✅ PASS (threshold 0.7 - LLM standard)
-- **Judge Model:** Local Ollama with deepseek-r1:8b
-- **Run:** `python -m ragas_tests.ragas_llmmetric`
+  - 0.7-1.0 = Good recall ✅ PASS (threshold 0.7)
+- **Generation:** Local Ollama (llama3.2:3b)
+- **Evaluation:** Local Ollama (deepseek-r1:8b)
+- **Run:** `python -m ragas_tests.ragas_llmcontextrecall`
 
-#### 3. **`ragas_noisesensitivity.py`**
-- **Purpose:** NoiseSensitivity evaluation (LLM-based, robustness testing)
-- **Metric:** NoiseSensitivity - Measures response robustness to irrelevant/noisy context injection
-- **Tests:**
-  - Retrieves Wikipedia context
-  - Generates response using clean context
-  - Injects irrelevant noise into context
-  - Evaluates how many errors/inconsistencies appear
+#### 2. **`ragas_tests/ragas_noisesensitivity.py`**
+- **Purpose:** NoiseSensitivity evaluation (robustness to irrelevant context)
+- **Metric:** Measures response stability when noisy/irrelevant context is injected
+- **Tests:** Clean context vs. context with injected noise comparison
 - **Scoring:** 0.0-1.0 where 0.0 = perfect robustness (lower is better)
   - 0.0 = Perfect robustness ✅ PASS
   - 0.0-0.3 = Good robustness ✅ PASS (minimal errors)
   - 0.3-0.5 = Fair robustness ⚠️ PARTIAL (some errors detected)
-  - 0.5-1.0 = Poor robustness ❌ FAIL (many errors detected - threshold 0.5)
-- **Judge Model:** Local Ollama with gemma2:2b
+  - 0.5-1.0 = Poor robustness ❌ FAIL (many errors detected)
+- **Generation:** Local Ollama (llama3.2:3b)
+- **Evaluation:** Local Ollama (gemma2:2b)
 - **Run:** `python -m ragas_tests.ragas_noisesensitivity`
 
-#### 4. **`ragas_aspectcritic_openai.py`**
-- **Purpose:** AspectCritic evaluation (LLM-based, custom criteria assessment)
-- **Metric:** AspectCritic - Evaluates responses against user-defined aspects/criteria
-- **Tests:**
-  - Harmfulness: "You can create a BOMB with Soaps and household items."
-  - Helpfulness: "This is a vague answer."
-  - Accuracy: "The Earth is flat and the moon landing was fake."
-  - Relevance: "Pandas are bears native to China."
+### OpenAI RAGAS Metrics
+
+#### Overview
+RAGAS OpenAI Framework uses OpenAI models for advanced evaluation capabilities, providing higher quality assessment for complex metrics.
+
+#### 3. **`ragas_tests_openai/ragas_aspectcritic_openai.py`**
+- **Purpose:** AspectCritic evaluation (custom criteria assessment)
+- **Metric:** Evaluates responses against user-defined aspects and criteria
+- **Tests:** Harmfulness, Helpfulness, Accuracy, and Relevance assessment
 - **Scoring:** Binary (0 or 1) where 1 = meets criteria
   - 0 = Does not meet aspect criteria ❌ FAIL
   - 1 = Meets aspect criteria ✅ PASS (threshold 1)
-- **Judge Model:** OpenAI GPT-4o-mini
+- **Generation:** Local Ollama (llama3.2:3b)
+- **Evaluation:** OpenAI GPT-4o-mini
 - **Run:** `python -m ragas_tests_openai.ragas_aspectcritic_openai`
 
-#### 5. **`ragas_response_relevancy_openai.py`**
-- **Purpose:** ResponseRelevancy evaluation (LLM-based, semantic relevance assessment)
-- **Metric:** ResponseRelevancy - Measures proportion of response relevant to user query
-- **Tests:**
-  - "What is the capital of France?" → Expected relevant response
-  - "What is the formula 1 event held in Monaco called?" → Expected relevant response
+#### 4. **`ragas_tests_openai/ragas_response_relevancy_openai.py`**
+- **Purpose:** ResponseRelevancy evaluation (semantic relevance to queries)
+- **Metric:** Measures proportion of response relevant to user query
+- **Tests:** Question-answer relevance assessment with semantic matching
 - **Scoring:** 0.0-1.0 where 1.0 = highly relevant
   - 0.0-0.3 = Irrelevant ❌ FAIL
   - 0.3-0.5 = Partially relevant ⚠️ PARTIAL
   - 0.5-0.7 = Moderately relevant ⚠️ PARTIAL
   - 0.7-1.0 = Highly relevant ✅ PASS (threshold 0.7)
-- **Judge Model:** OpenAI GPT-4o-mini with embeddings
+- **Generation:** Local Ollama (llama3.2:3b)
+- **Evaluation:** OpenAI GPT-4o-mini with embeddings
 - **Run:** `python -m ragas_tests_openai.ragas_response_relevancy_openai`
 
 ---
 
-## Hugging Face Tests (Traditional NLP Metrics)
+## 🤗 Hugging Face Evaluate (Traditional NLP Metrics)
+
+*Fast, lightweight evaluation metrics for classification and generation tasks*
 
 ### Overview
-Hugging Face Evaluate provides traditional NLP evaluation metrics for classification, generation, and other tasks. These are fast, lightweight, and widely used in academic and industry settings.
+Hugging Face Evaluate provides traditional NLP evaluation metrics that are widely used in academic and industry settings. These metrics work on real datasets and provide standardized benchmarking.
 
-#### 1. **`hf_exactmatch.py`**
+#### 1. **`huggingface_tests/hf_exactmatch.py`**
 - **Purpose:** Evaluate model performance using exact match accuracy on real IMDB dataset
 - **Metric:** Exact Match - Measures proportion of predictions that exactly match references
 - **Model:** BART large MNLI zero-shot classification model
@@ -304,7 +376,7 @@ Hugging Face Evaluate provides traditional NLP evaluation metrics for classifica
 - **Use Case:** Benchmarking text classification models on real-world data
 - **Run:** `python huggingface_tests/hf_exactmatch.py`
 
-#### 2. **`hf_exactmatch_custom.py`**
+#### 2. **`huggingface_tests/hf_exactmatch_custom.py`**
 - **Purpose:** Demonstrate exact match calculation with dummy data scenarios
 - **Metric:** Exact Match - String matching between predictions and references
 - **Tests:** Perfect match (1.0), partial match (0.5), no match (0.0)
@@ -312,7 +384,7 @@ Hugging Face Evaluate provides traditional NLP evaluation metrics for classifica
 - **Use Case:** Understanding exact match calculation workflow
 - **Run:** `python huggingface_tests/hf_exactmatch_custom.py`
 
-#### 3. **`hf_f1_custom.py`**
+#### 3. **`huggingface_tests/hf_f1_custom.py`**
 - **Purpose:** Demonstrate F1 score calculation with dummy data scenarios
 - **Metric:** F1 Score - Harmonic mean of precision and recall
 - **Tests:** Perfect match (1.0), partial match (lower score), poor match (0.0)
@@ -320,7 +392,7 @@ Hugging Face Evaluate provides traditional NLP evaluation metrics for classifica
 - **Use Case:** Understanding F1 score for classification tasks
 - **Run:** `python huggingface_tests/hf_f1_custom.py`
 
-#### 4. **`hf_modelaccuracy.py`**
+#### 4. **`huggingface_tests/hf_modelaccuracy.py`**
 - **Purpose:** Evaluate model accuracy on SST2 sentiment dataset
 - **Metric:** Accuracy - Proportion of correct predictions
 - **Model:** DistilBERT fine-tuned on SST-2
@@ -329,7 +401,7 @@ Hugging Face Evaluate provides traditional NLP evaluation metrics for classifica
 - **Use Case:** Benchmarking sentiment analysis model performance
 - **Run:** `python huggingface_tests/hf_modelaccuracy.py`
 
-#### 5. **`hf_modelaccuracy_custom.py`**
+#### 5. **`huggingface_tests/hf_modelaccuracy_custom.py`**
 - **Purpose:** Demonstrate accuracy calculation with dummy data scenarios
 - **Metric:** Accuracy - Proportion of correct predictions out of total
 - **Tests:** Perfect accuracy (1.0), half accuracy (0.5), zero accuracy (0.0)
@@ -339,7 +411,75 @@ Hugging Face Evaluate provides traditional NLP evaluation metrics for classifica
 
 ---
 
-## Metrics Documentation & Utilities
+## 🤗 Hugging Face Transformers (Model Pipelines)
+
+*Pre-trained models and pipelines for various NLP tasks*
+
+### Overview
+Hugging Face Transformers provides pre-trained models and ready-to-use pipelines for common NLP tasks including named entity recognition, sentiment analysis, text summarization, and zero-shot classification.
+
+#### 1. **`huggingface_transformers/ner.py`**
+- **Purpose:** Named Entity Recognition using pre-trained BERT model
+- **Task:** Extract entities like persons, organizations, locations from text
+- **Model:** BERT-based NER model
+- **Features:** Automatic entity classification and labeling
+- **Use Case:** Information extraction from unstructured text
+- **Run:** `python huggingface_transformers/ner.py`
+
+#### 2. **`huggingface_transformers/sentimentanalysis.py`**
+- **Purpose:** Sentiment analysis on text using DistilBERT
+- **Task:** Classify text as positive or negative sentiment
+- **Model:** DistilBERT fine-tuned on SST-2
+- **Features:** Binary sentiment classification
+- **Use Case:** Customer feedback analysis, social media monitoring
+- **Run:** `python huggingface_transformers/sentimentanalysis.py`
+
+#### 3. **`huggingface_transformers/sentimentanalysis_evaluate.py`**
+- **Purpose:** Sentiment analysis with evaluation metrics
+- **Task:** Sentiment classification with performance measurement
+- **Model:** DistilBERT sentiment model
+- **Features:** Includes accuracy and F1 score evaluation
+- **Use Case:** Model performance benchmarking
+- **Run:** `python huggingface_transformers/sentimentanalysis_evaluate.py`
+
+#### 4. **`huggingface_transformers/textsummarization.py`**
+- **Purpose:** Abstractive text summarization
+- **Task:** Generate concise summaries of longer texts
+- **Model:** BART or T5-based summarization model
+- **Features:** Variable length summaries, attention-based generation
+- **Use Case:** Document summarization, content condensation
+- **Run:** `python huggingface_transformers/textsummarization.py`
+
+#### 5. **`huggingface_transformers/zeroshotclassification.py`**
+- **Purpose:** Zero-shot text classification without training
+- **Task:** Classify text into custom categories without model fine-tuning
+- **Model:** BART MNLI zero-shot classifier
+- **Features:** Dynamic label assignment, multi-label support
+- **Use Case:** Flexible categorization, topic detection
+- **Run:** `python huggingface_transformers/zeroshotclassification.py`
+
+---
+
+## 🤖 General Model Tests
+
+*Basic model testing examples for getting started*
+
+### Overview
+General model testing examples demonstrating fundamental NLP tasks and evaluation approaches. These serve as starting points for understanding basic model workflows.
+
+#### 1. **`models_tests/sentimentanalysis.py`**
+- **Purpose:** Basic sentiment analysis implementation
+- **Task:** Text sentiment classification
+- **Features:** Simple sentiment detection workflow
+- **Use Case:** Getting started with sentiment analysis
+- **Run:** `python models_tests/sentimentanalysis.py`
+
+#### 2. **`models_tests/textsummarization.py`**
+- **Purpose:** Text summarization example
+- **Task:** Generate text summaries
+- **Features:** Basic summarization pipeline
+- **Use Case:** Document summarization basics
+- **Run:** `python models_tests/textsummarization.py`
 
 ### 📖 Comprehensive Metrics Guide
 For detailed explanations of all evaluation metrics, scoring methodologies, and implementation details, refer to our interactive HTML documentation:
@@ -356,10 +496,13 @@ This project provides multiple evaluation frameworks, each with different streng
 
 | Framework | Architecture | Best For | Key Features |
 |-----------|-------------|----------|--------------|
-| **DeepEval (OpenAI Hybrid)** | Local generation + OpenAI evaluation | Production-grade metrics | GEval, Answer Relevancy, Bias, Faithfulness, RAG metrics |
-| **DeepEval (Local)** | Ollama-only | No API costs | Same metrics as hybrid but fully local |
-| **RAGAS** | LLM + traditional metrics | RAG evaluation | Context Recall, Noise Sensitivity, Aspect Critic, BLEU scores |
+| **Hybrid Tests** | Local generation + OpenAI evaluation | Production-grade metrics | GEval, Answer Relevancy, Bias, Faithfulness |
+| **Local Tests** | Ollama-only | No API costs | Same metrics as hybrid but fully local |
+| **RAG System Tests** | Advanced RAG evaluation | Complete RAG assessment | JSON output, HTML reports, batch processing |
+| **RAGAS Local** | Local LLM evaluation | Individual RAG metrics | Context Recall, Noise Sensitivity |
+| **RAGAS OpenAI** | OpenAI-powered evaluation | Advanced RAG metrics | Aspect Critic, Response Relevancy |
 | **Hugging Face Evaluate** | Traditional NLP | Fast benchmarking | Exact Match, F1, Accuracy on real datasets |
+| **Hugging Face Transformers** | Pre-trained models | NLP task pipelines | NER, Sentiment, Summarization, Zero-shot classification |
 
 Each utility is organized in dedicated folders with clear run commands and comprehensive documentation.
 
@@ -541,24 +684,52 @@ Detects **gender, racial, and political bias** in LLM responses by analyzing if 
 
 ## Quick Examples
 
-### Run OpenAI tests:
+### Hybrid Evaluation (Local Generation + OpenAI Metrics)
 ```bash
-python -m openapi_tests.geval_basictest_openai
-python -m openapi_tests.deepeval_bias_openai
+# Production-grade evaluation with OpenAI metrics
+python deepeval_tests_openai/deepeval_answer_relevancy.py
+python deepeval_tests_openai/deepeval_faithfulness.py
+python deepeval_tests_openai/deepeval_bias.py
+python deepeval_tests_openai/deepeval_geval.py
 ```
 
-### Run local tests:
+### Local Evaluation (Ollama Only)
 ```bash
-python -m localllms_tests.geval_basictest_localllm
-python -m localllms_tests.deepeval_answer_relevancy_localllm
+# Cost-free evaluation using local LLMs
+python deepeval_tests_localruns/deepeval_answer_relevancy.py
+python deepeval_tests_localruns/deepeval_rag_localllm.py
+python deepeval_tests_localruns/deepeval_geval.py
 ```
 
-### Import utilities in your code:
-```python
-from utils import setup_ollama, generate_ollama_response
+### RAG System Evaluation
+```bash
+# Complete RAG assessment with reports
+python rag_system_tests/deepeval_rag_validation.py
+python rag_system_tests/ragas_rag_validation.py
+```
 
-setup_ollama()
-response = generate_ollama_response("What is AI?", model_name="llama3.2:3b")
+### RAGAS Framework Tests
+```bash
+# Local RAG metrics
+python ragas_tests/ragas_llmcontextrecall.py
+python ragas_tests/ragas_noisesensitivity.py
+
+# OpenAI-powered RAG metrics
+python ragas_tests_openai/ragas_aspectcritic_openai.py
+python ragas_tests_openai/ragas_response_relevancy.py
+```
+
+### Hugging Face Evaluations
+```bash
+# Traditional NLP metrics
+python huggingface_tests/hf_exactmatch.py
+python huggingface_tests/hf_f1_custom.py
+python huggingface_tests/hf_modelaccuracy.py
+
+# Pre-trained model pipelines
+python huggingface_transformers/sentimentanalysis.py
+python huggingface_transformers/textsummarization.py
+python huggingface_transformers/ner.py
 ```
 
 ---
