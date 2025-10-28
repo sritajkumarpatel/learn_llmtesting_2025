@@ -1,0 +1,112 @@
+{
+  "detailed_results": [
+    {
+      "query": "What is the Jagannatha Temple?",
+      "actual_output": "The Jagannath Temple is a Hindu temple dedicated to the god Jagannath, a form of Vishnu in Hinduism, located in Puri, Odisha, on the eastern coast of India. It is one of the 108 Abhimana Kshethrams of the Vaishnavite tradition. The temple was rebuilt from the 11th century, with its current structure begun by Anantavarman Chodaganga, the first king of the Eastern Ganga dynasty. Rituals are based on Oddiyana Tantras, which combine refined Mahayana and Shabari Tantras, and local legends link the idols to aboriginal tribes, with the daitapatis (servitors) claiming descent from them. The temple's history includes contributions from King Indradyumna of Avanti and reflects complex intermingling of Hindu, Buddhist, and tribal beliefs.",
+      "expected_output": "The Jagannatha Temple is a famous Hindu temple located in Puri, Odisha, India, dedicated to Lord Jagannatha (an incarnation of Lord Vishnu). It is one of the Char Dham pilgrimage sites and known for its unique wooden idols and annual Rath Yatra festival.",
+      "evaluation_model": "gpt-4o-mini",
+      "rag": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "relevancy": 1.0
+      },
+      "geval": {
+        "cultural_sensitivity": 0.8798186775339273,
+        "historical_accuracy": 0.8622459331201855,
+        "tourism_relevance": 0.2596835110878962,
+        "educational_value": 0.8128100439711805,
+        "completeness": 0.89621741665298
+      }
+    },
+    {
+      "query": "Describe the architecture of Jagannatha Temple",
+      "actual_output": "The Jagannath Temple's architecture is located in the south-west corner of the inner enclosure, on the right-hand western corner of the tower, and adjacent to the sacred pond Rohini kunda. The temple faces east and is constructed from sandstone and laterite. It follows the Deula style, which includes four key components: **vimana** (the main structure containing the sanctum), **jagamohana** (an assembly hall for rituals), **nata-mandapa** (a festival hall for performances), and possibly a fourth component (e.g., a prayer hall or other ceremonial space). The design emphasizes traditional Indian temple architecture, with the sanctum at the apex of the vimana and the surrounding halls serving functional and ritualistic purposes.",
+      "expected_output": "The Jagannatha Temple features Kalinga architecture with a curved tower (shikhara) reaching about 58 meters high. The temple complex includes multiple structures like the main sanctum (garbhagriha), audience hall (natamandira), and kitchen (bhogamandapa). The idols are made of neem wood and replaced periodically.",
+      "evaluation_model": "gpt-4o-mini",
+      "rag": {
+        "precision": 1.0,
+        "recall": 0.6666666666666666,
+        "relevancy": 1.0
+      },
+      "geval": {
+        "cultural_sensitivity": 0.6663493677676618,
+        "historical_accuracy": 0.8077238211036708,
+        "tourism_relevance": 0.24639007234800586,
+        "educational_value": 0.8148999974633288,
+        "completeness": 0.8437823499114202
+      }
+    },
+    {
+      "query": "What is the Rath Yatra festival at Jagannatha Temple?",
+      "actual_output": "The Rath Yatra festival at the Jagannath Temple is an **annual religious procession** celebrated in **June or July** in the **eastern states of India**, dedicated to **Jagannath**, one of the deities of the Hindu pantheon. The festival involves the **ceremonial emergence** of Jagannath's image and the other two associated deities (Chhaya and Bakha) from the **Garbhagruha** (sacrosanct chamber) of the main temple in **Puri**. The image is placed in a **temple car**, which is pulled by **numerous volunteers** to the **Gundicha Temple**, a distance of nearly 3 km. The procession lasts **eight days**, with the deities staying at Gundicha Temple before being returned to the main temple on the **ninth day**. The festival coincides with the **Dwitiya Tithi** (second day of the bright fortnight of the Sharad Paksha, also called Shukla Paksha) in the lunar month of **Asadh**. It attracts **hundreds of thousands of devotees** to Puri, who gather to witness the deity's chariot procession.",
+      "expected_output": "Rath Yatra is the annual chariot festival where the deities Jagannatha, Balabhadra, and Subhadra are pulled on massive wooden chariots through the streets of Puri. It occurs in the month of Ashadha (June-July) and attracts millions of devotees. The chariots are about 45 feet high and take several days to build.",
+      "evaluation_model": "gpt-4o-mini",
+      "rag": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "relevancy": 1.0
+      },
+      "geval": {
+        "cultural_sensitivity": 0.8799249985060495,
+        "historical_accuracy": 0.9499027441147947,
+        "tourism_relevance": 0.40286491993912954,
+        "educational_value": 0.8817574476193644,
+        "completeness": 0.9679178686187839
+      }
+    },
+    {
+      "query": "Where is Jagannatha Temple located?",
+      "actual_output": "The Jagannath Temple is located in Puri, Odisha, on the eastern coast of India.",
+      "expected_output": "Jagannatha Temple is located in Puri, Odisha, on the eastern coast of India. Puri is about 60 km from Bhubaneswar, the state capital, and is well-connected by road, rail, and air. The temple is situated near the Bay of Bengal and is part of the Golden Triangle of Odisha tourism.",
+      "evaluation_model": "gpt-4o-mini",
+      "rag": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "relevancy": 0.16666666666666666
+      },
+      "geval": {
+        "cultural_sensitivity": 0.3391703911013645,
+        "historical_accuracy": 0.8088617485093286,
+        "tourism_relevance": 0.21480471999111614,
+        "educational_value": 0.8293209633291072,
+        "completeness": 0.5951470432577162
+      }
+    },
+    {
+      "query": "What are the famous foods offered at Jagannatha Temple?",
+      "actual_output": "The provided documents do not mention any famous foods offered at the Jagannatha Temple. The text focuses on religious practices, the Ratha Yatra festival, the temple's historical significance, and legends about Krishna's heart, but there is no information about culinary offerings or foods associated with the temple. Thus, the answer is that **no specific foods are mentioned** in the documents regarding the Jagannatha Temple.",
+      "expected_output": "The temple kitchen prepares traditional Odia cuisine including khichdi, dalma, and various sweets. Prasad (sanctified food) is distributed to devotees and includes items like chakuli pitha and enduri pitha.",
+      "evaluation_model": "gpt-4o-mini",
+      "rag": {
+        "precision": 0,
+        "recall": 0.0,
+        "relevancy": 0.0
+      },
+      "geval": {
+        "cultural_sensitivity": 0.5401417510582134,
+        "historical_accuracy": 0.7304398603927499,
+        "tourism_relevance": 0.247743140488042,
+        "educational_value": 0.5333886728415277,
+        "completeness": 0.24663363081823722
+      }
+    },
+    {
+      "query": "What is the historical significance of Jagannatha Temple?",
+      "actual_output": "The historical significance of the Jagannatha Temple lies in its role as a **major pilgrimage site** since approximately 800 CE, making it one of the **Char Dham pilgrimage sites** in India. It is also a **key religious and cultural landmark** in Odisha, particularly within **Vaishnavism**, and is recognized for its **architectural importance** as one of the **best surviving specimens of Kalinga architecture**. The temple's massive size (over 61 meters high) and its association with the **Ratha Yatra processions** (annual Hindu festivals) highlight its historical and religious significance, reflecting its enduring role in Hindu tradition and cultural heritage.",
+      "expected_output": "Jagannatha Temple has immense historical and religious significance. It was originally built in the 12th century by King Anantavarman Chodaganga. The temple represents the unity of all religions and has been a center of spiritual learning for centuries.",
+      "evaluation_model": "gpt-4o-mini",
+      "rag": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "relevancy": 0.42857142857142855
+      },
+      "geval": {
+        "cultural_sensitivity": 0.894640737936931,
+        "historical_accuracy": 0.9514512028517002,
+        "tourism_relevance": 0.3562693062517542,
+        "educational_value": 0.8974042642990581,
+        "completeness": 0.9108062766951921
+      }
+    }
+  ]
+}
