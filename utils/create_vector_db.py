@@ -142,3 +142,25 @@ def add_documents_to_vector_db(query, num_docs=5, persist_directory=DB_LOCATION)
         print(f"  Total chunks in DB: {vectordb._collection.count()}")
         
         return vectordb
+
+def get_vector_db(persist_directory=DB_LOCATION):
+        """
+        Retrieve an existing vector database.
+            
+        Args:
+            persist_directory (str): Path to the vector database
+                
+        Returns:
+               Chroma: Vector database instance, or None if not found
+        """
+        if not os.path.exists(persist_directory):
+            print(f"Vector DB not found at {persist_directory}")
+            return None
+            
+        embeddings = OllamaEmbeddings(model=EMBEDDING_MODEL)
+        vectordb = Chroma(
+            embedding_function=embeddings,
+            persist_directory=persist_directory
+        )
+        print(f"✓ Loaded vector DB with {vectordb._collection.count()} chunks")
+        return vectordb        
