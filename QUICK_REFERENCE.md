@@ -19,24 +19,28 @@ python -m deepeval_tests_localruns.deepeval_rag
 python -m deepeval_tests_localruns.deepeval_rag_localllm
 ```
 
-### RAGAS Tests (Alternative Framework - uses Ollama)
+### RAGAS Framework Tests (Local)
 ```bash
 python -m ragas_tests.ragas_non_llmmetric
 python -m ragas_tests.ragas_llmmetric
 python -m ragas_tests.ragas_noisesensitivity
+```
+
+### RAGAS Framework Tests (OpenAI)
+```bash
 python -m ragas_tests_openai.ragas_aspectcritic_openai
 python -m ragas_tests_openai.ragas_response_relevancy_openai
 ```
 
-### RAG Evaluation & HTML Reporting
+### RAG System Tests (DeepEval Goldens)
 ```bash
-# Run RAG evaluation with JSON output (now in root directory)
+# Run comprehensive RAG evaluation with JSON output
 python deepeval_rag_validation.py
 
-# Generate HTML report from latest JSON results (now in utils/)
+# Generate HTML report from latest JSON results
 python utils/generate_html_report.py
 
-# Generate HTML report from specific JSON file (now in utils/)
+# Generate HTML report from specific JSON file
 python utils/generate_html_report.py deepeval_rag_evaluation_with_20251028_143052.json
 ```
 

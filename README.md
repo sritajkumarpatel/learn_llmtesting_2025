@@ -90,12 +90,12 @@ learn_llmtesting_2025/
 │   ├── deepeval_rag.py
 │   └── deepeval_rag_localllm.py
 │
-├── deepeval_rag_validation.py          # RAG evaluation with JSON output (moved from rag_tests/)
-├── utils/                              # Shared utilities
+├── deepeval_rag_validation.py          # RAG evaluation with JSON output
+├── utils/                              # Shared utilities and HTML report generator
 │   ├── local_llm_ollama_setup.py
 │   ├── create_vector_db.py
 │   ├── wikipedia_retriever.py
-│   └── generate_html_report.py         # HTML report generator (moved from rag_tests/)
+│   └── generate_html_report.py         # HTML report generator
 │
 ├── ragas_tests/                        # RAGAS evaluation framework tests
 │   ├── ragas_non_llmmetric.py
@@ -179,7 +179,18 @@ learn_llmtesting_2025/
 - **Scoring:** 1.0 = Perfect ✅ | ≥ 0.5 = PASS ✅ | < 0.5 = FAIL ❌
 - **Run:** `python -m deepeval_tests_localruns.deepeval_rag`
 
-#### 5. **`deepeval_rag_validation.py`**
+#### 5. **`deepeval_rag_localllm.py`**
+- **Purpose:** RAG evaluation with local Ollama models for both generation and evaluation
+- **Tests:** Same as above but completely local (no API keys required)
+- **Run:** `python -m deepeval_tests_localruns.deepeval_rag_localllm`
+
+---
+
+## RAG System Tests (DeepEval Goldens Framework)
+
+*Comprehensive RAG evaluation with JSON output and HTML reporting*
+
+#### 1. **`deepeval_rag_validation.py`**
 - **Purpose:** Comprehensive RAG evaluation using DeepEval's Golden framework with JSON output
 - **Topic:** Jagannatha Temple, Odisha (Hindu temple and cultural site)
 - **Features:** Uses DeepEval Golden objects with structured input/output/context, saves results to JSON
@@ -190,7 +201,7 @@ learn_llmtesting_2025/
 - **Output:** JSON file with detailed results for HTML report generation
 - **Run:** `python deepeval_rag_validation.py`
 
-#### 6. **`generate_html_report.py`**
+#### 2. **`generate_html_report.py`**
 - **Purpose:** Generate detailed HTML reports from RAG evaluation JSON results
 - **Features:** Individual test analysis without summary averages, compact table format for metrics
 - **Format:** Clean table showing Metric Name | Score for all evaluation metrics
@@ -201,7 +212,9 @@ learn_llmtesting_2025/
 
 ---
 
-### RAG Tests (DeepEval Goldens Framework)
+## RAGAS Tests (Alternative Framework)
+
+*RAGAS evaluation framework with both LLM-based and traditional metrics*
 
 #### 1. **`ragas_non_llmmetric.py`**
 - **Purpose:** BLEU Score evaluation (non-LLM based, surface-level n-gram matching)
@@ -323,6 +336,32 @@ Hugging Face Evaluate provides traditional NLP evaluation metrics for classifica
 - **Scoring:** 0.0-1.0 where 1.0 = all predictions correct
 - **Use Case:** Understanding accuracy calculation with controlled examples
 - **Run:** `python huggingface_tests/hf_modelaccuracy_custom.py`
+
+---
+
+## Metrics Documentation & Utilities
+
+### 📖 Comprehensive Metrics Guide
+For detailed explanations of all evaluation metrics, scoring methodologies, and implementation details, refer to our interactive HTML documentation:
+
+**📄 [Open `metrics_documentation.html`](metrics_documentation.html)** in your browser for:
+- Visual metric comparisons
+- Interactive scoring examples
+- Detailed implementation guides
+- Framework-specific documentation
+
+### 🛠️ Available Testing Utilities
+
+This project provides multiple evaluation frameworks, each with different strengths:
+
+| Framework | Architecture | Best For | Key Features |
+|-----------|-------------|----------|--------------|
+| **DeepEval (OpenAI Hybrid)** | Local generation + OpenAI evaluation | Production-grade metrics | GEval, Answer Relevancy, Bias, Faithfulness, RAG metrics |
+| **DeepEval (Local)** | Ollama-only | No API costs | Same metrics as hybrid but fully local |
+| **RAGAS** | LLM + traditional metrics | RAG evaluation | Context Recall, Noise Sensitivity, Aspect Critic, BLEU scores |
+| **Hugging Face Evaluate** | Traditional NLP | Fast benchmarking | Exact Match, F1, Accuracy on real datasets |
+
+Each utility is organized in dedicated folders with clear run commands and comprehensive documentation.
 
 ---
 
