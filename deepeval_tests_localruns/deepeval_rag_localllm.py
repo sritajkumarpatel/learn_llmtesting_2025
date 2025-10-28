@@ -7,7 +7,7 @@ DeepEval RAG Contextual Metrics (Local Ollama) - Precision, Recall, Relevancy
 What are RAG Contextual Metrics?
 - Evaluate RETRIEVAL-AUGMENTED GENERATION (RAG) systems
 - Test how well LLM uses retrieved context documents
-- Uses LOCAL Ollama model (deepseek-r1:8b) as judge
+- Uses LOCAL Ollama model (config-defined evaluation model) as judge
 - Answers: "Does the response use and rely on the provided context?"
 
 The 3 RAG Metrics:
@@ -65,8 +65,8 @@ Data Source: Wikipedia documents
 Retrieval: Semantic search using vector similarity
 
 Requires: Ollama running with:
-- llama3.1:8b (or similar) for response generation
-- deepseek-r1:8b for evaluation
+- Config-defined generation model for response generation
+- Config-defined evaluation model for evaluation
 
 Reference: DeepEval RAG Metrics
 https://docs.depevalai.com/docs/metrics/contextual-precision/
@@ -87,7 +87,7 @@ def test_single_query_all_metrics(query, context, expected_output, evaluationMod
     if use_custom_response and custom_response:
         ollama_response = custom_response
     else:
-        ollama_response = generate_ollama_response(query, model_name="llama3.1:8b")
+        ollama_response = generate_ollama_response(query)
     test_case = LLMTestCase(
         input=query,
         actual_output=ollama_response,
@@ -134,7 +134,7 @@ if __name__ == "__main__":
     print("=" * 80)
     
     setup_ollama()
-    evaluation_model = setup_custom_ollama_model_for_evaluation(model="llama3.2:3b")
+    evaluation_model = setup_custom_ollama_model_for_evaluation()
 
     print("\n🧪 TEST 1: ARTIFICIAL INTELLIGENCE (Expected: PASS)")
     print("=" * 80)

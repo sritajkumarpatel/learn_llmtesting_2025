@@ -7,7 +7,7 @@ DeepEval RAG Contextual Metrics (Local Ollama) - Precision, Recall, Relevancy
 What are RAG Contextual Metrics?
 - Evaluate how effectively RETRIEVAL-AUGMENTED GENERATION (RAG) systems work
 - Test what PROPORTION of retrieved context is used effectively
-- Uses LOCAL Ollama model (deepseek-r1:8b) as judge
+- Uses LOCAL Ollama model (config-defined evaluation model) as judge
 - Answers: "What percentage of retrieved context is used effectively in response?"
 
 The 3 RAG Metrics:
@@ -69,8 +69,8 @@ Data Source: Wikipedia documents via vector similarity search
 Vector DB: ChromaDB with semantic embeddings
 
 Requires: Ollama running with:
-- llama3.1:8b (or similar) for response generation
-- deepseek-r1:8b for evaluation
+- Config-defined generation model for response generation
+- Config-defined evaluation model for evaluation
 
 Reference: DeepEval RAG Metrics
 https://docs.depevalai.com/docs/metrics/contextual-precision/
@@ -111,7 +111,7 @@ def test_single_query_all_metrics(user_query, retrieved_docs, expected_output, e
     if use_custom_response and custom_response:
         ollama_response = custom_response
     else:
-        ollama_response = generate_ollama_response(prompt_with_context, model_name="llama3.1:8b")
+        ollama_response = generate_ollama_response(prompt_with_context)
     
     # Create test case
     test_case = LLMTestCase(
@@ -162,7 +162,7 @@ if __name__ == "__main__":
     print("=" * 80)
     
     setup_ollama()
-    evaluation_model = setup_custom_ollama_model_for_evaluation(model="llama3.2:3b")
+    evaluation_model = setup_custom_ollama_model_for_evaluation()
 
     # Step 1: Create vector database from Wikipedia
     print("\n📚 STEP 1: Creating Vector Database from Wikipedia")

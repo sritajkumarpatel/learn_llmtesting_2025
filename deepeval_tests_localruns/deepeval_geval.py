@@ -7,7 +7,7 @@ DeepEval GEval (Generalized Evaluation - LLM-Based with Local Ollama)
 What is GEval (Local)?
 - CUSTOM, FLEXIBLE LLM-based evaluation metric
 - Define your OWN evaluation criteria in natural language
-- Uses LOCAL Ollama model (deepseek-r1:8b) as judge
+- Uses LOCAL Ollama model (config-defined evaluation model) as judge
 - Answers: "Does the response match my custom evaluation criteria?"
 
 How It Works:
@@ -49,7 +49,7 @@ Use Cases:
 - Testing before production
 - Privacy-critical evaluations
 
-Requires: Ollama running with deepseek-r1:8b model
+Requires: Ollama running with config-defined evaluation model
 
 Reference: DeepEval Documentation
 https://docs.depevalai.com/docs/metrics/g-eval/

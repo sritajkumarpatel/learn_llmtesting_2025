@@ -7,7 +7,7 @@ DeepEval AnswerRelevancyMetric - Batch Testing (Local Ollama)
 What is Batch AnswerRelevancyMetric Testing?
 - Evaluates MULTIPLE queries in one batch operation
 - Measures how relevant LLM responses are to input queries
-- Uses LOCAL Ollama model (deepseek-r1:8b) as judge
+- Uses LOCAL Ollama model (config-defined evaluation model) as judge
 - Answers: "Do all responses directly address their queries?"
 
 How It Works:
@@ -51,7 +51,7 @@ Aggregation Metrics:
 - Avg Score: Average relevancy score across all queries
 - Min/Max: Range of scores observed
 
-Requires: Ollama running with deepseek-r1:8b model
+Requires: Ollama running with config-defined evaluation model
 
 Reference: DeepEval Documentation
 https://docs.depevalai.com/docs/metrics/answer-relevancy/
@@ -86,7 +86,7 @@ def test_answer_relevancy(queries, evaluationModel):
     
     Args:
         queries: List of query strings to test
-        evaluationModel: The local evaluation model to use (e.g., deepseek-r1:8b)
+        evaluationModel: The local evaluation model to use (config-defined)
     """
     
     print(f"\n📝 Testing {len(queries)} queries in batch...")

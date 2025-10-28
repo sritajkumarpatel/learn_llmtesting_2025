@@ -16,7 +16,7 @@ This is a fully local approach:
 
 Requirements:
 - Ollama running locally
-- Models: llama3.2:3b (generation) and deepseek-r1:8b (evaluation)
+- Models: Config-defined models (see config/models.json)
 - No internet connection needed
 - No external API keys needed
 
@@ -28,7 +28,7 @@ Test Files:
 - deepeval_rag_localllm.py: RAG with alternative retrieval approach
 
 Models Used:
-- Generation Model: llama3.2:3b (lightweight, fast)
-- Evaluation Model: deepseek-r1:8b (better reasoning for judging)
+- Generation Model: Config-defined (default: lightweight model for generation)
+- Evaluation Model: Config-defined (default: advanced model for judging)
 - Both run locally via Ollama
 """

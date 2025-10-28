@@ -7,7 +7,7 @@ DeepEval AnswerRelevancyMetric (LLM-Based with Local Ollama)
 What is AnswerRelevancyMetric (Local)?
 - Measures what PROPORTION of the LLM response directly addresses the input query
 - Detects off-topic or tangential answers
-- Uses LOCAL Ollama model (deepseek-r1:8b) as judge
+- Uses LOCAL Ollama model (config-defined evaluation model) as judge
 - Answers: "What percentage of the response addresses the query?"
 
 How It Works:
@@ -45,7 +45,7 @@ Use Cases:
 - Privacy-critical evaluations
 - Testing before OpenAI deployment
 
-Requires: Ollama running with deepseek-r1:8b model
+Requires: Ollama running with config-defined evaluation model
 
 Reference: DeepEval Documentation
 https://docs.depevalai.com/docs/metrics/answer-relevancy/

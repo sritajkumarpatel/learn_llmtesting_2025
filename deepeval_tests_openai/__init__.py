@@ -3,7 +3,7 @@ OpenAI Hybrid Tests for DeepEval Metrics
 =========================================
 
 Architecture: Local LLM Generation + OpenAI Evaluation
-- Response Generation: Local Ollama (llama3.2:3b or similar)
+- Response Generation: Local Ollama (config-defined generation model)
 - Evaluation/Judging: OpenAI GPT-4
 - Best For: Production-quality evaluation with local efficiency
 
@@ -23,6 +23,6 @@ Test Files:
 - deepeval_faithfulness.py: FaithfulnessMetric for fact-checking consistency
 
 Models Used:
-- Generation: llama3.2:3b (local, fast)
+- Generation: Config-defined local model (default: lightweight for generation)
 - Evaluation: GPT-4 (OpenAI, high quality)
 """
