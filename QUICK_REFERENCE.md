@@ -28,13 +28,16 @@ python -m ragas_tests_openai.ragas_aspectcritic_openai
 python -m ragas_tests_openai.ragas_response_relevancy_openai
 ```
 
-### Hugging Face Tests (Traditional NLP Metrics)
+### RAG Evaluation & HTML Reporting
 ```bash
-python huggingface_tests/hf_exactmatch.py
-python huggingface_tests/hf_exactmatch_custom.py
-python huggingface_tests/hf_f1_custom.py
-python huggingface_tests/hf_modelaccuracy.py
-python huggingface_tests/hf_modelaccuracy_custom.py
+# Run RAG evaluation with JSON output (now in root directory)
+python deepeval_rag_validation.py
+
+# Generate HTML report from latest JSON results (now in utils/)
+python utils/generate_html_report.py
+
+# Generate HTML report from specific JSON file (now in utils/)
+python utils/generate_html_report.py deepeval_rag_evaluation_with_20251028_143052.json
 ```
 
 ---
@@ -43,9 +46,10 @@ python huggingface_tests/hf_modelaccuracy_custom.py
 
 | Folder | Architecture | Tests |
 |--------|--------------|-------|
-| `utils/` | Shared utilities | - |
+| `utils/` | Shared utilities + HTML generator | HTML report generator |
 | `deepeval_tests_openai/` | Local Gen + OpenAI Eval | 4 tests |
 | `deepeval_tests_localruns/` | Completely Local (Ollama) | 5 tests |
+| `rag_tests/` | *Removed - files moved* | *Moved to root/utils* |
 | `ragas_tests/` | RAGAS Framework | 3 tests |
 | `huggingface_tests/` | Hugging Face Evaluate | 5 tests |
 

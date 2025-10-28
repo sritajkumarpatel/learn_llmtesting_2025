@@ -1,6 +1,6 @@
 # LLM Testing with DeepEval & Ollama
 
-Testing framework for evaluating Large Language Models (LLMs) using local models and DeepEval metrics.
+Testing framework for evaluating Large Language Models (LLMs) using local models and DeepEval metrics. Includes comprehensive RAG evaluation with JSON output and interactive HTML report generation.
 
 
 
@@ -90,6 +90,13 @@ learn_llmtesting_2025/
 │   ├── deepeval_rag.py
 │   └── deepeval_rag_localllm.py
 │
+├── deepeval_rag_validation.py          # RAG evaluation with JSON output (moved from rag_tests/)
+├── utils/                              # Shared utilities
+│   ├── local_llm_ollama_setup.py
+│   ├── create_vector_db.py
+│   ├── wikipedia_retriever.py
+│   └── generate_html_report.py         # HTML report generator (moved from rag_tests/)
+│
 ├── ragas_tests/                        # RAGAS evaluation framework tests
 │   ├── ragas_non_llmmetric.py
 │   └── ragas_llmmetric.py
@@ -165,16 +172,36 @@ learn_llmtesting_2025/
 
 #### 4. **`deepeval_rag.py`**
 - **Purpose:** RAG evaluation with vector database and 3 contextual metrics
-- **Tests:**
+- **Tests:** 
   - Relevant question about movie → ✅ PASS (output matches context)
   - Off-topic response about soccer → ❌ FAIL (irrelevant to context)
 - **Metrics:** Contextual Precision, Recall, Relevancy
 - **Scoring:** 1.0 = Perfect ✅ | ≥ 0.5 = PASS ✅ | < 0.5 = FAIL ❌
 - **Run:** `python -m deepeval_tests_localruns.deepeval_rag`
 
+#### 5. **`deepeval_rag_validation.py`**
+- **Purpose:** Comprehensive RAG evaluation using DeepEval's Golden framework with JSON output
+- **Topic:** Jagannatha Temple, Odisha (Hindu temple and cultural site)
+- **Features:** Uses DeepEval Golden objects with structured input/output/context, saves results to JSON
+- **Tests:** Multiple golden test cases covering facts, architecture, festivals, location with custom GEval metrics
+- **Vector DB:** Wikipedia content about Jagannatha Temple
+- **Framework:** DeepEval Goldens for standardized evaluation
+- **Metrics:** Contextual Precision, Recall, Relevancy + Custom GEval metrics (Cultural Sensitivity, Historical Accuracy, Tourism Relevance, Educational Value, Completeness)
+- **Output:** JSON file with detailed results for HTML report generation
+- **Run:** `python deepeval_rag_validation.py`
+
+#### 6. **`generate_html_report.py`**
+- **Purpose:** Generate detailed HTML reports from RAG evaluation JSON results
+- **Features:** Individual test analysis without summary averages, compact table format for metrics
+- **Format:** Clean table showing Metric Name | Score for all evaluation metrics
+- **Sections:** RAG Contextual Metrics (Precision, Recall, Relevancy) and GEval Custom Metrics
+- **Styling:** Color-coded scores, responsive design, professional appearance
+- **Usage:** `python utils/generate_html_report.py` (auto-finds latest JSON) or `python utils/generate_html_report.py results.json`
+- **Output:** Interactive HTML report with detailed per-test analysis
+
 ---
 
-### RAGAS Tests (Alternative Evaluation Framework)
+### RAG Tests (DeepEval Goldens Framework)
 
 #### 1. **`ragas_non_llmmetric.py`**
 - **Purpose:** BLEU Score evaluation (non-LLM based, surface-level n-gram matching)
