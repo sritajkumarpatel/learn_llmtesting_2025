@@ -1,115 +1,38 @@
 # RUNS LOCALLY - Uses Ollama for generation, OpenAI for evaluation (requires API key)
 
 """
-RAGAS EvaluationDataset and evaluate() Method Demonstration - Jagannatha Temple, Odisha
-=====================================================================================
+RAGAS EvaluationDataset and evaluate() Method
+==============================================
 
-Demonstrates how to use RAGAS evaluate() method with EvaluationDataset for batch evaluation.
+What is EvaluationDataset and evaluate()?
+- EvaluationDataset: Container for batch evaluation of multiple test samples
+- evaluate(): Batch evaluation method that runs multiple metrics on all samples asynchronously
+- Answers: "How do multiple RAG responses perform across various quality metrics?"
 
-What this script does:
-- Creates an EvaluationDataset from SingleTurnSample objects
-- Uses the evaluate() method to run multiple metrics in batch
-- Demonstrates proper RAG context augmentation for response generation
-- Includes debugging output for each test case
+How It Works:
+- Takes: EvaluationDataset (containing SingleTurnSample/MultiTurnSample objects) and list of metrics
+- Creates samples with user_input, response, reference, retrieved_contexts for each test case
+- Runs all metrics on all samples in parallel using async processing
+- Outputs: Result object with scores for each metric across all samples
 
-Key Components:
+Score Interpretation (RAGAS Standard):
+- Score Range: 0.0 to 1.0 (PROPORTION/BINARY depending on metric)
+- Multiple metrics evaluated: Context Recall, Noise Sensitivity, Response Relevancy, Faithfulness, AspectCritic
+- Individual metric scores: 0.0 (poor) to 1.0 (excellent) - see metric-specific thresholds
+- Batch results: Aggregated scores across all test samples for comprehensive evaluation
 
-1. EVALUATIONDATASET CREATION
-   - Creates SingleTurnSample objects with user_input, response, reference, retrieved_contexts
-   - Builds EvaluationDataset from list of samples
-   - Supports both single-turn and multi-turn evaluation patterns
-
-2. BATCH EVALUATION WITH evaluate()
-   - evaluate(dataset, metrics) runs all metrics on all samples asynchronously
-   - Returns Result object with scores for each metric across all samples
-   - More efficient than individual single_turn_score() calls
-
-3. RAG CONTEXT AUGMENTATION
-   - Retrieves relevant context from vector database
-   - Augments prompts with retrieved context before generation
-   - Ensures responses use retrieved information (critical for context recall)
-
-4. DEBUGGING OUTPUT
-   - Prints query, generated response, expected response, and retrieved context
-   - Helps identify why metrics like context_recall may be low
-
-Current Setup:
-- Generation: Local Ollama models (no API keys required)
-- Evaluation: OpenAI GPT-4o-mini (requires API key)
-- Vector DB: ChromaDB with Wikipedia data about Jagannatha Temple
-
-The RAGAS Metrics Evaluated:
-
-1. LLM CONTEXT RECALL
-   - Measures: PROPORTION of retrieved context that is recalled/used in response
-   - Ideal: Response uses all relevant context information
-   - Formula: (# context facts in response) / (total facts in context)
-   - Score 0.0-1.0 (higher is better)
-
-2. NOISE SENSITIVITY
-   - Measures: How robust response is to irrelevant/noisy context injection
-   - Ideal: Response unaffected by irrelevant information
-   - Formula: Proportion of claims that become incorrect with noise
-   - Score 0.0-1.0 (lower is better)
-
-3. RESPONSE RELEVANCY
-   - Measures: PROPORTION of response that directly addresses the query
-   - Ideal: All response content is relevant to the question
-   - Formula: (# relevant response sentences) / (total response sentences)
-   - Score 0.0-1.0 (higher is better)
-
-4. FAITHFULNESS
-   - Measures: Factual consistency between response and retrieved context
-   - Ideal: Response contains no hallucinations or contradictions
-   - Formula: (# claims supported by context) / (total claims in response)
-   - Score 0.0-1.0 (higher is better)
-
-5. CULTURAL SENSITIVITY (AspectCritic)
-   - Custom metric evaluating respectful treatment of Hindu traditions
-   - Checks for appropriate tone and cultural understanding
-   - Score 0.0-1.0 (higher is better)
-
-6. HISTORICAL ACCURACY (AspectCritic)
-   - Custom metric verifying factual historical information
-   - Validates dates, figures, and historical significance
-   - Score 0.0-1.0 (higher is better)
-
-Score Interpretation (Each Metric):
-- Score Range: 0.0 to 1.0 (PROPORTION metric)
-- For Recall/Relevancy/Faithfulness/AspectCritic: Higher is better (1.0 = perfect, 0.0 = poor)
-- For Noise Sensitivity: Lower is better (0.0 = robust, 1.0 = sensitive)
-- 0.0-0.3     = Poor performance
-- 0.3-0.5     = Moderate performance
-- 0.5-0.7     = Good performance
-- 0.7-1.0     = Excellent performance
-
-Thresholds (RAGAS Standards):
-- Context Recall: ≥ 0.7 (70% of context should be recalled)
-- Noise Sensitivity: ≤ 0.5 (≤50% claims affected by noise)
-- Response Relevancy: ≥ 0.7 (70% of response should be relevant)
-- Faithfulness: ≥ 0.7 (70% of claims should be supported by context)
-- Cultural Sensitivity: ≥ 0.8 (80% appropriate cultural handling)
-- Historical Accuracy: ≥ 0.8 (80% factual accuracy)
-
-Golden Test Cases for Jagannatha Temple:
-- Uses structured test cases with predefined queries and expected outputs
-- Tests factual accuracy about temple history, architecture, festivals
-- Tests cultural significance, rituals, and location information
-- Validates RAG system performance against predefined standards
+Threshold: Varies by metric (see individual metric documentation)
+- Context Recall: ≥0.7 (70% context utilization)
+- Noise Sensitivity: ≤0.5 (≤50% affected by noise)
+- Response Relevancy: ≥0.7 (70% response relevance)
+- Faithfulness: ≥0.7 (70% factual consistency)
+- AspectCritic: 1.0 (100% - binary pass/fail)
 
 Use Cases:
-- Demonstrating RAGAS EvaluationDataset usage
-- Batch evaluation of multiple test cases
-- Debugging RAG system performance issues
-- Comparing different RAG implementations
-
-Data Source: Wikipedia documents about Jagannatha Temple, Odisha
-Vector DB: ChromaDB with semantic embeddings
-
-Requires:
-- Ollama running locally for response generation
-- OpenAI API key for evaluation metrics
-- ChromaDB vector database with Jagannatha Temple data
+- Batch evaluation of RAG systems
+- Comparative analysis of different RAG implementations
+- Comprehensive quality assessment across multiple dimensions
+- Automated testing pipelines for RAG applications
 
 Reference: RAGAS Documentation
 https://docs.ragas.io/en/latest/concepts/metrics/
@@ -131,7 +54,22 @@ from utils.wikipedia_retriever import retrieve_context_from_wiki
 
 
 def create_ragas_evaluators():
-    """Create RAGAS evaluators using config-defined models."""
+    """
+    Create RAGAS evaluator metrics using OpenAI for evaluation.
+
+    Initializes multiple RAGAS metrics including standard metrics (Context Recall,
+    Noise Sensitivity, Response Relevancy, Faithfulness) and custom AspectCritic
+    metrics for cultural sensitivity and historical accuracy.
+
+    Returns:
+    dict: Dictionary containing initialized RAGAS metric objects with keys:
+        - 'context_recall': LLMContextRecall metric
+        - 'noise_sensitivity': NoiseSensitivity metric  
+        - 'response_relevancy': ResponseRelevancy metric
+        - 'faithfulness': Faithfulness metric
+        - 'cultural_sensitivity': AspectCritic for cultural sensitivity
+        - 'historical_accuracy': AspectCritic for historical accuracy
+    """
     openai_chat = ChatOpenAI(model="gpt-4o-mini", temperature=0.0)
     evaluator_model = LangchainLLMWrapper(openai_chat)
 
@@ -155,7 +93,19 @@ def create_ragas_evaluators():
     return evaluators
 
 def create_golden_test_cases():
-    """Create comprehensive test cases for Jagannatha Temple evaluation."""
+    """
+    Create comprehensive test cases for Jagannatha Temple evaluation.
+
+    Defines structured test cases with queries, expected outputs, and topics
+    covering various aspects of Jagannatha Temple including history, architecture,
+    festivals, location, and visiting information.
+
+    Returns:
+    list: List of dictionaries, each containing:
+        - 'query' (str): The test question
+        - 'expected_output' (str): Expected response content
+        - 'topic' (str): Topic category for the test case
+    """
 
     test_cases = [
         {
@@ -189,7 +139,22 @@ def create_golden_test_cases():
 
 
 def run_evaluation_with_dataset():
-    """Demonstrate how the evaluate() method works with EvaluationDataset."""
+    """
+    Demonstrate RAGAS EvaluationDataset and evaluate() method for batch evaluation.
+
+    This function showcases the complete RAG evaluation pipeline:
+    1. Sets up vector database with Wikipedia data
+    2. Creates test samples with context-augmented responses
+    3. Builds EvaluationDataset from SingleTurnSample objects
+    4. Runs batch evaluation using evaluate() method
+    5. Displays results for all metrics across all test cases
+
+    The function demonstrates proper RAG context augmentation by retrieving
+    relevant context and including it in the prompt before generation.
+
+    Returns:
+    None: Prints evaluation results and debugging information
+    """
 
      # Setup
     setup_ollama()
