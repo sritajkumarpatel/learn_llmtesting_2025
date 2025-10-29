@@ -191,6 +191,18 @@ DeepEval Hybrid Framework combines local LLM generation with cloud-based OpenAI 
 - **Evaluation:** OpenAI GPT-4
 - **Run:** `python -m deepeval_tests_openai.deepeval_faithfulness`
 
+#### 5. **`deepeval_tests_openai/deepeval_prompts_test.py`**
+- **Purpose:** Test prompt engineering effectiveness using custom GEval criteria
+- **Tests:**
+  - One Word Prompt: Math question → Should return single number
+  - Greetings Prompt: Capital question → Should end with greeting
+  - Poem Prompt: Ocean description → Should be in poem format
+  - Negative cases: Intentionally mismatched prompts → Should fail
+- **Scoring:** Custom GEval criteria (1.0 = Meets prompt requirements ✅ | 0.0 = Fails ❌)
+- **Generation:** Local Ollama (llama3.2:3b)
+- **Evaluation:** OpenAI GPT-4
+- **Run:** `python -m deepeval_tests_openai.deepeval_prompts_test`
+
 ---
 
 ## 🏠 Local Tests (Completely Offline)

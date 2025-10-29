@@ -9,6 +9,7 @@ python deepeval_tests_openai/deepeval_answer_relevancy.py
 python deepeval_tests_openai/deepeval_faithfulness.py
 python deepeval_tests_openai/deepeval_bias.py
 python deepeval_tests_openai/deepeval_geval.py
+python deepeval_tests_openai/deepeval_prompts_test.py
 ```
 
 ### Local Evaluation (Ollama Only)
@@ -56,7 +57,7 @@ python huggingface_transformers/ner.py
 
 | Folder | Architecture | Tests | Key Features |
 |--------|--------------|-------|--------------|
-| `deepeval_tests_openai/` | Hybrid (Local Gen + OpenAI Eval) | 4 tests | GEval, Answer Relevancy, Bias, Faithfulness |
+| `deepeval_tests_openai/` | Hybrid (Local Gen + OpenAI Eval) | 5 tests | GEval, Answer Relevancy, Bias, Faithfulness, Prompts |
 | `deepeval_tests_localruns/` | Local (Ollama Only) | 5 tests | Same metrics as hybrid but fully local |
 | `rag_system_tests/` | Advanced RAG Evaluation | 2 tests | JSON output, HTML reports, batch processing |
 | `ragas_tests/` | RAGAS Local Framework | 2 tests | Context Recall, Noise Sensitivity |
@@ -96,6 +97,12 @@ Tests use local Ollama for generation and OpenAI GPT-4 for evaluation.
 **FaithfulnessMetric Test**
 - Checks if LLM output is factually consistent with retrieval context
 - Tests: Faithful output, factually incorrect, partially faithful
+- Uses OpenAI GPT-4 for evaluation
+
+**Prompts Test**
+- Tests prompt engineering effectiveness with custom GEval criteria
+- Evaluates if prompts successfully constrain LLM output format
+- Tests: One-word responses, greetings, poem format, negative cases
 - Uses OpenAI GPT-4 for evaluation
 
 ### Local Tests (Ollama Only)
@@ -208,7 +215,7 @@ Basic model testing examples demonstrating fundamental NLP tasks and evaluation 
 
 | Framework | Architecture | Focus | Key Metrics | Speed | Cost |
 |-----------|-------------|-------|-------------|-------|------|
-| **Hybrid Tests** | Local Gen + OpenAI Eval | General LLM evaluation | GEval, AnswerRelevancy, Bias, Faithfulness | Medium | API keys required |
+| **Hybrid Tests** | Local Gen + OpenAI Eval | General LLM evaluation | GEval, AnswerRelevancy, Bias, Faithfulness, Prompts | Medium | API keys required |
 | **Local Tests** | Ollama Only | General LLM evaluation | Same as hybrid | Medium | Free |
 | **RAG System Tests** | Advanced RAG | Production RAG validation | All metrics + custom GEval | Medium-High | Mixed |
 | **RAGAS Local** | Ollama Only | RAG-specific metrics | ContextRecall, NoiseSensitivity | Medium | Free |
